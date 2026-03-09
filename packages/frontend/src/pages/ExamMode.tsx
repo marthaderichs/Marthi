@@ -122,7 +122,7 @@ export default function ExamMode() {
   if (!quizStarted && !setupMode) return (
     <div className="w-full max-w-5xl mx-auto space-y-12">
       <div className="text-center space-y-4">
-        <h1 className="text-7xl font-display text-[#8B1E1E] lowercase">klausur-modus</h1>
+        <h1 className="text-7xl font-display text-[#8B1E1E]">Klausur-Modus</h1>
         <p className="text-xl text-[#4A3A2F]/50 font-serif italic">Wähle ein Fach und leg los.</p>
       </div>
       <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-4">
