@@ -31,10 +31,10 @@ export default function Dashboard() {
   if (subjectsLoading) return <div className="flex justify-center py-32"><Loader2 className="w-10 h-10 animate-spin text-[#8B1E1E]" /></div>;
 
   return (
-    <div className="max-w-4xl mx-auto bg-[#F9F4E8] rounded-3xl shadow-2xl overflow-hidden">
+    <div className="max-w-6xl mx-auto space-y-10">
 
       {/* Welcome */}
-      <div className="px-10 pt-10 pb-8 space-y-4">
+      <div className="space-y-4">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#8B1E1E]/8 rounded-full text-[#8B1E1E] text-[10px] font-black uppercase tracking-[0.2em]">
           <Sparkles className="w-3 h-3" /> hey marthi!
         </div>
@@ -47,7 +47,7 @@ export default function Dashboard() {
       </div>
 
       {/* Main Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 px-10 pb-10 gap-x-10 gap-y-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-8">
 
         {/* Quick Actions */}
         <div className="lg:col-span-7 space-y-3">
@@ -55,8 +55,8 @@ export default function Dashboard() {
             <NavLink
               key={link.to}
               to={link.to}
-              className="group flex items-center justify-between px-7 py-5 bg-white rounded-full border border-[#4A3A2F]/6 hover:-translate-y-0.5 hover:shadow-md transition-all"
-              style={{ boxShadow: '0 2px 8px rgba(74,58,47,0.07)' }}
+              className="group flex items-center justify-between px-7 py-5 bg-white rounded-full border border-[#4A3A2F]/6 hover:-translate-y-0.5 transition-all"
+              style={{ boxShadow: '0 2px 10px rgba(74,58,47,0.08)' }}
             >
               <div className="flex items-center gap-5">
                 <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: `${link.color}20`, color: link.color }}>
@@ -73,9 +73,8 @@ export default function Dashboard() {
         </div>
 
         {/* Sidebar */}
-        <div className="lg:col-span-5 space-y-6 lg:pl-8 lg:border-l lg:border-[#4A3A2F]/8">
+        <div className="lg:col-span-5 space-y-6 lg:pl-8 lg:border-l lg:border-[#4A3A2F]/10">
 
-          {/* Fortschritt */}
           <div className="space-y-4">
             <h3 className="font-display text-2xl text-[#8B1E1E]">Dein Fortschritt</h3>
             <div className="space-y-3">
@@ -104,7 +103,6 @@ export default function Dashboard() {
 
           <div className="border-t border-[#4A3A2F]/10" />
 
-          {/* Zuletzt besucht */}
           <div className="space-y-1">
             <h4 className="text-2xl font-display text-[#8B1E1E] mb-3">Zuletzt besucht</h4>
             {subjects?.slice(4, 8).map((s) => {
