@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Lora:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Gochi Hand", cursive;
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+  --font-serif: "Lora", serif;
+}
+
+:root {
+  /* The "marthi lernt!" Palette */
+  --main-cream: #E2E8D4; /* Sage Green instead of Yellowish Cream */
+  --rust-red: #8B1E1E; /* Refined Strong Red from Image */
+  --deep-brown: #4A3A2F;
+  
+  /* Background Stripes */
+  --stripe-tan: #9B9478;
+  --stripe-blue: #B8D3E5;
+  
+  /* Scandi Accents */
+  --scandi-olive: #8B8D6F;
+  --scandi-peach: #F2B091;
+  --scandi-mustard: #E9C46A;
+  
+  --radius-scandi: 24px;
+}
+
+html {
+  overflow-y: scroll;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--main-cream);
+  color: var(--deep-brown);
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  padding: 0;
+}
+
+/* Wide Vertical Stripes like in the reference */
+.main-bg-stripes {
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--stripe-tan),
+    var(--stripe-tan) 60px,
+    var(--stripe-blue) 60px,
+    var(--stripe-blue) 120px
+  );
+  background-attachment: scroll;
+}
+
+/* Checkerboard top border utility */
+.border-checker {
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--rust-red) 0px,
+    var(--rust-red) 18px,
+    var(--stripe-blue) 18px,
+    var(--stripe-blue) 36px
+  );
+  height: 14px;
+  width: 100%;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--rust-red);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.scandi-card {
+  background-color: var(--main-cream);
+  border-radius: 12px;
+  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
+  border: 1px solid rgba(74, 58, 47, 0.05);
+}
+
+.doodle-button {
+  font-family: var(--font-display);
+  border: 1.5px solid var(--deep-brown);
+  border-radius: 8px;
+  background: white;
+  transition: all 0.2s ease;
+}
+
+.doodle-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 2px 2px 0px var(--deep-brown);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--main-cream); }
+::-webkit-scrollbar-thumb {
+  background: var(--rust-red);
+  border-radius: 10px;
+}

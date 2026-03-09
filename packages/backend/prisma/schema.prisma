@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./medilearn.db"
+}
+
+// ============================================
+// SUBJECTS (Fachgebiete)
+// ============================================
+model Subject {
+  id          String   @id                    // 'kardio', 'chirurgie', etc.
+  name        String                          // 'Kardiologie'
+  color       String                          // '#FFB5A7'
+  icon        String?                         // 'Heart' (Lucide Icon Name)
+  description String
+
+  topics      Topic[]
+  questions   Question[]
+  flashcards  Flashcard[]
+
+  createdAt   DateTime @default(now())
+}
+
+// ============================================
+// TOPICS (Lernzusammenfassungen / Wiki)
+// ============================================
+model Topic {
+  id          String   @id @default(uuid())
+  title       String
+  content     String                          // Markdown/Text, kann lang sein
+  
+  subjectId   String
+  subject     Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  questions   Question[]
+  flashcards  Flashcard[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([subjectId])
+}
+
+// ============================================
+// QUESTIONS (Multiple-Choice-Fragen)
+// ============================================
+model Question {
+  id                 String   @id @default(uuid())
+  text               String                   // Die Frage
+  options            String                   // JSON-String: ["A","B","C","D"]
+  correctAnswerIndex Int                      // 0-basiert
+  explanation        String
+
+  subjectId          String
+  subject            Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  topicId            String?                  // Optional
+  topic              Topic?   @relation(fields: [topicId], references: [id], onDelete: SetNull)
+
+  examResults        ExamResult[]
+
+  createdAt          DateTime @default(now())
+
+  @@index([subjectId])
+  @@index([topicId])
+}
+
+// ============================================
+// FLASHCARDS (Karteikarten)
+// ============================================
+model Flashcard {
+  id         String   @id @default(uuid())
+  front      String                           // Frage
+  back       String                           // Antwort
+
+  subjectId  String
+  subject    Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  topicId    String?
+  topic      Topic?   @relation(fields: [topicId], references: [id], onDelete: SetNull)
+
+  // Spaced Repetition Felder
+  easeFactor Float    @default(2.5)           // SM-2 Algorithmus
+  interval   Int      @default(0)             // Tage bis zur nächsten Review
+  repetitions Int     @default(0)             // Anzahl erfolgreicher Reviews
+  nextReview DateTime @default(now())         // Wann ist die Karte fällig?
+  lastReview DateTime?                        // Letzte Review
+
+  createdAt  DateTime @default(now())
+
+  @@index([subjectId])
+  @@index([topicId])
+  @@index([nextReview])
+}
+
+// ============================================
+// EXAM RESULTS (Prüfungsergebnisse)
+// ============================================
+model ExamResult {
+  id          String   @id @default(uuid())
+  
+  questionId  String
+  question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  selectedIndex Int                           // Was hat der User gewählt
+  wasCorrect    Boolean                       // Richtig oder falsch
+
+  examSessionId String                        // Gruppiert Fragen einer Sitzung
+  
+  createdAt   DateTime @default(now())
+
+  @@index([examSessionId])
+  @@index([questionId])
+  @@index([createdAt])
+}
+
+// ============================================
+// EXAM SESSIONS (Prüfungssitzungen - Übersicht)
+// ============================================
+model ExamSession {
+  id          String   @id @default(uuid())
+  subjectId   String
+  totalQuestions Int
+  correctAnswers Int
+  percentage  Float
+  completedAt DateTime @default(now())
+
+  @@index([subjectId])
+  @@index([completedAt])
+}

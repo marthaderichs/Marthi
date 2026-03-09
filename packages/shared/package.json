@@ -1,0 +1,18 @@
+{
+  "name": "@medilearn/shared",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "private": true,
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.5",
+    "typescript": "^5.8.2",
+    "zod": "^3.24.1"
+  },
+  "dependencies": {
+    "zod": "^3.24.1"
+  }
+}

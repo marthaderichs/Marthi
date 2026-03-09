@@ -1,0 +1,12 @@
+node_modules/
+packages/*/node_modules/
+packages/backend/prisma/medilearn.db
+packages/backend/prisma/medilearn.db-shm
+packages/backend/prisma/medilearn.db-wal
+packages/shared/dist/
+packages/frontend/dist/
+dev_output.log
+.env
+*.env
+.DS_Store
+.claude/
