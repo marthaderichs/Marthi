@@ -46,11 +46,8 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Checker divider */}
-      <div className="border-checker" />
-
       {/* Main Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 px-10 py-10 gap-x-10 gap-y-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 px-10 pb-10 gap-x-10 gap-y-8">
 
         {/* Quick Actions */}
         <div className="lg:col-span-7 space-y-3">

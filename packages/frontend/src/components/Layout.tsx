@@ -219,8 +219,7 @@ export default function Layout() {
 
   return (
     <div className={cn(
-      "min-h-screen flex flex-col font-sans selection:bg-[#8B3E2F]/20 transition-colors duration-1000",
-      location.pathname === '/' ? "main-bg-stripes" : "bg-[#F9F4E8]",
+      "min-h-screen flex flex-col font-sans selection:bg-[#8B3E2F]/20 bg-[#F9F4E8] transition-colors duration-1000",
       isFocusMode && "bg-[#D1E3ED]/30"
     )}>
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#F9F4E8] border-b border-[#4A3A2F]/5">
@@ -292,7 +291,8 @@ export default function Layout() {
         "flex-1 pb-32 w-full flex flex-col items-center transition-opacity duration-1000",
         isFocusMode && "opacity-80"
       )}>
-        <div className="max-w-6xl w-full px-6 pt-8 pb-12">
+        <div className="w-full main-bg-stripes flex-shrink-0" style={{ height: '72px' }} />
+        <div className="max-w-6xl w-full px-6 pb-12 -mt-6">
           {isFocusMode && (
             <div className="flex items-center justify-center mb-8 gap-3 text-[#8B1E1E]/40 font-display text-2xl animate-pulse">
                <Coffee className="w-6 h-6" />
