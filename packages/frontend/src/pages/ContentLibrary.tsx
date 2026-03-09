@@ -37,22 +37,52 @@ export default function ContentLibrary() {
       </div>
 
       {!selectedSubject ? (
-        <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-5">
-          {subjects?.map((subject) => (
-            <motion.button
-              key={subject.id}
-              whileHover={{ scale: 1.08 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              onClick={() => setSelectedSubject(subject)}
-              className="aspect-square rounded-full flex items-center justify-center p-3"
-              style={{ backgroundColor: subject.color }}
-            >
-              <span className="font-display text-[11px] text-white/80 text-center leading-tight lowercase">
-                {subject.name.toLowerCase()}
-              </span>
-            </motion.button>
-          ))}
-        </div>
+        <>
+          {/* SVG grain filter – applied to every blob */}
+          <svg style={{ display: 'none' }}>
+            <defs>
+              <filter id="blob-grain" x="0%" y="0%" width="100%" height="100%" colorInterpolationFilters="sRGB">
+                <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="4" stitchTiles="stitch" result="noise"/>
+                <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+                <feBlend in="SourceGraphic" in2="grayNoise" mode="soft-light" result="blend"/>
+                <feComposite in="blend" in2="SourceGraphic" operator="in"/>
+              </filter>
+            </defs>
+          </svg>
+
+          <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-4">
+            {subjects?.map((subject, i) => {
+              // Organic blob shapes – each circle slightly different
+              const blobs = [
+                '58% 42% 52% 48% / 48% 56% 44% 52%',
+                '44% 56% 48% 52% / 54% 46% 58% 42%',
+                '52% 48% 62% 38% / 40% 60% 50% 50%',
+                '40% 60% 46% 54% / 56% 44% 62% 38%',
+                '62% 38% 50% 50% / 46% 54% 40% 60%',
+                '50% 50% 56% 44% / 60% 40% 52% 48%',
+                '46% 54% 40% 60% / 52% 48% 58% 42%',
+              ];
+              const br = blobs[i % blobs.length];
+              const tilt = ((i * 7) % 11) - 5; // –5° to +5°, deterministic
+
+              return (
+                <motion.button
+                  key={subject.id}
+                  initial={{ rotate: tilt }}
+                  whileHover={{ scale: 1.1, rotate: 0 }}
+                  transition={{ type: 'spring', stiffness: 280, damping: 20 }}
+                  onClick={() => setSelectedSubject(subject)}
+                  className="aspect-square relative flex items-center justify-center p-3"
+                  style={{ backgroundColor: subject.color, borderRadius: br, filter: 'url(#blob-grain)' }}
+                >
+                  <span className="font-sans text-[10px] font-semibold text-white text-center leading-snug lowercase [text-shadow:0_1px_3px_rgba(0,0,0,0.25)]">
+                    {subject.name.toLowerCase()}
+                  </span>
+                </motion.button>
+              );
+            })}
+          </div>
+        </>
       ) : (
         <div className="space-y-8">
           {/* Subject header – clean, no heavy card */}
