@@ -128,7 +128,7 @@ export default function ExamMode() {
             <div
               className="w-full h-full"
               style={{
-                backgroundImage: 'repeating-linear-gradient(90deg, #9B9478 0px, #9B9478 5px, #B8D3E5 5px, #B8D3E5 10px)',
+                backgroundImage: 'repeating-linear-gradient(90deg, #D8D2C0 0px, #D8D2C0 5px, #C8DCE8 5px, #C8DCE8 10px)',
                 borderRadius: '18px',
                 padding: '2.5px',
                 boxShadow: '2px 3px 0 rgba(74,58,47,0.10)',
@@ -142,7 +142,7 @@ export default function ExamMode() {
                 }}
               >
                 {React.createElement(getIcon(s.icon), { className: 'w-10 h-10', style: { color: s.color } })}
-                <h3 className="font-display text-[12px] text-[#4A3A2F] text-center leading-tight">{s.name}</h3>
+                <h3 className="font-display text-[12px] text-[#4A3A2F] text-center leading-tight">{s.name.toLowerCase()}</h3>
               </div>
             </div>
           </motion.button>
