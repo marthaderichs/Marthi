@@ -5,6 +5,11 @@ import { useExamGenerate, useExamSubmit } from '../hooks/useExam';
 import { useMistakes } from '../hooks/useMistakes';
 import { cn } from '../lib/utils';
 import { CheckCircle2, XCircle, ArrowRight, Trophy, Loader2, RotateCcw, Sparkles, Settings2, Info, Layers } from 'lucide-react';
+
+function isLight(hex: string) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return (r*299 + g*587 + b*114) / 1000 > 160;
+}
 import { getIcon } from '../lib/icons';
 
 // Helper to clean up messy explanation texts
@@ -113,21 +118,32 @@ export default function ExamMode() {
         <h1 className="text-7xl font-display text-[#8B1E1E] lowercase">klausur-modus</h1>
         <p className="text-xl text-[#4A3A2F]/50 font-medium font-sans lowercase">wähle ein fach und leg los.</p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {subjects?.map((s) => (
-          <button
-            key={s.id}
-            onClick={() => selectSubject(s.id)}
-            className="group relative p-8 bg-[#F9F4E8] rounded-2xl border border-[#4A3A2F]/8 transition-all text-left hover:-translate-y-0.5"
-            style={{ boxShadow: '2px 2px 0 rgba(74,58,47,0.07)' }}
-          >
-            <div className="w-14 h-14 flex items-center justify-center mb-6 rounded-2xl" style={{ backgroundColor: s.color }}>
-                {React.createElement(getIcon(s.icon), { className: "w-7 h-7 text-white" })}
-            </div>
-            <h3 className="text-3xl font-bold text-[#8B1E1E] font-display mb-1">{s.name}</h3>
-            <div className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/30 lowercase">{s._count?.questions || 0} fragen</div>
-          </button>
-        ))}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+        {subjects?.map((s) => {
+          const light = isLight(s.color);
+          return (
+            <motion.button
+              key={s.id}
+              whileHover={{ y: -4 }}
+              onClick={() => selectSubject(s.id)}
+              className="group flex flex-col text-left"
+            >
+              <div
+                className="relative w-full aspect-[4/5] rounded-[28px] flex items-center justify-center overflow-hidden"
+                style={{ backgroundColor: s.color, boxShadow: '3px 3px 0 rgba(74,58,47,0.12)' }}
+              >
+                {React.createElement(getIcon(s.icon), { className: cn('w-16 h-16', light ? 'text-black/30' : 'text-white/70') })}
+                <div className={cn('absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-black tracking-wider lowercase', light ? 'bg-black/10 text-black/50' : 'bg-black/15 text-white/80')}>
+                  {s._count?.questions || 0} fr
+                </div>
+              </div>
+              <div className="pt-3 px-1 space-y-0.5">
+                <h3 className="font-display text-xl text-[#4A3A2F] lowercase leading-tight">{s.name.toLowerCase()}</h3>
+                <p className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/35 lowercase">{s._count?.questions || 0} fragen</p>
+              </div>
+            </motion.button>
+          );
+        })}
       </div>
     </div>
   );

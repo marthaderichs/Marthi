@@ -11,13 +11,10 @@ import { getIcon } from '../lib/icons';
 import { cn } from '../lib/utils';
 import { useNavigate } from 'react-router-dom';
 
-// Subtle dot decoration for cards
-const DotDecoration = () => (
-  <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-[0.15]" style={{
-    backgroundImage: 'radial-gradient(rgba(255,255,255,0.8) 1.5px, transparent 1.5px)',
-    backgroundSize: '16px 16px'
-  }} />
-);
+function isLight(hex: string) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return (r*299 + g*587 + b*114) / 1000 > 160;
+}
 
 export default function ContentLibrary() {
   const { data: subjects, isLoading: subjectsLoading } = useSubjects();
@@ -47,24 +44,29 @@ export default function ContentLibrary() {
       </div>
 
       {!selectedSubject ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
           {subjects?.map((subject) => {
             const Icon = getIcon(subject.icon);
+            const light = isLight(subject.color);
             return (
               <motion.button
                 key={subject.id}
-                whileHover={{ y: -3, scale: 1.01 }}
+                whileHover={{ y: -4 }}
                 onClick={() => setSelectedSubject(subject)}
-                className="group relative p-8 min-h-[180px] text-left flex flex-col justify-between rounded-2xl overflow-hidden transition-all hover:-translate-y-0.5"
-                style={{ backgroundColor: subject.color, boxShadow: '3px 3px 0 rgba(74,58,47,0.15)' }}
+                className="group flex flex-col text-left"
               >
-                <DotDecoration />
-                <div className="w-13 h-13 flex items-center justify-center bg-white/25 backdrop-blur-sm rounded-2xl shadow-inner relative z-10 w-14 h-14">
-                  <Icon className="w-7 h-7 text-white" />
+                <div
+                  className="relative w-full aspect-[4/5] rounded-[28px] flex items-center justify-center overflow-hidden"
+                  style={{ backgroundColor: subject.color, boxShadow: '3px 3px 0 rgba(74,58,47,0.12)' }}
+                >
+                  <Icon className={cn('w-16 h-16', light ? 'text-black/30' : 'text-white/70')} />
+                  <div className={cn('absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-black tracking-wider lowercase', light ? 'bg-black/10 text-black/50' : 'bg-black/15 text-white/80')}>
+                    {subject._count?.topics || 0} kap
+                  </div>
                 </div>
-                <div className="relative z-10">
-                  <h3 className="text-3xl font-display text-white lowercase drop-shadow-sm">{subject.name.toLowerCase()}</h3>
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60 mt-1">{subject._count?.topics || 0} kapitel</p>
+                <div className="pt-3 px-1 space-y-0.5">
+                  <h3 className="font-display text-xl text-[#4A3A2F] lowercase leading-tight">{subject.name.toLowerCase()}</h3>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/35 lowercase">{subject.description}</p>
                 </div>
               </motion.button>
             );
