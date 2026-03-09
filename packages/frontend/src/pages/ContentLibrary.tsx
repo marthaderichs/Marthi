@@ -45,22 +45,35 @@ export default function ContentLibrary() {
             return (
               <motion.button
                 key={subject.id}
-                whileHover={{ y: -3, scale: 1.03 }}
+                whileHover={{ y: -6, rotate: 1.5 }}
+                transition={{ type: 'spring', stiffness: 320, damping: 18 }}
                 onClick={() => setSelectedSubject(subject)}
-                className="group flex flex-col text-left"
+                className="group flex flex-col text-left origin-bottom"
               >
                 <div
-                  className="w-full aspect-square rounded-2xl flex items-center justify-center relative overflow-hidden"
+                  className="w-full rounded-[18px] overflow-hidden"
                   style={{
-                    backgroundColor: '#E2E8D4',
-                    boxShadow: '2px 2px 0 rgba(74,58,47,0.09)',
-                    backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 7px, rgba(255,255,255,0.55) 7px, rgba(255,255,255,0.55) 8px)',
+                    aspectRatio: '3/4',
+                    boxShadow: '3px 4px 0 rgba(74,58,47,0.13)',
                   }}
                 >
-                  <Icon className="w-9 h-9 relative z-10" style={{ color: subject.color }} />
-                </div>
-                <div className="pt-2 px-0.5">
-                  <h3 className="font-display text-base text-[#4A3A2F] lowercase leading-tight">{subject.name.toLowerCase()}</h3>
+                  {/* Coloured top – icon lives here */}
+                  <div
+                    className="h-[62%] flex items-center justify-center"
+                    style={{
+                      backgroundColor: subject.color,
+                      backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 6px, rgba(255,255,255,0.18) 6px, rgba(255,255,255,0.18) 7px)',
+                    }}
+                  >
+                    <Icon className="w-10 h-10 text-white/80 drop-shadow-sm" />
+                  </div>
+                  {/* Cream label bottom */}
+                  <div
+                    className="h-[38%] bg-[#F9F4E8] flex items-center justify-center px-2 border-t border-dashed"
+                    style={{ borderColor: `${subject.color}55` }}
+                  >
+                    <h3 className="font-display text-[13px] text-[#4A3A2F] text-center lowercase leading-tight">{subject.name.toLowerCase()}</h3>
+                  </div>
                 </div>
               </motion.button>
             );
