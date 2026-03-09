@@ -7,6 +7,9 @@ import { questionsRouter } from './routes/questions';
 import { flashcardsRouter } from './routes/flashcards';
 import { examsRouter } from './routes/exams';
 import { importRouter } from './routes/import';
+import { notesRouter } from './routes/notes';
+import { studyplanRouter } from './routes/studyplan';
+import { searchRouter } from './routes/search';
 import { errorHandler } from './middleware/errorHandler';
 
 export function createApp() {
@@ -25,6 +28,9 @@ export function createApp() {
   app.use('/api/flashcards', flashcardsRouter);
   app.use('/api/exams', examsRouter);
   app.use('/api/import', importRouter);
+  app.use('/api/notes', notesRouter);
+  app.use('/api/studyplan', studyplanRouter);
+  app.use('/api/search', searchRouter);
 
   // Serve frontend in production
   if (process.env.NODE_ENV === 'production') {

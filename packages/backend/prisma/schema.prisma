@@ -131,3 +131,35 @@ model ExamSession {
   @@index([subjectId])
   @@index([completedAt])
 }
+
+// ============================================
+// NOTES (Persönliche Notizen)
+// ============================================
+model Note {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  subjectId String?
+  topicId   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([subjectId])
+}
+
+// ============================================
+// STUDY PLAN (Lernplan)
+// ============================================
+model StudyPlanItem {
+  id          String   @id @default(uuid())
+  date        String   // ISO "2026-03-09"
+  subjectId   String
+  type        String   // "exam" | "flashcards" | "reading"
+  durationMin Int      @default(30)
+  completed   Boolean  @default(false)
+  note        String?
+  createdAt   DateTime @default(now())
+
+  @@index([date])
+  @@index([subjectId])
+}
