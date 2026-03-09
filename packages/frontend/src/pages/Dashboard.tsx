@@ -22,10 +22,10 @@ export default function Dashboard() {
   }, [subjects]);
 
   const quickLinks = [
-    { to: '/exam', icon: CheckSquare, label: 'klausur', color: '#8B1E1E', desc: 'wissen testen' },
-    { to: '/content', icon: BookOpen, label: 'bibliothek', color: '#A3B18A', desc: 'kapitel lesen' },
-    { to: '/flashcards', icon: Brain, label: 'karten', color: '#E9C46A', desc: 'fakten lernen' },
-    { to: '/garden', icon: Flower2, label: 'garten', color: '#B8D3E5', desc: 'fehler pflegen' },
+    { to: '/exam', icon: CheckSquare, label: 'Klausur', color: '#8B1E1E', desc: 'Wissen testen' },
+    { to: '/content', icon: BookOpen, label: 'Bibliothek', color: '#A3B18A', desc: 'Kapitel lesen' },
+    { to: '/flashcards', icon: Brain, label: 'Karten', color: '#E9C46A', desc: 'Fakten lernen' },
+    { to: '/garden', icon: Flower2, label: 'Garten', color: '#B8D3E5', desc: 'Fehler pflegen' },
   ];
 
   if (subjectsLoading) return <div className="flex justify-center py-32"><Loader2 className="w-10 h-10 animate-spin text-[#8B1E1E]" /></div>;
@@ -38,11 +38,11 @@ export default function Dashboard() {
         <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#8B1E1E]/8 rounded-full text-[#8B1E1E] text-[10px] font-black uppercase tracking-[0.2em]">
           <Sparkles className="w-3 h-3" /> hey marthi!
         </div>
-        <h1 className="text-5xl md:text-6xl font-display text-[#8B1E1E] lowercase leading-tight">schön, dass du da bist</h1>
+        <h1 className="text-5xl md:text-6xl font-display text-[#8B1E1E] leading-tight">Schön, dass du da bist</h1>
         <div className="flex items-center gap-3 flex-wrap">
-          <p className="text-lg text-[#4A3A2F]/60 font-serif italic">bereit für eine prise medizinisches wissen?</p>
-          <span className="px-4 py-1.5 bg-[#F9F4E8] rounded-full text-[#8B1E1E] font-black text-xs">{stats.totalTopics} kapitel</span>
-          <span className="px-4 py-1.5 bg-[#B8D3E5] rounded-full text-[#4A3A2F] font-black text-xs">{stats.totalQuestions} fragen</span>
+          <p className="text-lg text-[#4A3A2F]/60 font-serif italic">Bereit für eine Prise medizinisches Wissen?</p>
+          <span className="px-4 py-1.5 bg-[#F9F4E8] rounded-full text-[#8B1E1E] font-black text-xs">{stats.totalTopics} Kapitel</span>
+          <span className="px-4 py-1.5 bg-[#B8D3E5] rounded-full text-[#4A3A2F] font-black text-xs">{stats.totalQuestions} Fragen</span>
         </div>
       </div>
 
@@ -66,8 +66,8 @@ export default function Dashboard() {
                   <link.icon className="w-4 h-4" />
                 </div>
                 <div className="flex items-baseline gap-3">
-                  <span className="font-display text-2xl text-[#4A3A2F] lowercase">{link.label}</span>
-                  <span className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/35 lowercase hidden sm:inline">{link.desc}</span>
+                  <span className="font-display text-2xl text-[#4A3A2F]">{link.label}</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/35 hidden sm:inline">{link.desc}</span>
                 </div>
               </div>
               <ArrowRight className="w-4 h-4 text-[#4A3A2F]/25 group-hover:text-[#8B1E1E] group-hover:translate-x-1 transition-all" />
@@ -80,12 +80,12 @@ export default function Dashboard() {
 
           {/* Fortschritt */}
           <div className="space-y-4">
-            <h3 className="font-display text-2xl text-[#8B1E1E] lowercase">dein fortschritt</h3>
+            <h3 className="font-display text-2xl text-[#8B1E1E]">Dein Fortschritt</h3>
             <div className="space-y-3">
               {subjects?.slice(0, 4).map(s => (
                 <div key={s.id} className="space-y-1.5 pb-3 border-b border-[#4A3A2F]/8 last:border-0">
-                  <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/50 lowercase">
-                    <span>{s.name.toLowerCase()}</span>
+                  <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/50">
+                    <span>{s.name}</span>
                     <span>{(s as any).progress || 0}%</span>
                   </div>
                   <div className="h-1 w-full bg-[#4A3A2F]/10 rounded-full overflow-hidden">
@@ -100,8 +100,8 @@ export default function Dashboard() {
                 </div>
               ))}
             </div>
-            <NavLink to="/content" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#8B1E1E]/50 hover:text-[#8B1E1E] hover:gap-3 transition-all lowercase">
-              alle fächer <ArrowRight className="w-3 h-3" />
+            <NavLink to="/content" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#8B1E1E]/50 hover:text-[#8B1E1E] hover:gap-3 transition-all">
+              Alle Fächer <ArrowRight className="w-3 h-3" />
             </NavLink>
           </div>
 
@@ -109,7 +109,7 @@ export default function Dashboard() {
 
           {/* Fachbereiche */}
           <div className="space-y-1">
-            <h4 className="text-2xl font-display text-[#8B1E1E] lowercase mb-3">zuletzt besucht</h4>
+            <h4 className="text-2xl font-display text-[#8B1E1E] mb-3">Zuletzt besucht</h4>
             {subjects?.slice(4, 8).map((s) => {
               const Icon = getIcon(s.icon);
               return (
@@ -117,7 +117,7 @@ export default function Dashboard() {
                   <div className="w-6 h-6 rounded-full shrink-0 flex items-center justify-center" style={{ backgroundColor: `${s.color}25`, color: s.color }}>
                     <Icon className="w-3 h-3" />
                   </div>
-                  <span className="text-sm font-bold text-[#4A3A2F]/60 truncate lowercase flex-1 group-hover:text-[#4A3A2F] transition-colors">{s.name.toLowerCase()}</span>
+                  <span className="text-sm font-bold text-[#4A3A2F]/60 truncate flex-1 group-hover:text-[#4A3A2F] transition-colors">{s.name}</span>
                   <ArrowRight className="w-3 h-3 text-[#4A3A2F]/20 group-hover:text-[#8B1E1E] transition-colors" />
                 </div>
               );

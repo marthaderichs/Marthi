@@ -13,14 +13,14 @@ const formatExplanation = (text: string) => {
   if (!text) return null;
 
   const cleaned = text
-    // Remove lines that are ONLY a label word (± markdown, ± colon, ± number/period)
-    .replace(/^\s*[*_#]*\s*(frage|thema|kernaspekt|antwort|erklärung|option)\s*[*_]*:?\s*\d*\.?\s*$/gmi, '')
-    // Remove label prefixes at start of lines (e.g. "Frage: ", "Thema: ")
-    .replace(/^\s*[*_#]*\s*(frage|thema|kernaspekt|antwort|erklärung)\s*[*_]*:\s*/gmi, '')
+    // Remove lines that are ONLY a label word (handles **Frage:**, ### Thema, etc.)
+    .replace(/^[\s*_#]*(?:frage|thema|kernaspekt|antwort|erklärung|option)[\s*_#]*:?[\s*_#\d.]*$/gmi, '')
+    // Remove "Label: " prefixes at start of lines
+    .replace(/^[\s*_#]*(?:frage|thema|kernaspekt|antwort|erklärung)[\s*_#]*:\s*/gmi, '')
     // Remove pipe-table dividers
     .replace(/\|?\s*:?-+:?\s*\|/g, '')
-    // Remove standalone numbers (with optional period/colon)
-    .replace(/^\s*\d+[.):]?\s*$/gm, '')
+    // Remove standalone numbers, possibly with markdown decoration (e.g. **4**, 4., 4:)
+    .replace(/^[\s*_]*\d+[.):]?[\s*_]*$/gm, '')
     // Collapse excess blank lines
     .replace(/\n{3,}/g, '\n\n')
     .trim();
