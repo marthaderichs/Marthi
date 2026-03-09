@@ -45,34 +45,32 @@ export default function ContentLibrary() {
             return (
               <motion.button
                 key={subject.id}
-                whileHover={{ y: -6, rotate: 1.5 }}
-                transition={{ type: 'spring', stiffness: 320, damping: 18 }}
+                whileHover={{ y: -5 }}
+                transition={{ type: 'spring', stiffness: 280, damping: 22 }}
                 onClick={() => setSelectedSubject(subject)}
-                className="group flex flex-col text-left origin-bottom"
+                className="group block w-full"
+                style={{ aspectRatio: '3/4' }}
               >
+                {/* Striped border frame */}
                 <div
-                  className="w-full rounded-[18px] overflow-hidden"
+                  className="w-full h-full"
                   style={{
-                    aspectRatio: '3/4',
-                    boxShadow: '3px 4px 0 rgba(74,58,47,0.13)',
+                    backgroundImage: 'repeating-linear-gradient(90deg, #9B9478 0px, #9B9478 5px, #B8D3E5 5px, #B8D3E5 10px)',
+                    borderRadius: '18px',
+                    padding: '2.5px',
+                    boxShadow: '2px 3px 0 rgba(74,58,47,0.10)',
                   }}
                 >
-                  {/* Coloured top – icon lives here */}
+                  {/* Inner card – pastel tint of subject color */}
                   <div
-                    className="h-[62%] flex items-center justify-center"
+                    className="w-full h-full flex flex-col items-center justify-center gap-2.5 px-2"
                     style={{
-                      backgroundColor: subject.color,
-                      backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 6px, rgba(255,255,255,0.18) 6px, rgba(255,255,255,0.18) 7px)',
+                      backgroundColor: subject.color + '22',
+                      borderRadius: '15.5px',
                     }}
                   >
-                    <Icon className="w-10 h-10 text-white/80 drop-shadow-sm" />
-                  </div>
-                  {/* Cream label bottom */}
-                  <div
-                    className="h-[38%] bg-[#F9F4E8] flex items-center justify-center px-2 border-t border-dashed"
-                    style={{ borderColor: `${subject.color}55` }}
-                  >
-                    <h3 className="font-display text-[13px] text-[#4A3A2F] text-center lowercase leading-tight">{subject.name.toLowerCase()}</h3>
+                    <Icon className="w-10 h-10" style={{ color: subject.color }} />
+                    <h3 className="font-display text-[12px] text-[#4A3A2F] text-center leading-tight">{subject.name}</h3>
                   </div>
                 </div>
               </motion.button>
