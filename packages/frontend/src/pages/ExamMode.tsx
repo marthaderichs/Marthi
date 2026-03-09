@@ -8,29 +8,39 @@ import { CheckCircle2, XCircle, ArrowRight, Trophy, Loader2, RotateCcw, Sparkles
 
 import { getIcon } from '../lib/icons';
 
-// Helper to clean up messy explanation texts
+// Clean up AI-generated explanation texts
 const formatExplanation = (text: string) => {
   if (!text) return null;
-  
-  // Remove technical prefixes like "frage:", "thema:", "kernaspekt:" if they appear at start of line
-  let cleaned = text.replace(/^(frage|thema|kernaspekt|antwort|erklärung):\s*/gmi, '');
-  
-  cleaned = cleaned.replace(/\|?\s*:?-+:?\s*\|/g, '');
+
+  const cleaned = text
+    // Remove lines that are ONLY a label word (± colon, ± number)
+    .replace(/^[ \t]*(frage|thema|kernaspekt|antwort|erklärung|option)\s*:?\s*\d*\s*$/gmi, '')
+    // Remove label prefixes at start of lines
+    .replace(/^[ \t]*(frage|thema|kernaspekt|antwort|erklärung)\s*:\s*/gmi, '')
+    // Remove pipe-table dividers
+    .replace(/\|?\s*:?-+:?\s*\|/g, '')
+    // Remove standalone single numbers on a line
+    .replace(/^\s*\d+\s*$/gm, '')
+    // Collapse excess blank lines
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+
+  // Pipe-separated format
   const parts = cleaned.split('|').map(p => p.trim()).filter(p => p.length > 0);
-  
-  if (parts.length > 5) {
+  if (parts.length > 4) {
     return (
-      <div className="space-y-4">
+      <div className="space-y-3">
         {parts.map((part, i) => {
-          if (/^[A-E]$/.test(part)) {
-            return <div key={i} className="font-bold text-[#8B1E1E] pt-2 border-t border-black/5 mt-4 first:mt-0 first:border-0 lowercase">option {part}:</div>;
-          }
+          if (/^[A-E]$/.test(part)) return null;
           const lower = part.toLowerCase();
-          return <p key={i} className={cn("leading-relaxed", lower === 'richtig' ? "text-[#A3B18A] font-bold" : lower === 'falsch' ? "text-[#8B1E1E]/60" : "")}>{part.toLowerCase()}</p>;
+          if (lower === 'richtig') return <p key={i} className="font-semibold text-[#5C8E78]">{part}</p>;
+          if (lower === 'falsch') return <p key={i} className="font-semibold text-[#8B1E1E]/60">{part}</p>;
+          return <p key={i} className="leading-relaxed">{part}</p>;
         })}
       </div>
     );
   }
+
   return <p className="leading-relaxed whitespace-pre-wrap">{cleaned}</p>;
 };
 
@@ -161,14 +171,14 @@ export default function ExamMode() {
                     {React.createElement(getIcon(subject.icon), { className: "w-8 h-8 text-white" })}
                 </div>
                 <div>
-                    <h2 className="text-4xl font-display text-[#8B1E1E]">{subject.name.toLowerCase()}</h2>
+                    <h2 className="text-4xl font-display text-[#8B1E1E]">{subject.name}</h2>
                     <button onClick={() => setSetupMode(false)} className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/30 hover:text-[#8B1E1E] transition-colors lowercase">abbrechen</button>
                 </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-6">
-                  <h4 className="text-sm font-black uppercase tracking-widest text-[#4A3A2F]/50 flex items-center gap-2 lowercase"><Settings2 className="w-3 h-3" /> fragenanzahl</h4>
+                  <h4 className="text-sm font-black uppercase tracking-widest text-[#4A3A2F]/50 flex items-center gap-2"><Settings2 className="w-3 h-3" /> Fragenanzahl</h4>
                   <div className="flex gap-3">
                       {[5, 10, 20].map(count => (
                           <button key={count} onClick={() => setQuizCount(count)} className={cn("flex-1 py-4 rounded-2xl font-display text-2xl border-2 transition-all", quizCount === count ? "bg-[#8B1E1E] text-white border-[#8B1E1E] shadow-lg" : "bg-[#E2E8D4]/50 border-transparent text-[#4A3A2F]/40 hover:bg-white")}>{count}</button>
@@ -177,7 +187,7 @@ export default function ExamMode() {
               </div>
 
               <div className="space-y-6">
-                  <h4 className="text-sm font-black uppercase tracking-widest text-[#4A3A2F]/50 flex items-center gap-2 lowercase"><Sparkles className="w-3 h-3" /> filter</h4>
+                  <h4 className="text-sm font-black uppercase tracking-widest text-[#4A3A2F]/50 flex items-center gap-2"><Sparkles className="w-3 h-3" /> Filter</h4>
                   <button 
                     onClick={() => setOnlyNew(!onlyNew)}
                     className={cn(
@@ -185,13 +195,13 @@ export default function ExamMode() {
                       onlyNew ? "bg-[#A3B18A] text-white border-[#A3B18A] shadow-lg" : "bg-[#E2E8D4]/50 border-transparent text-[#4A3A2F]/40 hover:bg-white"
                     )}
                   >
-                    {onlyNew ? 'nur neue fragen' : 'alle fragen'}
+                    {onlyNew ? 'Nur neue Fragen' : 'Alle Fragen'}
                   </button>
               </div>
             </div>
 
             <div className="space-y-6">
-                <h4 className="text-sm font-black uppercase tracking-widest text-[#4A3A2F]/50 flex items-center gap-2 lowercase"><Layers className="w-3 h-3" /> themen (optional)</h4>
+                <h4 className="text-sm font-black uppercase tracking-widest text-[#4A3A2F]/50 flex items-center gap-2"><Layers className="w-3 h-3" /> Themen (optional)</h4>
                 <div className="grid grid-cols-1 gap-2 max-h-[250px] overflow-y-auto pr-2 custom-scrollbar text-sm">
                     {subject.topics?.map(topic => (
                         <button key={topic.id} onClick={() => setSelectedTopicIds(prev => prev.includes(topic.id) ? prev.filter(id => id !== topic.id) : [...prev, topic.id])} className={cn("text-left p-4 rounded-xl font-bold border-2 transition-all flex justify-between items-center group", selectedTopicIds.includes(topic.id) ? "bg-[#A3B18A]/10 border-[#A3B18A] text-[#1E3A1E]" : "bg-white border-black/[0.03] text-[#4A3A2F]/60")}>
@@ -206,17 +216,17 @@ export default function ExamMode() {
     </div>
   );
 
-  if (examLoading) return <div className="flex flex-col items-center justify-center py-40 gap-4"><Sparkles className="w-10 h-10 text-[#E9C46A] animate-pulse" /><p className="text-2xl font-bold text-[#8B1E1E] tracking-tight font-display lowercase">lade fragen...</p></div>;
+  if (examLoading) return <div className="flex flex-col items-center justify-center py-40 gap-4"><Sparkles className="w-10 h-10 text-[#E9C46A] animate-pulse" /><p className="text-2xl font-bold text-[#8B1E1E] tracking-tight font-display">Lade Fragen...</p></div>;
 
   if (showSummary) return (
     <div className="flex items-center justify-center min-h-[60vh]">
         <div className="max-w-md w-full text-center p-16 bg-[#F9F4E8] rounded-2xl border border-[#4A3A2F]/8" style={{ boxShadow: '2px 2px 0 rgba(74,58,47,0.07)' }}>
             <Trophy className="w-16 h-16 text-[#E9C46A] mx-auto mb-8" />
-            <h2 className="text-5xl font-bold text-[#8B1E1E] font-display mb-4 lowercase">ergebnis</h2>
+            <h2 className="text-5xl font-bold text-[#8B1E1E] font-display mb-4">Ergebnis</h2>
             <div className="text-8xl font-extrabold text-[#8B1E1E] mb-10 font-display">{Math.round((score / questions.length) * 100)}%</div>
             <div className="space-y-4">
-                <button onClick={handleRestart} className="w-full py-5 bg-[#8B1E1E] text-white rounded-2xl font-bold text-xl font-display shadow-lg lowercase">nochmal</button>
-                <button onClick={() => { setQuizStarted(false); setSetupMode(false); }} className="w-full py-2 text-[#4A3A2F]/30 font-bold text-xs uppercase font-sans lowercase">beenden</button>
+                <button onClick={handleRestart} className="w-full py-5 bg-[#8B1E1E] text-white rounded-2xl font-bold text-xl font-display shadow-lg">Nochmal</button>
+                <button onClick={() => { setQuizStarted(false); setSetupMode(false); }} className="w-full py-2 text-[#4A3A2F]/30 font-bold text-xs uppercase font-sans">Beenden</button>
             </div>
         </div>
     </div>
@@ -231,7 +241,7 @@ export default function ExamMode() {
       </div>
       <div className="space-y-12">
           <div className="space-y-4">
-             <div className="inline-flex items-center gap-2 text-[#4A3A2F]/30 text-[10px] font-black uppercase lowercase"><Info className="w-3 h-3" /> frage {currentIndex + 1}</div>
+             <div className="inline-flex items-center gap-2 text-[#4A3A2F]/30 text-[10px] font-black uppercase"><Info className="w-3 h-3" /> Frage {currentIndex + 1}</div>
              <h3 className="text-4xl font-display text-[#4A3A2F] leading-tight">{question?.text}</h3>
           </div>
           <div className="grid gap-3">
@@ -245,12 +255,12 @@ export default function ExamMode() {
             {isAnswered && (
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="p-8 lg:p-12 bg-[#E2E8D4]/60 rounded-[40px] border border-black/[0.02] space-y-8 shadow-inner">
                   <div className="space-y-6">
-                     <h4 className="text-xl lg:text-2xl font-display text-[#8B1E1E] flex items-center gap-3 lowercase"><Sparkles className="w-5 h-5" /> erklärung</h4>
+                     <h4 className="text-xl lg:text-2xl font-display text-[#8B1E1E] flex items-center gap-3"><Sparkles className="w-5 h-5" /> Erklärung</h4>
                      <div className="text-xl text-[#4A3A2F]/80 leading-relaxed font-serif italic">
                         {formatExplanation(question.explanation)}
                      </div>
                   </div>
-                  <button onClick={handleNext} className="w-full py-6 bg-[#8B1E1E] text-white rounded-3xl font-bold text-2xl hover:bg-[#763428] transition-all flex items-center justify-center gap-4 shadow-xl font-display lowercase"><span>{currentIndex < questions.length - 1 ? 'nächste frage' : 'ergebnis anzeigen'}</span><ArrowRight className="w-6 h-6" /></button>
+                  <button onClick={handleNext} className="w-full py-6 bg-[#8B1E1E] text-white rounded-3xl font-bold text-2xl hover:bg-[#763428] transition-all flex items-center justify-center gap-4 shadow-xl font-display"><span>{currentIndex < questions.length - 1 ? 'Nächste Frage' : 'Ergebnis anzeigen'}</span><ArrowRight className="w-6 h-6" /></button>
                 </motion.div>
             )}
           </AnimatePresence>
