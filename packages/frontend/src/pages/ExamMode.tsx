@@ -115,50 +115,41 @@ export default function ExamMode() {
         <h1 className="text-7xl font-display text-[#8B1E1E] lowercase">klausur-modus</h1>
         <p className="text-xl text-[#4A3A2F]/50 font-serif italic">wähle ein fach und leg los.</p>
       </div>
-      <>
-        <svg style={{ display: 'none' }}>
-          <defs>
-            <filter id="blob-grain-exam" x="0%" y="0%" width="100%" height="100%" colorInterpolationFilters="sRGB">
-              <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="4" stitchTiles="stitch" result="noise"/>
-              <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
-              <feBlend in="SourceGraphic" in2="grayNoise" mode="soft-light" result="blend"/>
-              <feComposite in="blend" in2="SourceGraphic" operator="in"/>
-            </filter>
-          </defs>
-        </svg>
-
-        <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-4">
-          {subjects?.map((s, i) => {
-            const blobs = [
-              '58% 42% 52% 48% / 48% 56% 44% 52%',
-              '44% 56% 48% 52% / 54% 46% 58% 42%',
-              '52% 48% 62% 38% / 40% 60% 50% 50%',
-              '40% 60% 46% 54% / 56% 44% 62% 38%',
-              '62% 38% 50% 50% / 46% 54% 40% 60%',
-              '50% 50% 56% 44% / 60% 40% 52% 48%',
-              '46% 54% 40% 60% / 52% 48% 58% 42%',
-            ];
-            const br = blobs[i % blobs.length];
-            const tilt = ((i * 7) % 11) - 5;
-
-            return (
-              <motion.button
-                key={s.id}
-                initial={{ rotate: tilt }}
-                whileHover={{ scale: 1.1, rotate: 0 }}
-                transition={{ type: 'spring', stiffness: 280, damping: 20 }}
-                onClick={() => selectSubject(s.id)}
-                className="aspect-square relative flex items-center justify-center p-3"
-                style={{ backgroundColor: s.color, borderRadius: br, filter: 'url(#blob-grain-exam)' }}
-              >
-                <span className="font-sans text-[10px] font-semibold text-white text-center leading-snug lowercase [text-shadow:0_1px_3px_rgba(0,0,0,0.25)]">
-                  {s.name.toLowerCase()}
-                </span>
-              </motion.button>
-            );
-          })}
-        </div>
-      </>
+      <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-4">
+        {subjects?.map((s, i) => {
+          const blobs = [
+            '58% 42% 52% 48% / 48% 56% 44% 52%',
+            '44% 56% 48% 52% / 54% 46% 58% 42%',
+            '52% 48% 62% 38% / 40% 60% 50% 50%',
+            '40% 60% 46% 54% / 56% 44% 62% 38%',
+            '62% 38% 50% 50% / 46% 54% 40% 60%',
+            '50% 50% 56% 44% / 60% 40% 52% 48%',
+            '46% 54% 40% 60% / 52% 48% 58% 42%',
+          ];
+          const br = blobs[i % blobs.length];
+          const tilt = ((i * 7) % 11) - 5;
+          return (
+            <motion.button
+              key={s.id}
+              initial={{ rotate: tilt }}
+              whileHover={{ scale: 1.1, rotate: 0 }}
+              transition={{ type: 'spring', stiffness: 280, damping: 20 }}
+              onClick={() => selectSubject(s.id)}
+              className="aspect-square relative overflow-hidden flex items-center justify-center"
+              style={{ borderRadius: br }}
+            >
+              <div className="absolute inset-0" style={{ backgroundColor: s.color }} />
+              <div
+                className="absolute inset-0 mix-blend-soft-light opacity-40"
+                style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: '180px 180px' }}
+              />
+              <span className="relative z-10 font-sans text-[10px] font-semibold text-white text-center leading-snug lowercase px-2 [text-shadow:0_1px_2px_rgba(0,0,0,0.22)]">
+                {s.name.toLowerCase()}
+              </span>
+            </motion.button>
+          );
+        })}
+      </div>
     </div>
   );
 
