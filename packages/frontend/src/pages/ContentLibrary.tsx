@@ -40,26 +40,28 @@ export default function ContentLibrary() {
       </div>
 
       {!selectedSubject ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
           {subjects?.map((subject) => {
             const Icon = getIcon(subject.icon);
-            const light = isLight(subject.color);
             return (
               <motion.button
                 key={subject.id}
-                whileHover={{ y: -4 }}
+                whileHover={{ y: -3, scale: 1.03 }}
                 onClick={() => setSelectedSubject(subject)}
                 className="group flex flex-col text-left"
               >
                 <div
-                  className="w-full aspect-[4/5] rounded-[28px] flex items-center justify-center bg-[#E2E8D4]"
-                  style={{ boxShadow: '3px 3px 0 rgba(74,58,47,0.10)' }}
+                  className="w-full aspect-square rounded-2xl flex items-center justify-center relative overflow-hidden"
+                  style={{
+                    backgroundColor: '#E2E8D4',
+                    boxShadow: '2px 2px 0 rgba(74,58,47,0.09)',
+                    backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 7px, rgba(255,255,255,0.55) 7px, rgba(255,255,255,0.55) 8px)',
+                  }}
                 >
-                  <Icon className="w-16 h-16" style={{ color: subject.color }} />
+                  <Icon className="w-9 h-9 relative z-10" style={{ color: subject.color }} />
                 </div>
-                <div className="pt-3 px-1 space-y-0.5">
-                  <h3 className="font-display text-xl text-[#4A3A2F] lowercase leading-tight">{subject.name.toLowerCase()}</h3>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/35 lowercase">{subject.description}</p>
+                <div className="pt-2 px-0.5">
+                  <h3 className="font-display text-base text-[#4A3A2F] lowercase leading-tight">{subject.name.toLowerCase()}</h3>
                 </div>
               </motion.button>
             );

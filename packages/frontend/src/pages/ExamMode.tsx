@@ -115,23 +115,26 @@ export default function ExamMode() {
         <h1 className="text-7xl font-display text-[#8B1E1E] lowercase">klausur-modus</h1>
         <p className="text-xl text-[#4A3A2F]/50 font-medium font-sans lowercase">wähle ein fach und leg los.</p>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
         {subjects?.map((s) => (
           <motion.button
             key={s.id}
-            whileHover={{ y: -4 }}
+            whileHover={{ y: -3, scale: 1.03 }}
             onClick={() => selectSubject(s.id)}
             className="group flex flex-col text-left"
           >
             <div
-              className="w-full aspect-[4/5] rounded-[28px] flex items-center justify-center bg-[#E2E8D4]"
-              style={{ boxShadow: '3px 3px 0 rgba(74,58,47,0.10)' }}
+              className="w-full aspect-square rounded-2xl flex items-center justify-center relative overflow-hidden"
+              style={{
+                backgroundColor: '#E2E8D4',
+                boxShadow: '2px 2px 0 rgba(74,58,47,0.09)',
+                backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 7px, rgba(255,255,255,0.55) 7px, rgba(255,255,255,0.55) 8px)',
+              }}
             >
-              {React.createElement(getIcon(s.icon), { className: 'w-16 h-16', style: { color: s.color } })}
+              {React.createElement(getIcon(s.icon), { className: 'w-9 h-9 relative z-10', style: { color: s.color } })}
             </div>
-            <div className="pt-3 px-1 space-y-0.5">
-              <h3 className="font-display text-xl text-[#4A3A2F] lowercase leading-tight">{s.name.toLowerCase()}</h3>
-              <p className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/35 lowercase">{s._count?.questions || 0} fragen</p>
+            <div className="pt-2 px-0.5">
+              <h3 className="font-display text-base text-[#4A3A2F] lowercase leading-tight">{s.name.toLowerCase()}</h3>
             </div>
           </motion.button>
         ))}
