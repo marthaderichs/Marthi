@@ -115,36 +115,19 @@ export default function ExamMode() {
         <h1 className="text-7xl font-display text-[#8B1E1E] lowercase">klausur-modus</h1>
         <p className="text-xl text-[#4A3A2F]/50 font-serif italic">wähle ein fach und leg los.</p>
       </div>
-      <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+      <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-5">
         {subjects?.map((s) => (
           <motion.button
             key={s.id}
-            whileHover={{ y: -5 }}
-            transition={{ type: 'spring', stiffness: 280, damping: 22 }}
+            whileHover={{ scale: 1.08 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             onClick={() => selectSubject(s.id)}
-            className="group block w-full"
-            style={{ aspectRatio: '3/4' }}
+            className="aspect-square rounded-full flex items-center justify-center p-3"
+            style={{ backgroundColor: s.color }}
           >
-            <div
-              className="w-full h-full"
-              style={{
-                backgroundImage: 'repeating-linear-gradient(90deg, #D8D2C0 0px, #D8D2C0 5px, #C8DCE8 5px, #C8DCE8 10px)',
-                borderRadius: '18px',
-                padding: '2.5px',
-                boxShadow: '2px 3px 0 rgba(74,58,47,0.10)',
-              }}
-            >
-              <div
-                className="w-full h-full flex flex-col items-center justify-center gap-2.5 px-2"
-                style={{
-                  backgroundColor: s.color + '22',
-                  borderRadius: '15.5px',
-                }}
-              >
-                {React.createElement(getIcon(s.icon), { className: 'w-10 h-10', style: { color: s.color } })}
-                <h3 className="font-display text-[12px] text-[#4A3A2F] text-center leading-tight">{s.name.toLowerCase()}</h3>
-              </div>
-            </div>
+            <span className="font-display text-[11px] text-white/80 text-center leading-tight lowercase">
+              {s.name.toLowerCase()}
+            </span>
           </motion.button>
         ))}
       </div>

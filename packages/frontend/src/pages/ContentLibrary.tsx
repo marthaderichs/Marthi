@@ -7,9 +7,7 @@ import {
   Bookmark, Pencil, ArrowRight
 } from 'lucide-react';
 import { Subject, Topic } from '@medilearn/shared';
-import { getIcon } from '../lib/icons';
 import { cn } from '../lib/utils';
-import { useNavigate } from 'react-router-dom';
 
 export default function ContentLibrary() {
   const { data: subjects, isLoading: subjectsLoading } = useSubjects();
@@ -39,43 +37,21 @@ export default function ContentLibrary() {
       </div>
 
       {!selectedSubject ? (
-        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-          {subjects?.map((subject) => {
-            const Icon = getIcon(subject.icon);
-            return (
-              <motion.button
-                key={subject.id}
-                whileHover={{ y: -5 }}
-                transition={{ type: 'spring', stiffness: 280, damping: 22 }}
-                onClick={() => setSelectedSubject(subject)}
-                className="group block w-full"
-                style={{ aspectRatio: '3/4' }}
-              >
-                {/* Striped border frame */}
-                <div
-                  className="w-full h-full"
-                  style={{
-                    backgroundImage: 'repeating-linear-gradient(90deg, #D8D2C0 0px, #D8D2C0 5px, #C8DCE8 5px, #C8DCE8 10px)',
-                    borderRadius: '18px',
-                    padding: '2.5px',
-                    boxShadow: '2px 3px 0 rgba(74,58,47,0.10)',
-                  }}
-                >
-                  {/* Inner card – pastel tint of subject color */}
-                  <div
-                    className="w-full h-full flex flex-col items-center justify-center gap-2.5 px-2"
-                    style={{
-                      backgroundColor: subject.color + '22',
-                      borderRadius: '15.5px',
-                    }}
-                  >
-                    <Icon className="w-10 h-10" style={{ color: subject.color }} />
-                    <h3 className="font-display text-[12px] text-[#4A3A2F] text-center leading-tight">{subject.name.toLowerCase()}</h3>
-                  </div>
-                </div>
-              </motion.button>
-            );
-          })}
+        <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-5">
+          {subjects?.map((subject) => (
+            <motion.button
+              key={subject.id}
+              whileHover={{ scale: 1.08 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              onClick={() => setSelectedSubject(subject)}
+              className="aspect-square rounded-full flex items-center justify-center p-3"
+              style={{ backgroundColor: subject.color }}
+            >
+              <span className="font-display text-[11px] text-white/80 text-center leading-tight lowercase">
+                {subject.name.toLowerCase()}
+              </span>
+            </motion.button>
+          ))}
         </div>
       ) : (
         <div className="space-y-8">
