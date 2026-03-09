@@ -32,7 +32,7 @@ export default function ContentLibrary() {
       <div className="text-center space-y-3">
         <h1 className="text-7xl font-display text-[#8B1E1E] lowercase">bibliothek</h1>
         <p className="text-xl text-[#4A3A2F]/45 font-serif italic">
-          „lesen ist ein abenteuer im kopf."
+          „Wiederholung ist das Fundament der Meisterschaft."
         </p>
       </div>
 
@@ -87,15 +87,15 @@ export default function ContentLibrary() {
                 <ChevronLeft className="w-5 h-5" />
               </button>
               <div>
-                <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[#8B1E1E]/35 lowercase">fachbereich</div>
-                <h2 className="text-4xl font-display text-[#8B1E1E] lowercase">{selectedSubject.name.toLowerCase()}</h2>
+                <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[#8B1E1E]/35">Fachbereich</div>
+                <h2 className="text-4xl font-display text-[#8B1E1E]">{selectedSubject.name}</h2>
               </div>
             </div>
             <div className="relative w-full sm:w-72">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4A3A2F]/25" />
               <input
                 type="text"
-                placeholder="thema suchen..."
+                placeholder="Thema suchen..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-[#F9F4E8] pl-11 pr-6 py-3 rounded-full border border-[#4A3A2F]/8 focus:outline-none focus:ring-2 focus:ring-[#8B1E1E]/10 text-sm font-medium placeholder:text-[#4A3A2F]/20"
