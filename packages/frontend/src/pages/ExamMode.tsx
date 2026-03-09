@@ -13,14 +13,14 @@ const formatExplanation = (text: string) => {
   if (!text) return null;
 
   const cleaned = text
-    // Remove lines that are ONLY a label word (± colon, ± number)
-    .replace(/^[ \t]*(frage|thema|kernaspekt|antwort|erklärung|option)\s*:?\s*\d*\s*$/gmi, '')
-    // Remove label prefixes at start of lines
-    .replace(/^[ \t]*(frage|thema|kernaspekt|antwort|erklärung)\s*:\s*/gmi, '')
+    // Remove lines that are ONLY a label word (± markdown, ± colon, ± number/period)
+    .replace(/^\s*[*_#]*\s*(frage|thema|kernaspekt|antwort|erklärung|option)\s*[*_]*:?\s*\d*\.?\s*$/gmi, '')
+    // Remove label prefixes at start of lines (e.g. "Frage: ", "Thema: ")
+    .replace(/^\s*[*_#]*\s*(frage|thema|kernaspekt|antwort|erklärung)\s*[*_]*:\s*/gmi, '')
     // Remove pipe-table dividers
     .replace(/\|?\s*:?-+:?\s*\|/g, '')
-    // Remove standalone single numbers on a line
-    .replace(/^\s*\d+\s*$/gm, '')
+    // Remove standalone numbers (with optional period/colon)
+    .replace(/^\s*\d+[.):]?\s*$/gm, '')
     // Collapse excess blank lines
     .replace(/\n{3,}/g, '\n\n')
     .trim();
@@ -123,7 +123,7 @@ export default function ExamMode() {
     <div className="w-full max-w-5xl mx-auto space-y-12">
       <div className="text-center space-y-4">
         <h1 className="text-7xl font-display text-[#8B1E1E] lowercase">klausur-modus</h1>
-        <p className="text-xl text-[#4A3A2F]/50 font-serif italic">wähle ein fach und leg los.</p>
+        <p className="text-xl text-[#4A3A2F]/50 font-serif italic">Wähle ein Fach und leg los.</p>
       </div>
       <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-4">
         {subjects?.map((s, i) => {
@@ -153,8 +153,8 @@ export default function ExamMode() {
                 className="absolute inset-0 mix-blend-soft-light opacity-40"
                 style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: '180px 180px' }}
               />
-              <span className="relative z-10 font-sans text-[10px] font-semibold text-white text-center leading-snug lowercase px-2 [text-shadow:0_1px_2px_rgba(0,0,0,0.22)]">
-                {s.name.toLowerCase()}
+              <span className="relative z-10 font-sans text-[12px] font-bold text-white text-center leading-snug px-2 [text-shadow:0_1px_2px_rgba(0,0,0,0.28)]">
+                {s.name}
               </span>
             </motion.button>
           );
@@ -172,7 +172,7 @@ export default function ExamMode() {
                 </div>
                 <div>
                     <h2 className="text-4xl font-display text-[#8B1E1E]">{subject.name}</h2>
-                    <button onClick={() => setSetupMode(false)} className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/30 hover:text-[#8B1E1E] transition-colors lowercase">abbrechen</button>
+                    <button onClick={() => setSetupMode(false)} className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/30 hover:text-[#8B1E1E] transition-colors">Abbrechen</button>
                 </div>
             </div>
 
@@ -211,7 +211,7 @@ export default function ExamMode() {
                     ))}
                 </div>
             </div>
-            <button onClick={startQuiz} className="w-full py-6 bg-[#8B1E1E] text-white rounded-[24px] font-display text-3xl shadow-xl hover:bg-[#763428] transition-all lowercase">starten</button>
+            <button onClick={startQuiz} className="w-full py-6 bg-[#8B1E1E] text-white rounded-[24px] font-display text-3xl shadow-xl hover:bg-[#763428] transition-all">Starten</button>
         </div>
     </div>
   );
@@ -236,7 +236,7 @@ export default function ExamMode() {
     <div className="bg-[#F9F4E8] p-8 md:p-16 rounded-2xl space-y-12 max-w-4xl mx-auto border border-[#4A3A2F]/8 relative overflow-hidden" style={{ boxShadow: '2px 2px 0 rgba(74,58,47,0.07)' }}>
       <div className="absolute top-0 left-0 w-full h-2 bg-[#E2E8D4]"><motion.div className="h-full bg-[#8B1E1E]" initial={{ width: 0 }} animate={{ width: `${((currentIndex + (isAnswered ? 1 : 0)) / questions.length) * 100}%` }} transition={{ duration: 0.4 }} /></div>
       <div className="flex items-center justify-between">
-        <button onClick={() => { setQuizStarted(false); setSetupMode(false); }} className="text-[10px] font-black uppercase text-[#4A3A2F]/20 hover:text-[#8B1E1E] font-sans lowercase">abbrechen</button>
+        <button onClick={() => { setQuizStarted(false); setSetupMode(false); }} className="text-[10px] font-black uppercase text-[#4A3A2F]/20 hover:text-[#8B1E1E] font-sans">Abbrechen</button>
         <div className="px-4 py-1 bg-[#E2E8D4] rounded-full text-xl font-display text-[#8B1E1E]">{currentIndex + 1} / {questions.length}</div>
       </div>
       <div className="space-y-12">
