@@ -272,7 +272,7 @@ export default function Layout() {
             end={item.to === '/'}
             className={({ isActive }) => cn(
               "flex flex-col items-center gap-1 px-2 py-2 transition-all duration-300 rounded-xl",
-              isActive ? "bg-[#B8D3E5] text-[#4A3A2F]" : "text-[#4A3A2F]/30"
+              isActive ? "bg-[#B8D3E5] text-[#4A3A2F]" : "text-[#4A3A2F]/60"
             )}
           >
             <item.icon className="w-4 h-4 stroke-[2]" />
