@@ -31,7 +31,7 @@ export default function Dashboard() {
   if (subjectsLoading) return <div className="flex justify-center py-32"><Loader2 className="w-10 h-10 animate-spin text-[#8B1E1E]" /></div>;
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto bg-[#E2E8D4]/80 backdrop-blur-sm rounded-3xl px-10 py-10">
 
       {/* Welcome */}
       <div className="pb-8 space-y-4">
