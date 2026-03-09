@@ -41,7 +41,7 @@ export default function Dashboard() {
         <h1 className="text-5xl md:text-6xl font-display text-[#8B1E1E] leading-tight">Schön, dass du da bist</h1>
         <div className="flex items-center gap-3 flex-wrap">
           <p className="text-lg text-[#4A3A2F]/60 font-serif italic">Bereit für eine Prise medizinisches Wissen?</p>
-          <span className="px-4 py-1.5 bg-[#F9F4E8] rounded-full text-[#8B1E1E] font-black text-xs">{stats.totalTopics} Kapitel</span>
+          <span className="px-4 py-1.5 bg-[#A3B18A]/20 rounded-full text-[#344E41] font-black text-xs">{stats.totalTopics} Kapitel</span>
           <span className="px-4 py-1.5 bg-[#B8D3E5] rounded-full text-[#4A3A2F] font-black text-xs">{stats.totalQuestions} Fragen</span>
         </div>
       </div>
@@ -58,7 +58,7 @@ export default function Dashboard() {
             <NavLink
               key={link.to}
               to={link.to}
-              className="group flex items-center justify-between px-8 py-5 bg-[#F9F4E8] rounded-full border border-[#4A3A2F]/8 hover:-translate-y-0.5 transition-all"
+              className="group flex items-center justify-between px-8 py-5 bg-[#A3B18A]/12 rounded-full border border-[#A3B18A]/20 hover:-translate-y-0.5 hover:bg-[#A3B18A]/20 transition-all"
               style={{ boxShadow: '2px 2px 0 rgba(74,58,47,0.06)' }}
             >
               <div className="flex items-center gap-5">
@@ -113,13 +113,13 @@ export default function Dashboard() {
             {subjects?.slice(4, 8).map((s) => {
               const Icon = getIcon(s.icon);
               return (
-                <div key={s.id} className="flex items-center gap-3 py-2.5 border-b border-[#4A3A2F]/8 last:border-0 group cursor-pointer">
+                <NavLink key={s.id} to="/content" className="flex items-center gap-3 py-2.5 border-b border-[#4A3A2F]/8 last:border-0 group">
                   <div className="w-6 h-6 rounded-full shrink-0 flex items-center justify-center" style={{ backgroundColor: `${s.color}25`, color: s.color }}>
                     <Icon className="w-3 h-3" />
                   </div>
                   <span className="text-sm font-bold text-[#4A3A2F]/60 truncate flex-1 group-hover:text-[#4A3A2F] transition-colors">{s.name}</span>
                   <ArrowRight className="w-3 h-3 text-[#4A3A2F]/20 group-hover:text-[#8B1E1E] transition-colors" />
-                </div>
+                </NavLink>
               );
             })}
           </div>

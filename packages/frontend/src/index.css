@@ -50,6 +50,17 @@ body {
   background-attachment: scroll;
 }
 
+/* Subtle stripe texture for cards/sections */
+.bg-stripes-subtle {
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 48px,
+    rgba(184, 211, 229, 0.35) 48px,
+    rgba(184, 211, 229, 0.35) 96px
+  );
+}
+
 /* Checkerboard top border utility */
 .border-checker {
   background-image: repeating-linear-gradient(

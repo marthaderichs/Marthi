@@ -12,8 +12,6 @@ import ContentLibrary from './pages/ContentLibrary';
 import Flashcards from './pages/Flashcards';
 import ImportData from './pages/ImportData';
 import MistakeGarden from './pages/MistakeGarden';
-import Notes from './pages/Notes';
-import StudyPlan from './pages/StudyPlan';
 
 export default function App() {
   return (
@@ -23,8 +21,6 @@ export default function App() {
         <Route path="exam" element={<ExamMode />} />
         <Route path="content" element={<ContentLibrary />} />
         <Route path="flashcards" element={<Flashcards />} />
-        <Route path="notes" element={<Notes />} />
-        <Route path="plan" element={<StudyPlan />} />
         <Route path="garden" element={<MistakeGarden />} />
         <Route path="import" element={<ImportData />} />
         <Route path="*" element={<Navigate to="/" replace />} />

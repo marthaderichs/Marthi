@@ -68,7 +68,7 @@ export default function ContentLibrary() {
                   style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: '180px 180px' }}
                 />
                 {/* Text – crisp, above grain */}
-                <span className="relative z-10 font-sans text-[12px] font-bold text-white text-center leading-snug px-2 [text-shadow:0_1px_2px_rgba(0,0,0,0.28)]">
+                <span className="relative z-10 font-display text-[14px] text-white text-center leading-snug px-2 [text-shadow:0_1px_3px_rgba(0,0,0,0.35)]">
                   {subject.name}
                 </span>
               </motion.button>
