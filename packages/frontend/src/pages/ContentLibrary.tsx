@@ -86,7 +86,7 @@ export default function ContentLibrary() {
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4A3A2F]/30" />
                 <input 
                   type="text"
-                  placeholder="Thema suchen..."
+                  placeholder="thema suchen..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full bg-white/80 pl-11 pr-6 py-4 rounded-2xl border-transparent focus:ring-2 focus:ring-[#8B1E1E]/10 transition-all font-bold text-sm placeholder:text-[#4A3A2F]/20 lowercase"
@@ -153,7 +153,7 @@ export default function ContentLibrary() {
               <div className="p-12 md:p-16 overflow-y-auto custom-scrollbar">
                 <div className="max-w-2xl mx-auto space-y-10 pb-12">
                   <div className="space-y-4 text-center">
-                    <h2 className="text-5xl md:text-6xl font-display text-[#8B1E1E] leading-tight">{selectedTopic.title}</h2>
+                    <h2 className="text-5xl md:text-6xl font-display text-[#8B1E1E] leading-tight">{selectedTopic.title.toLowerCase()}</h2>
                     <div className="h-1 w-24 bg-[#8B1E1E]/20 mx-auto rounded-full" />
                   </div>
 

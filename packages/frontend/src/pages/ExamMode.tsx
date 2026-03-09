@@ -25,7 +25,8 @@ const formatExplanation = (text: string) => {
           if (/^[A-E]$/.test(part)) {
             return <div key={i} className="font-bold text-[#8B1E1E] pt-2 border-t border-black/5 mt-4 first:mt-0 first:border-0 lowercase">option {part}:</div>;
           }
-          return <p key={i} className={cn("leading-relaxed", part === 'Richtig' || part === 'richtig' ? "text-[#A3B18A] font-bold" : part === 'Falsch' || part === 'falsch' ? "text-[#8B1E1E]/60" : "")}>{part}</p>;
+          const lower = part.toLowerCase();
+          return <p key={i} className={cn("leading-relaxed", lower === 'richtig' ? "text-[#A3B18A] font-bold" : lower === 'falsch' ? "text-[#8B1E1E]/60" : "")}>{part.toLowerCase()}</p>;
         })}
       </div>
     );
@@ -146,7 +147,7 @@ export default function ExamMode() {
                     {React.createElement(getIcon(subject.icon), { className: "w-8 h-8 text-white" })}
                 </div>
                 <div>
-                    <h2 className="text-4xl font-display text-[#8B1E1E]">{subject.name}</h2>
+                    <h2 className="text-4xl font-display text-[#8B1E1E]">{subject.name.toLowerCase()}</h2>
                     <button onClick={() => setSetupMode(false)} className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/30 hover:text-[#8B1E1E] transition-colors lowercase">abbrechen</button>
                 </div>
             </div>

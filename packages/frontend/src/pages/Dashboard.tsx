@@ -36,7 +36,7 @@ export default function Dashboard() {
       {/* Welcome */}
       <div className="pb-8 space-y-4">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#8B1E1E]/8 rounded-full text-[#8B1E1E] text-[10px] font-black uppercase tracking-[0.2em]">
-          <Sparkles className="w-3 h-3" /> Hey Marthi!
+          <Sparkles className="w-3 h-3" /> hey marthi!
         </div>
         <h1 className="text-5xl md:text-6xl font-display text-[#8B1E1E] lowercase leading-tight">schön, dass du da bist</h1>
         <div className="flex items-center gap-3 flex-wrap">
