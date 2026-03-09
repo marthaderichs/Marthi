@@ -11,10 +11,6 @@ import { getIcon } from '../lib/icons';
 import { cn } from '../lib/utils';
 import { useNavigate } from 'react-router-dom';
 
-function isLight(hex: string) {
-  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
-  return (r*299 + g*587 + b*114) / 1000 > 160;
-}
 
 export default function ContentLibrary() {
   const { data: subjects, isLoading: subjectsLoading } = useSubjects();
@@ -56,13 +52,10 @@ export default function ContentLibrary() {
                 className="group flex flex-col text-left"
               >
                 <div
-                  className="relative w-full aspect-[4/5] rounded-[28px] flex items-center justify-center overflow-hidden"
-                  style={{ backgroundColor: subject.color, boxShadow: '3px 3px 0 rgba(74,58,47,0.12)' }}
+                  className="w-full aspect-[4/5] rounded-[28px] flex items-center justify-center bg-[#E2E8D4]"
+                  style={{ boxShadow: '3px 3px 0 rgba(74,58,47,0.10)' }}
                 >
-                  <Icon className={cn('w-16 h-16', light ? 'text-black/30' : 'text-white/70')} />
-                  <div className={cn('absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-black tracking-wider lowercase', light ? 'bg-black/10 text-black/50' : 'bg-black/15 text-white/80')}>
-                    {subject._count?.topics || 0} kap
-                  </div>
+                  <Icon className="w-16 h-16" style={{ color: subject.color }} />
                 </div>
                 <div className="pt-3 px-1 space-y-0.5">
                   <h3 className="font-display text-xl text-[#4A3A2F] lowercase leading-tight">{subject.name.toLowerCase()}</h3>
