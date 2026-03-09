@@ -1,0 +1,15 @@
+services:
+  medilearn:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - medilearn-data:/data
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: file:/data/medilearn.db
+    restart: unless-stopped
+
+volumes:
+  medilearn-data:

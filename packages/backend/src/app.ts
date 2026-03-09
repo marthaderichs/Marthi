@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
 import { subjectsRouter } from './routes/subjects';
 import { topicsRouter } from './routes/topics';
 import { questionsRouter } from './routes/questions';
@@ -24,6 +25,15 @@ export function createApp() {
   app.use('/api/flashcards', flashcardsRouter);
   app.use('/api/exams', examsRouter);
   app.use('/api/import', importRouter);
+
+  // Serve frontend in production
+  if (process.env.NODE_ENV === 'production') {
+    const frontendDist = path.join(__dirname, '../../frontend/dist');
+    app.use(express.static(frontendDist));
+    app.get('*', (_req, res) => {
+      res.sendFile(path.join(frontendDist, 'index.html'));
+    });
+  }
 
   // Global Error Handler
   app.use(errorHandler);
