@@ -40,7 +40,7 @@ export default function Dashboard() {
         </div>
         <h1 className="text-5xl md:text-6xl font-display text-[#8B1E1E] lowercase leading-tight">schön, dass du da bist</h1>
         <div className="flex items-center gap-3 flex-wrap">
-          <p className="text-lg text-[#4A3A2F]/60 font-display italic lowercase">bereit für eine prise medizinisches wissen?</p>
+          <p className="text-lg text-[#4A3A2F]/60 font-serif italic">bereit für eine prise medizinisches wissen?</p>
           <span className="px-4 py-1.5 bg-[#F9F4E8] rounded-full text-[#8B1E1E] font-black text-xs">{stats.totalTopics} kapitel</span>
           <span className="px-4 py-1.5 bg-[#B8D3E5] rounded-full text-[#4A3A2F] font-black text-xs">{stats.totalQuestions} fragen</span>
         </div>
