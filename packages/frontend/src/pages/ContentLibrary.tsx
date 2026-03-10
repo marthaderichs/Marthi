@@ -9,6 +9,7 @@ import {
 import { Subject, Topic } from '@medilearn/shared';
 import { DisplayText } from '../components/DisplayText';
 import { cn } from '../lib/utils';
+import { SubjectBlob } from '../components/SubjectBlob';
 
 export default function ContentLibrary() {
   const { data: subjects, isLoading: subjectsLoading } = useSubjects();
@@ -43,32 +44,15 @@ export default function ContentLibrary() {
       </div>
 
       {!selectedSubject ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {subjects?.map((subject) => (
-            <motion.button
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+          {subjects?.map((subject, i) => (
+            <SubjectBlob
               key={subject.id}
-              whileHover={{ y: -3 }}
-              whileTap={{ scale: 0.98 }}
+              color={subject.color}
+              index={i}
+              name={subject.name}
               onClick={() => setSelectedSubject(subject)}
-              className="group p-6 bg-[#F9F4E8] rounded-2xl text-left space-y-4 border border-[#4A3A2F]/6 hover:shadow-md transition-all"
-              style={{ borderLeft: `4px solid ${subject.color}` }}
-            >
-              <div className="flex items-start justify-between gap-2">
-                <h2 className="font-display text-2xl text-[#673147] leading-tight">{subject.name}</h2>
-                <ArrowRight className="w-4 h-4 text-[#673147]/20 group-hover:text-[#673147] group-hover:translate-x-0.5 transition-all shrink-0 mt-1.5" />
-              </div>
-              <div className="flex gap-4 flex-wrap">
-                <span className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/45">
-                  <BookOpen className="w-3 h-3" /> {subject._count?.topics ?? 0} Kapitel
-                </span>
-                <span className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/45">
-                  <CheckSquare className="w-3 h-3" /> {subject._count?.questions ?? 0} Fragen
-                </span>
-                <span className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/45">
-                  <Brain className="w-3 h-3" /> {subject._count?.flashcards ?? 0} Karten
-                </span>
-              </div>
-            </motion.button>
+            />
           ))}
         </div>
       ) : (
@@ -97,6 +81,19 @@ export default function ContentLibrary() {
                 className="w-full bg-[#F9F4E8] pl-11 pr-6 py-3 rounded-full border border-[#4A3A2F]/8 focus:outline-none focus:ring-2 focus:ring-[#673147]/10 text-sm font-medium placeholder:text-[#4A3A2F]/20"
               />
             </div>
+          </div>
+
+          {/* Stats */}
+          <div className="flex gap-6 flex-wrap">
+            <span className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest text-[#4A3A2F]/50">
+              <BookOpen className="w-3.5 h-3.5" /> {selectedSubject._count?.topics ?? 0} Kapitel
+            </span>
+            <span className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest text-[#4A3A2F]/50">
+              <CheckSquare className="w-3.5 h-3.5" /> {selectedSubject._count?.questions ?? 0} Fragen
+            </span>
+            <span className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest text-[#4A3A2F]/50">
+              <Brain className="w-3.5 h-3.5" /> {selectedSubject._count?.flashcards ?? 0} Karteikarten
+            </span>
           </div>
 
           {/* Topic cards – flat, with colored left accent */}
