@@ -7,7 +7,6 @@ import { cn } from '../lib/utils';
 import { CheckCircle2, XCircle, ArrowRight, Trophy, Loader2, RotateCcw, Sparkles, Settings2, Info, Layers } from 'lucide-react';
 
 import { getIcon } from '../lib/icons';
-import { SubjectCircle } from '../components/SubjectCircle';
 
 // Clean up AI-generated explanation texts
 const formatExplanation = (text: string) => {
@@ -131,16 +130,15 @@ export default function ExamMode() {
         <h1 className="text-7xl font-display text-[#673147]">Klausur-Modus</h1>
         <p className="text-xl text-[#673147]/50 font-typewriter">Wähle ein Fach und leg los.</p>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-8 gap-y-12">
-        {subjects?.map((s, i) => (
-          <SubjectCircle
+      <div className="flex flex-wrap gap-3">
+        {subjects?.map((s) => (
+          <button
             key={s.id}
-            color={s.color}
-            index={i}
-            label={abbreviate(s.name)}
-            fullName={s.name}
             onClick={() => selectSubject(s.id)}
-          />
+            className="font-display text-2xl text-[#673147] hover:opacity-60 transition-opacity"
+          >
+            {s.name}
+          </button>
         ))}
       </div>
     </div>

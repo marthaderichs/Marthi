@@ -8,7 +8,6 @@ import {
 } from 'lucide-react';
 import { Subject, Topic } from '@medilearn/shared';
 import { cn } from '../lib/utils';
-import { SubjectCircle } from '../components/SubjectCircle';
 
 export default function ContentLibrary() {
   const { data: subjects, isLoading: subjectsLoading } = useSubjects();
@@ -43,16 +42,15 @@ export default function ContentLibrary() {
       </div>
 
       {!selectedSubject ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-8 gap-y-12">
-          {subjects?.map((subject, i) => (
-            <SubjectCircle
+        <div className="flex flex-wrap gap-3">
+          {subjects?.map((subject) => (
+            <button
               key={subject.id}
-              color={subject.color}
-              index={i}
-              label={abbreviate(subject.name)}
-              fullName={subject.name}
               onClick={() => setSelectedSubject(subject)}
-            />
+              className="font-display text-2xl text-[#673147] hover:opacity-60 transition-opacity"
+            >
+              {subject.name}
+            </button>
           ))}
         </div>
       ) : (
