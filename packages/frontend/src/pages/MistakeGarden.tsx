@@ -175,7 +175,7 @@ export default function MistakeGarden() {
                         onClick={handleNext}
                         className="mx-auto flex items-center gap-2 px-7 py-2.5 border border-[#673147] text-[#673147] font-display text-xl rounded-full hover:bg-[#673147] hover:text-white transition-all"
                       >
-                         <span>{selectedOption === activeMistake.correctAnswerIndex ? 'Erledigt!' : 'Weiter üben'}</span>
+                         <span style={{ fontFamily: 'inherit' }}>{selectedOption === activeMistake.correctAnswerIndex ? 'Erledigt!' : 'Weiter üben'}</span>
                          <ArrowRight className="w-4 h-4" />
                       </button>
                     </motion.div>

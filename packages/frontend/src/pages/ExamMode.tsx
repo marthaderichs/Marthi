@@ -244,7 +244,7 @@ export default function ExamMode() {
                         {formatExplanation(question.explanation)}
                      </div>
                   </div>
-                  <button onClick={handleNext} className="w-full py-6 bg-[#673147] text-white rounded-3xl font-bold text-2xl hover:bg-[#763428] transition-all flex items-center justify-center gap-4 shadow-xl font-display"><span>{currentIndex < questions.length - 1 ? 'Nächste Frage' : 'Ergebnis anzeigen'}</span><ArrowRight className="w-6 h-6" /></button>
+                  <button onClick={handleNext} className="w-full py-6 bg-[#673147] text-white rounded-3xl font-bold text-2xl hover:bg-[#763428] transition-all flex items-center justify-center gap-4 shadow-xl font-display"><span style={{ fontFamily: 'inherit' }}>{currentIndex < questions.length - 1 ? 'Nächste Frage' : 'Ergebnis anzeigen'}</span><ArrowRight className="w-6 h-6" /></button>
                 </motion.div>
             )}
           </AnimatePresence>
