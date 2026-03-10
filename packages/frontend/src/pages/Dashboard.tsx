@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import { useSubjects } from '../hooks/useSubjects';
 import { NavLink } from 'react-router-dom';
 import { cn } from '../lib/utils';
-import { Heart, HeartPulse, HeartHandshake, Flower2, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 // ── Handdrawn divider ─────────────────────────────────────────────────────────
 function Squiggle() {
@@ -14,52 +14,36 @@ function Squiggle() {
   );
 }
 
-// ── Scribbled heart (nav) ─────────────────────────────────────────────────────
-// Each heart is slightly tilted differently for a hand-drawn feel
-const HEART_TILTS = [-8, 6, -5, 9];
-// Slightly different heart paths per index for organic variation
-const HEART_PATHS = [
-  "M50,77 C18,62 3,44 3,29 Q3,11 22,11 Q37,11 50,27 Q63,11 78,11 Q97,11 97,29 C97,44 82,62 50,77 Z",
-  "M50,79 C17,63 2,45 2,30 Q2,10 21,10 Q36,10 50,27 Q64,10 79,10 Q98,10 98,30 C98,45 83,63 50,79 Z",
-  "M50,76 C19,61 4,43 4,28 Q4,10 23,10 Q37,10 50,26 Q63,10 77,10 Q96,10 96,28 C96,43 81,61 50,76 Z",
-  "M50,78 C18,63 3,45 3,30 Q3,11 22,11 Q36,11 50,28 Q64,11 78,11 Q97,11 97,30 C97,45 82,63 50,78 Z",
-];
+// ── Cute cartoon heart with radiating dashes ──────────────────────────────────
+const TILTS = [-7, 5, -4, 8];
+const HEART = "M50,74 C22,59 4,42 4,26 Q4,8 23,8 Q37,8 50,25 Q63,8 77,8 Q96,8 96,26 C96,42 78,59 50,74 Z";
+const NUM_DASHES = 16;
+const HCX = 50, HCY = 41, R1 = 53, R2 = 64;
+const DASHES = Array.from({ length: NUM_DASHES }, (_, i) => {
+  const a = (i / NUM_DASHES) * Math.PI * 2 - Math.PI / 2;
+  return { x1: HCX + R1 * Math.cos(a), y1: HCY + R1 * Math.sin(a), x2: HCX + R2 * Math.cos(a), y2: HCY + R2 * Math.sin(a) };
+});
 
-function WcDot({ color, index, children }: { color: string; index: number; children: React.ReactNode }) {
-  const nId = `wcd-n-${index}`;
-  const tilt = HEART_TILTS[index % HEART_TILTS.length];
-  const path = HEART_PATHS[index % HEART_PATHS.length];
-
+function CuteHeart({ color, index }: { color: string; index: number }) {
   return (
-    <div className="w-[72px] h-[72px] relative flex items-center justify-center shrink-0">
-      <svg
-        className="absolute inset-0 w-full h-full"
-        viewBox="0 0 100 100"
-        style={{ transform: `rotate(${tilt}deg)` }}
-      >
-        <defs>
-          <filter id={nId} x="-8%" y="-8%" width="116%" height="116%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="4" seed={index * 7 + 2} result="noise"/>
-            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.18 0" in="noise" result="g"/>
-            <feBlend in="SourceGraphic" in2="g" mode="multiply"/>
-          </filter>
-        </defs>
-        {/* Filled heart with grain */}
-        <path d={path} fill={color} opacity="0.82" filter={`url(#${nId})`}/>
-        {/* Soft scribble outline */}
-        <path d={path} fill="none" stroke={color} strokeWidth="3" opacity="0.20" strokeLinecap="round" strokeLinejoin="round"/>
+    <div className="w-[84px] h-[84px] flex items-center justify-center shrink-0">
+      <svg viewBox="-22 -22 144 144" className="w-full h-full" style={{ transform: `rotate(${TILTS[index % 4]}deg)` }}>
+        {DASHES.map((d, i) => (
+          <line key={i} x1={d.x1} y1={d.y1} x2={d.x2} y2={d.y2} stroke="#3D2420" strokeWidth="3.5" strokeLinecap="round" opacity="0.6" />
+        ))}
+        <path d={HEART} fill={color} />
+        <path d={HEART} fill="none" stroke="#2A1810" strokeWidth="5.5" strokeLinejoin="round" strokeLinecap="round" />
       </svg>
-      <div className="relative z-10" style={{ marginTop: '6px' }}>{children}</div>
     </div>
   );
 }
 
 // ── Quick links ───────────────────────────────────────────────────────────────
 const LINKS = [
-  { to: '/exam',       icon: HeartPulse,    label: 'Klausur',    color: '#EA6C47', desc: 'Wissen testen'  },
-  { to: '/content',    icon: Heart,         label: 'Bibliothek', color: '#009CA6', desc: 'Kapitel lesen'  },
-  { to: '/flashcards', icon: HeartHandshake,label: 'Karten',     color: '#8D377C', desc: 'Fakten lernen'  },
-  { to: '/garden',     icon: Flower2,       label: 'Garten',     color: '#6A902C', desc: 'Fehler pflegen' },
+  { to: '/exam',       label: 'Klausur',    color: '#EA6C47', desc: 'Wissen testen'  },
+  { to: '/content',    label: 'Bibliothek', color: '#009CA6', desc: 'Kapitel lesen'  },
+  { to: '/flashcards', label: 'Karten',     color: '#8D377C', desc: 'Fakten lernen'  },
+  { to: '/garden',     label: 'Garten',     color: '#6A902C', desc: 'Fehler pflegen' },
 ] as const;
 
 // ── Dashboard ─────────────────────────────────────────────────────────────────
@@ -99,9 +83,7 @@ export default function Dashboard() {
                 transition={{ type: 'spring', stiffness: 340, damping: 22 }}
                 className="flex flex-col items-center gap-2.5 py-3 text-center"
               >
-                <WcDot color={link.color} index={i}>
-                  <link.icon className="w-5 h-5 text-white stroke-[1.3]" />
-                </WcDot>
+                <CuteHeart color={link.color} index={i} />
                 <div>
                   <div className="font-display text-[1.35rem] text-[#673147] leading-none group-hover:opacity-55 transition-opacity">
                     {link.label}
