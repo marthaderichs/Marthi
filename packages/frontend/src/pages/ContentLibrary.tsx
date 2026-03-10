@@ -44,16 +44,6 @@ export default function ContentLibrary() {
       {!selectedSubject ? (
         <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-6 gap-y-10">
           {subjects?.map((subject, i) => {
-            const blobs = [
-              '58% 42% 52% 48% / 48% 56% 44% 52%',
-              '44% 56% 48% 52% / 54% 46% 58% 42%',
-              '52% 48% 62% 38% / 40% 60% 50% 50%',
-              '40% 60% 46% 54% / 56% 44% 62% 38%',
-              '62% 38% 50% 50% / 46% 54% 40% 60%',
-              '50% 50% 56% 44% / 60% 40% 52% 48%',
-              '46% 54% 40% 60% / 52% 48% 58% 42%',
-            ];
-            const br = blobs[i % blobs.length];
             const tilt = ((i * 7) % 11) - 5;
             return (
               <div key={subject.id} className="flex flex-col items-center">
@@ -62,9 +52,8 @@ export default function ContentLibrary() {
                   whileHover={{ scale: 1.1, rotate: 0 }}
                   transition={{ type: 'spring', stiffness: 280, damping: 20 }}
                   onClick={() => setSelectedSubject(subject)}
-                  className="aspect-square w-full relative overflow-hidden flex items-center justify-center group"
+                  className="aspect-square w-full relative overflow-hidden flex items-center justify-center group rounded-full"
                   style={{ 
-                    borderRadius: br,
                     boxShadow: '0 4px 15px rgba(0,0,0,0.05), inset 0 0 20px rgba(0,0,0,0.1)'
                   }}
                 >
