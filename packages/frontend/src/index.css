@@ -7,10 +7,12 @@
   font-weight: 400;
   font-style: normal;
   font-display: swap;
+  /* Exclude German umlauts — they fall back to Gochi Hand which has proper glyphs */
+  unicode-range: U+0020-00BF, U+2000-206F;
 }
 
 @theme {
-  --font-display: "Tiny SSO Main", "Short Stack", "Gochi Hand", cursive;
+  --font-display: "Tiny SSO Main", "Gochi Hand", "Short Stack", cursive;
   --font-sans: "Plus Jakarta Sans", sans-serif;
   --font-serif: "Lora", serif;
   --font-fascinate: "Fascinate", system-ui;
