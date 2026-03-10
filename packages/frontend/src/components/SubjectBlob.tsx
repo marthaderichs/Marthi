@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
 
-// 10 distinct smooth organic shapes via CSS border-radius
 const BLOBS = [
   '42% 58% 54% 46% / 48% 44% 56% 52%',
   '56% 44% 48% 52% / 52% 58% 42% 48%',
@@ -15,8 +14,32 @@ const BLOBS = [
   '50% 50% 50% 50% / 44% 56% 50% 50%',
 ];
 
-// Noise grain as data-URL SVG — ultra-subtle matte texture
 const GRAIN = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")`;
+
+/** 3-letter abbreviation, umlauts replaced so no fallback-font size clash */
+function abbr(name: string): string {
+  return name
+    .replace(/ä/gi, 'a').replace(/ö/gi, 'o').replace(/ü/gi, 'u').replace(/ß/g, 's')
+    .slice(0, 3)
+    .toUpperCase();
+}
+
+/**
+ * Renders text with umlaut characters (ä ö ü Ä Ö Ü ß) in a slightly smaller
+ * span so the fallback-font size mismatch isn't visible.
+ */
+function Text({ str }: { str: string }) {
+  const parts = str.split(/([äöüÄÖÜß])/g);
+  return (
+    <>
+      {parts.map((p, i) =>
+        /^[äöüÄÖÜß]$/.test(p)
+          ? <span key={i} style={{ fontSize: '0.78em', verticalAlign: 'middle' }}>{p.toUpperCase()}</span>
+          : <span key={i}>{p.toUpperCase()}</span>
+      )}
+    </>
+  );
+}
 
 interface SubjectBlobProps {
   color: string;
@@ -27,7 +50,7 @@ interface SubjectBlobProps {
 
 export function SubjectBlob({ color, index, name, onClick }: SubjectBlobProps) {
   const shape = BLOBS[index % BLOBS.length];
-  const tilt  = ((index * 7) % 9) - 4;   // –4° to +4°, gentle
+  const tilt  = ((index * 7) % 9) - 4;
 
   return (
     <motion.button
@@ -38,30 +61,23 @@ export function SubjectBlob({ color, index, name, onClick }: SubjectBlobProps) {
       onClick={onClick}
       className="aspect-square w-full relative flex items-center justify-center group"
     >
-      {/* ── Blob fill ── */}
-      <div
-        className="absolute inset-1.5"
-        style={{
-          borderRadius: shape,
-          backgroundColor: color,
-          opacity: 0.82,          // slightly washed = "ein bisschen blasser"
-        }}
-      />
+      {/* Blob fill */}
+      <div className="absolute inset-1.5" style={{ borderRadius: shape, backgroundColor: color, opacity: 0.82 }} />
 
-      {/* ── Grain overlay (same shape, blend overlay) ── */}
+      {/* Grain overlay */}
       <div
         className="absolute inset-1.5 mix-blend-overlay pointer-events-none"
-        style={{
-          borderRadius: shape,
-          backgroundImage: GRAIN,
-          backgroundSize: '180px 180px',
-          opacity: 0.13,
-        }}
+        style={{ borderRadius: shape, backgroundImage: GRAIN, backgroundSize: '180px 180px', opacity: 0.13 }}
       />
 
-      {/* ── Label ── */}
-      <span className="relative z-10 font-typewriter text-white text-[11px] uppercase tracking-[0.18em] text-center px-3 leading-tight [text-shadow:0_1px_3px_rgba(0,0,0,0.22)] group-hover:opacity-80 transition-opacity">
-        {name}
+      {/* Default: 3-letter abbr */}
+      <span className="relative z-10 font-typewriter text-white text-[15px] tracking-[0.22em] [text-shadow:0_1px_3px_rgba(0,0,0,0.25)] group-hover:hidden">
+        {abbr(name)}
+      </span>
+
+      {/* Hover: full name, umlauts shrunk */}
+      <span className="relative z-10 font-typewriter text-white text-[11px] tracking-[0.15em] [text-shadow:0_1px_3px_rgba(0,0,0,0.25)] hidden group-hover:block text-center px-3 leading-snug">
+        <Text str={name} />
       </span>
     </motion.button>
   );
