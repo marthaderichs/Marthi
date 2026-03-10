@@ -10,15 +10,17 @@
 }
 
 @font-face {
-  font-family: "Snacky Plop";
-  src: url('/fonts/SnackyPlop-Regular.woff2') format('woff2');
+  font-family: "Royana Numbers";
+  src: url('/fonts/Royana-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
+  /* Nur Zahlen 0-9 */
+  unicode-range: U+0030-0039;
 }
 
 @font-face {
-  font-family: "Tiny SSO";
+  font-family: "Tiny SSO Main";
   src: url('/fonts/TinySso-Regular.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
@@ -26,7 +28,7 @@
 }
 
 @theme {
-  --font-display: "Snacky Plop", "Tiny SSO", "Gochi Hand", cursive;
+  --font-display: "Royana Numbers", "Tiny SSO Main", "Gochi Hand", cursive;
   --font-sans: "Plus Jakarta Sans", sans-serif;
   --font-serif: "Lora", serif;
   --font-fascinate: "Fascinate", system-ui;
@@ -100,7 +102,7 @@ body {
 }
 
 h1, h2, h3, h4 {
-  font-family: "Snacky Plop", "Tiny SSO", "Gochi Hand", cursive;
+  font-family: "Royana Numbers", "Tiny SSO Main", "Gochi Hand", cursive;
   color: var(--plum);
   font-weight: 400;
   line-height: 1.1;
