@@ -31,32 +31,44 @@ export default function ImportData() {
 
   const copyPrompt = () => {
     const subjectList = subjects?.map(s => `- ${s.name} (id: "${s.id}")`).join('\n') || '';
-    const prompt = `Du bist ein Experte für medizinisches Wissen und Spaced Repetition. Konvertiere die folgenden Informationen in ein präzises JSON-Format.
+    const prompt = `Du bist ein Experte für medizinisches Lernen. Konvertiere die folgenden Inhalte in ein strukturiertes JSON für eine Lern-App.
 
 DEINE AUFGABE:
-Erstelle aus dem Text Zusammenfassungen (topics), Prüfungsfragen (questions) und Karteikarten (flashcards).
+Erstelle aus dem Text drei Arten von Inhalten:
+1. Bibliotheks-Kapitel (topics) – ausführliche Zusammenfassungen zum Nachlesen
+2. Klausurfragen (questions) – Multiple-Choice-Fragen
+3. Karteikarten (flashcards) – atomare Fakten zum Einprägen
 
-WICHTIG FÜR KARTEIKARTEN:
-- Erstelle pro Information MINDESTENS 3–5 verschiedene Karteikarten.
-- Nutze das Prinzip der „atomaren Informationen": Eine Karte = Ein Fakt.
-- Erstelle Karten für: Definitionen, Symptome, Goldstandard-Diagnostik, Therapie der Wahl und typische Fallstricke.
-- Wenn eine Multiple-Choice-Frage gegeben ist, erstelle Karten für den richtigen Fakt UND für die Begründungen in der Erklärung.
+━━━ BIBLIOTHEK (topics) ━━━
+- Schreibe pro Thema ein ausführliches Kapitel als Fließtext (mehrere Absätze).
+- Decke ab: Pathophysiologie, Symptome, Diagnostik, Therapie, Besonderheiten.
+- Schreibe vollständige Sätze – kein Stichpunkte, kein Tabellen.
+
+━━━ KLAUSURFRAGEN (questions) ━━━
+- Erstelle realistische MC-Fragen im IMPP-Stil (4–5 Antwortoptionen).
+- Erklärungsfeld: Erkläre in 2–4 klaren Sätzen, WARUM die richtige Antwort korrekt ist und warum die anderen falsch sind.
+- VERBOTEN in Erklärungen: Label-Wörter wie "Konzept:", "Details:", "Krankheitsbild:", "Kernaspekt:", "Thema:", "Antwort:", "Erklärung:" – nur sauberer Fließtext.
+- KEINE Pipes (|), Trennstriche oder Tabellen in Erklärungen.
+
+━━━ KARTEIKARTEN (flashcards) ━━━
+- Erstelle pro Klausurfrage genau 1–2 Karteikarten, die den Kernfakt der Frage festigen.
+- Vorderseite: eine klare Frage oder ein unvollständiger Satz.
+- Rückseite: die präzise Antwort (1–2 Sätze max).
+- Eine Karte = ein Fakt. Kein Fragen-Wust.
 
 STRUKTUR:
-Das JSON muss ein Objekt mit drei Arrays sein:
-1. "topics": Zusammenfassungen (subjectId, title, content).
-2. "questions": MC-Fragen (subjectId, text, options[], correctAnswerIndex, explanation).
-3. "flashcards": Karteikarten (subjectId, front, back).
+{
+  "topics": [{ "subjectId": "...", "title": "...", "content": "..." }],
+  "questions": [{ "subjectId": "...", "text": "...", "options": ["A","B","C","D"], "correctAnswerIndex": 0, "explanation": "..." }],
+  "flashcards": [{ "subjectId": "...", "front": "...", "back": "..." }]
+}
 
 ERLAUBTE SUBJECT-IDS:
 ${subjectList}
 
 REGELN:
-- Antworte NUR mit dem JSON. Keine Markdown-Backticks.
+- Antworte NUR mit dem JSON-Objekt. Keine Markdown-Backticks, kein Kommentar drumherum.
 - Sprache: Deutsch, professionell, präzise.
-- Korrekte deutsche Groß- und Kleinschreibung verwenden.
-- Erklärungen vollständig und klar formulieren.
-- KEINE Tabellen, KEINE Pipes (|) oder Trennstriche in den Erklärungen verwenden. Nur Fließtext oder einfache Zeilenumbrüche.
 
 INHALTE:
 [DEINE INHALTE HIER EINFÜGEN]`;
@@ -66,7 +78,7 @@ INHALTE:
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-12 pb-20 pt-8 sm:pt-4">
+    <div className="max-w-5xl mx-auto space-y-12 pb-20 pt-16 sm:pt-10">
       <div className="text-center space-y-4">
         <h1 className="text-7xl font-display text-[#673147]">Daten-Import</h1>
         <p className="text-xl text-[#673147]/50 font-typewriter">

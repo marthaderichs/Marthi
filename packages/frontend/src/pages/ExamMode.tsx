@@ -15,12 +15,16 @@ const formatExplanation = (text: string) => {
   if (!text) return null;
 
   const cleaned = text
-    // Remove lines that are ONLY a label word (handles **Frage:**, ### Thema, etc.)
-    .replace(/^[\s*_#]*(?:frage|thema|kernaspekt|antwort|erklärung|option)[\s*_#]*:?[\s*_#\d.]*$/gmi, '')
+    // Remove lines that are ONLY a label word
+    .replace(/^[\s*_#]*(?:frage|thema|kernaspekt|antwort|erklärung|option|konzept|details?|krankheitsbild|diagnose|therapie|merke|hinweis|zusammenfassung|fazit|grund|begründung)[\s*_#]*:?[\s*_#\d.]*$/gmi, '')
     // Remove "Label: " prefixes at start of lines
-    .replace(/^[\s*_#]*(?:frage|thema|kernaspekt|antwort|erklärung)[\s*_#]*:\s*/gmi, '')
+    .replace(/^[\s*_#]*(?:frage|thema|kernaspekt|antwort|erklärung|konzept|details?|krankheitsbild|diagnose|therapie|merke|hinweis)[\s*_#]*:\s*/gmi, '')
+    // Remove markdown bold/italic wrappers around single words (e.g. **Konzept**)
+    .replace(/\*{1,2}([A-ZÄÖÜ][a-zäöüß]+)\*{1,2}/g, '$1')
     // Remove pipe-table dividers
     .replace(/\|?\s*:?-+:?\s*\|/g, '')
+    // Remove pipe-separated content entirely if it looks like a table row
+    .replace(/^.*\|.*\|.*$/gm, '')
     // Remove standalone numbers, possibly with markdown decoration (e.g. **4**, 4., 4:)
     .replace(/^[\s*_]*\d+[.):]?[\s*_]*$/gm, '')
     // Collapse excess blank lines
