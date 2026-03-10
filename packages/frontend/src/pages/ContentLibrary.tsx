@@ -84,16 +84,22 @@ export default function ContentLibrary() {
           </div>
 
           {/* Stats */}
-          <div className="flex gap-6 flex-wrap">
-            <span className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest text-[#4A3A2F]/50">
-              <BookOpen className="w-3.5 h-3.5" /> {selectedSubject._count?.topics ?? 0} Kapitel
-            </span>
-            <span className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest text-[#4A3A2F]/50">
-              <CheckSquare className="w-3.5 h-3.5" /> {selectedSubject._count?.questions ?? 0} Fragen
-            </span>
-            <span className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest text-[#4A3A2F]/50">
-              <Brain className="w-3.5 h-3.5" /> {selectedSubject._count?.flashcards ?? 0} Karteikarten
-            </span>
+          <div className="flex gap-3 flex-wrap">
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[#4A3A2F]/8">
+              <BookOpen className="w-3.5 h-3.5 text-[#673147]" />
+              <span className="text-sm font-bold text-[#4A3A2F]">{selectedSubject._count?.topics ?? 0}</span>
+              <span className="text-xs text-[#4A3A2F]/50 font-typewriter">Kapitel</span>
+            </div>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[#4A3A2F]/8">
+              <CheckSquare className="w-3.5 h-3.5 text-[#673147]" />
+              <span className="text-sm font-bold text-[#4A3A2F]">{selectedSubject._count?.questions ?? 0}</span>
+              <span className="text-xs text-[#4A3A2F]/50 font-typewriter">Fragen</span>
+            </div>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[#4A3A2F]/8">
+              <Brain className="w-3.5 h-3.5 text-[#673147]" />
+              <span className="text-sm font-bold text-[#4A3A2F]">{selectedSubject._count?.flashcards ?? 0}</span>
+              <span className="text-xs text-[#4A3A2F]/50 font-typewriter">Karteikarten</span>
+            </div>
           </div>
 
           {/* Topic cards – flat, with colored left accent */}
