@@ -4,11 +4,13 @@ import { useSubjects } from '../hooks/useSubjects';
 import { useExamGenerate, useExamSubmit } from '../hooks/useExam';
 import { useMistakes } from '../hooks/useMistakes';
 import { cn } from '../lib/utils';
-import { CheckCircle2, XCircle, ArrowRight, Trophy, Loader2, RotateCcw, Sparkles, Settings2, Info, Layers, Shuffle } from 'lucide-react';
+import { CheckCircle2, XCircle, ArrowRight, Trophy, Loader2, RotateCcw, Sparkles, Settings2, Info, Layers, Shuffle, List, Trash2 } from 'lucide-react';
 import { DisplayText } from '../components/DisplayText';
 
 import { getIcon } from '../lib/icons';
 import { SubjectBlob } from '../components/SubjectBlob';
+import { useQuestions } from '../hooks/useQuestions';
+import { useDeleteQuestion } from '../hooks/useTopics';
 
 // Clean up AI-generated explanation texts
 const formatExplanation = (text: string) => {
@@ -58,6 +60,19 @@ export default function ExamMode() {
   const [selectedTopicIds, setSelectedTopicIds] = useState<string[]>([]);
   const [quizStarted, setQuizStarted] = useState(false);
   const [setupMode, setSetupMode] = useState(false);
+  const [showOverview, setShowOverview] = useState(false);
+  const [overviewSubjectId, setOverviewSubjectId] = useState<string | undefined>(undefined);
+  const [confirmDeleteQuestionId, setConfirmDeleteQuestionId] = useState<string | null>(null);
+  const [deletedQuestionIds, setDeletedQuestionIds] = useState<string[]>([]);
+
+  const { data: allQuestions, isLoading: questionsLoading } = useQuestions(showOverview ? overviewSubjectId : undefined);
+  const deleteQuestion = useDeleteQuestion();
+
+  const handleDeleteQuestion = async (id: string) => {
+    await deleteQuestion.mutate(id);
+    setDeletedQuestionIds(prev => [...prev, id]);
+    setConfirmDeleteQuestionId(null);
+  };
   const [quizCount, setQuizCount] = useState(10);
   const [onlyNew, setOnlyNew] = useState(false);
 
@@ -138,11 +153,131 @@ export default function ExamMode() {
 
   if (subjectsLoading) return <div className="flex justify-center py-32"><Loader2 className="w-10 h-10 animate-spin text-[#673147]/40" /></div>;
 
+  // --- VIEW: FRAGEN ÜBERSICHT ---
+  if (showOverview) {
+    const visibleQuestions = (allQuestions ?? []).filter(q => !deletedQuestionIds.includes(q.id));
+    const overviewSubject = subjects?.find(s => s.id === overviewSubjectId);
+    return (
+      <div className="max-w-4xl mx-auto space-y-8 pt-4">
+        <div className="flex items-center justify-between border-b border-[#673147]/10 pb-8">
+          <div>
+            <div className="text-[10px] font-black uppercase tracking-widest text-[#673147]/40 mb-1">Klausurfragen</div>
+            <h1 className="text-5xl font-display text-[#673147]">
+              {overviewSubject ? <DisplayText>{overviewSubject.name}</DisplayText> : 'Alle Fächer'}
+            </h1>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="px-4 py-2 bg-[#E2E8D4]/60 rounded-full text-sm font-bold text-[#673147]/60">
+              {visibleQuestions.length} Fragen
+            </div>
+            <button
+              onClick={() => { setShowOverview(false); setDeletedQuestionIds([]); setConfirmDeleteQuestionId(null); }}
+              className="px-6 py-2.5 bg-[#E2E8D4] rounded-full text-xs font-bold uppercase tracking-widest text-[#673147] hover:bg-[#673147] hover:text-white transition-all"
+            >
+              Zurück
+            </button>
+          </div>
+        </div>
+
+        {/* Subject filter */}
+        <div className="flex gap-2 flex-wrap">
+          <button
+            onClick={() => setOverviewSubjectId(undefined)}
+            className={cn("px-4 py-1.5 rounded-full text-xs font-bold border-2 transition-all",
+              overviewSubjectId === undefined ? "bg-[#673147] text-white border-[#673147]" : "bg-[#E2E8D4]/50 border-transparent text-[#673147]/50 hover:border-[#673147]/20"
+            )}
+          >Alle</button>
+          {subjects?.map(s => (
+            <button
+              key={s.id}
+              onClick={() => setOverviewSubjectId(s.id)}
+              className={cn("px-4 py-1.5 rounded-full text-xs font-bold border-2 transition-all",
+                overviewSubjectId === s.id ? "text-white border-transparent" : "bg-[#E2E8D4]/50 border-transparent text-[#673147]/50 hover:border-[#673147]/20"
+              )}
+              style={overviewSubjectId === s.id ? { backgroundColor: s.color } : {}}
+            >{s.name}</button>
+          ))}
+        </div>
+
+        {questionsLoading ? (
+          <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-[#673147]/30" /></div>
+        ) : (
+          <AnimatePresence>
+            <div className="space-y-3">
+              {visibleQuestions.map((q, i) => (
+                <motion.div
+                  key={q.id}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.97 }}
+                  transition={{ delay: i * 0.015 }}
+                  className="group flex items-start gap-4 p-6 bg-[#F9F4E8] rounded-2xl border border-[#4A3A2F]/6"
+                  style={{ boxShadow: '2px 2px 0 rgba(74,58,47,0.05)' }}
+                >
+                  <div className="flex-1 space-y-2">
+                    <p className="font-serif text-[#4A3A2F] leading-snug">{q.text}</p>
+                    <div className="flex gap-2 flex-wrap">
+                      {q.options.map((opt, idx) => (
+                        <span
+                          key={idx}
+                          className={cn(
+                            "text-[10px] px-2.5 py-1 rounded-full font-bold",
+                            idx === q.correctAnswerIndex
+                              ? "bg-[#A3B18A]/20 text-[#344E41]"
+                              : "bg-[#E2E8D4]/60 text-[#4A3A2F]/40"
+                          )}
+                        >
+                          {opt}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="shrink-0">
+                    {confirmDeleteQuestionId === q.id ? (
+                      <div className="flex gap-1.5">
+                        <button
+                          onClick={() => handleDeleteQuestion(q.id)}
+                          className="px-2.5 py-1 bg-red-500 text-white text-[10px] rounded-lg font-bold hover:bg-red-600 transition-colors"
+                        >Löschen</button>
+                        <button
+                          onClick={() => setConfirmDeleteQuestionId(null)}
+                          className="px-2.5 py-1 bg-[#E2E8D4] text-[#4A3A2F] text-[10px] rounded-lg font-bold"
+                        >×</button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => setConfirmDeleteQuestionId(q.id)}
+                        className="p-1.5 text-[#4A3A2F]/0 group-hover:text-[#4A3A2F]/25 hover:!text-red-500 transition-colors rounded-lg"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+              {visibleQuestions.length === 0 && (
+                <div className="text-center py-20 text-[#4A3A2F]/30 font-typewriter">Keine Fragen vorhanden.</div>
+              )}
+            </div>
+          </AnimatePresence>
+        )}
+      </div>
+    );
+  }
+
   if (!quizStarted && !setupMode) return (
     <div className="w-full max-w-5xl mx-auto space-y-12 pt-10">
-      <div className="text-center space-y-4">
-        <h1 className="text-7xl font-display text-[#673147]">Klausur-Modus</h1>
-        <p className="text-xl text-[#673147]/50 font-typewriter">Wähle ein Fach und leg los.</p>
+      <div className="flex items-start justify-between">
+        <div className="space-y-4">
+          <h1 className="text-7xl font-display text-[#673147]">Klausur-Modus</h1>
+          <p className="text-xl text-[#673147]/50 font-typewriter">Wähle ein Fach und leg los.</p>
+        </div>
+        <button
+          onClick={() => { setOverviewSubjectId(undefined); setShowOverview(true); }}
+          className="flex items-center gap-2 px-5 py-2.5 bg-[#E2E8D4] rounded-full text-xs font-bold uppercase tracking-widest text-[#673147] hover:bg-[#673147] hover:text-white transition-all mt-2 shrink-0"
+        >
+          <List className="w-3.5 h-3.5" /> Fragen verwalten
+        </button>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
         {subjects?.map((s, i) => (
