@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Fascinate&family=Lora:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Special+Elite&display=swap');
-@import "tailwindcss";
 
 @font-face {
   font-family: "Snacky Plop";
-  src: url('/fonts/SnackyPlop-Regular.woff2') format('woff2');
+  src: url('/fonts/SnackyPlop-Regular.woff2') format('woff2'),
+       url('/fonts/SnackyPlop-Regular.woff') format('woff');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -18,6 +18,8 @@
   /* Nur i und j – für die Herzchen-Punkte */
   unicode-range: U+0069, U+006A;
 }
+
+@import "tailwindcss";
 
 @theme {
   --font-display: "Tiny SSO", "Snacky Plop", cursive;
