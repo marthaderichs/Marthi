@@ -49,15 +49,11 @@ body {
   padding: 0;
 }
 
-/* Wide Vertical Stripes – wide tan, narrow blue like reference */
+/* Stripe background using actual image */
 .main-bg-stripes {
-  background-image: repeating-linear-gradient(
-    90deg,
-    var(--stripe-tan),
-    var(--stripe-tan) 80px,
-    var(--stripe-blue) 80px,
-    var(--stripe-blue) 100px
-  );
+  background-image: url('/stripe-bg.jpg');
+  background-repeat: repeat;
+  background-size: 200px auto;
   background-attachment: scroll;
 }
 
