@@ -18,6 +18,26 @@ export function useTopics(subjectId?: string) {
   return { data, isLoading, error };
 }
 
+export function useDeleteTopic() {
+  const [isPending, setIsPending] = useState(false);
+  const mutate = async (id: string) => {
+    setIsPending(true);
+    try { await api.delete(`/topics/${id}`); }
+    finally { setIsPending(false); }
+  };
+  return { mutate, isPending };
+}
+
+export function useDeleteQuestion() {
+  const [isPending, setIsPending] = useState(false);
+  const mutate = async (id: string) => {
+    setIsPending(true);
+    try { await api.delete(`/questions/${id}`); }
+    finally { setIsPending(false); }
+  };
+  return { mutate, isPending };
+}
+
 export function useTopic(id: string | null) {
   const [data, setData] = useState<(Topic & { questions: Question[] }) | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);

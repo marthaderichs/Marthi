@@ -1,10 +1,10 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useSubjects } from '../hooks/useSubjects';
-import { useTopics } from '../hooks/useTopics';
+import { useTopics, useTopic, useDeleteTopic, useDeleteQuestion } from '../hooks/useTopics';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   X, BookOpen, Loader2, Search, ChevronLeft,
-  Bookmark, Pencil, ArrowRight, Brain, CheckSquare
+  Bookmark, Pencil, ArrowRight, Brain, CheckSquare, Trash2
 } from 'lucide-react';
 import { Subject, Topic } from '@medilearn/shared';
 import { DisplayText } from '../components/DisplayText';
@@ -16,21 +16,37 @@ export default function ContentLibrary() {
   const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
   const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [confirmDeleteTopicId, setConfirmDeleteTopicId] = useState<string | null>(null);
+  const [deletedTopicIds, setDeletedTopicIds] = useState<string[]>([]);
+  const [confirmDeleteQuestionId, setConfirmDeleteQuestionId] = useState<string | null>(null);
+  const [deletedQuestionIds, setDeletedQuestionIds] = useState<string[]>([]);
 
   const { data: topics, isLoading: topicsLoading } = useTopics(selectedSubject?.id);
-
-  const abbreviate = (name: string) => {
-    if (name.length <= 3) return name.toUpperCase();
-    return name.substring(0, 3).toUpperCase();
-  };
+  const { data: topicDetail } = useTopic(selectedTopic?.id ?? null);
+  const deleteTopic = useDeleteTopic();
+  const deleteQuestion = useDeleteQuestion();
 
   const filteredTopics = useMemo(() => {
     if (!topics) return [];
-    return topics.filter(t =>
-      t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.content.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [topics, searchQuery]);
+    return topics
+      .filter(t => !deletedTopicIds.includes(t.id))
+      .filter(t =>
+        t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        t.content.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+  }, [topics, searchQuery, deletedTopicIds]);
+
+  const handleDeleteTopic = async (id: string) => {
+    await deleteTopic.mutate(id);
+    setDeletedTopicIds(prev => [...prev, id]);
+    setConfirmDeleteTopicId(null);
+  };
+
+  const handleDeleteQuestion = async (id: string) => {
+    await deleteQuestion.mutate(id);
+    setDeletedQuestionIds(prev => [...prev, id]);
+    setConfirmDeleteQuestionId(null);
+  };
 
   if (subjectsLoading) return <div className="flex justify-center py-32"><Loader2 className="w-10 h-10 animate-spin text-[#673147]/30" /></div>;
 
@@ -57,7 +73,7 @@ export default function ContentLibrary() {
         </div>
       ) : (
         <div className="space-y-8">
-          {/* Subject header – clean, no heavy card */}
+          {/* Subject header */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b-2 border-[#4A3A2F]/8">
             <div className="flex items-center gap-4">
               <button
@@ -102,29 +118,58 @@ export default function ContentLibrary() {
             </div>
           </div>
 
-          {/* Topic cards – flat, with colored left accent */}
+          {/* Topic cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <AnimatePresence mode="popLayout">
               {filteredTopics.map((topic) => (
-                <motion.button
+                <motion.div
                   key={topic.id}
                   layout
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  onClick={() => setSelectedTopic(topic)}
-                  className="group relative p-6 bg-[#F9F4E8] rounded-2xl text-left flex flex-col border-l-[3px] hover:-translate-y-0.5 transition-all"
+                  className="group relative p-6 bg-[#F9F4E8] rounded-2xl text-left flex flex-col border-l-[3px] hover:-translate-y-0.5 transition-all cursor-pointer"
                   style={{
                     borderLeftColor: selectedSubject.color,
                     boxShadow: '2px 2px 0 rgba(74,58,47,0.07)',
                   }}
+                  onClick={() => {
+                    if (confirmDeleteTopicId === topic.id) return;
+                    setSelectedTopic(topic);
+                  }}
                 >
-                  <h3 className="font-serif text-lg text-[#4A3A2F] leading-snug mb-3">{topic.title}</h3>
+                  <h3 className="font-serif text-lg text-[#4A3A2F] leading-snug mb-3 pr-8">{topic.title}</h3>
+
+                  {/* Delete control */}
+                  {confirmDeleteTopicId === topic.id ? (
+                    <div className="absolute top-3 right-3 flex gap-1.5" onClick={e => e.stopPropagation()}>
+                      <button
+                        onClick={() => handleDeleteTopic(topic.id)}
+                        className="px-2.5 py-1 bg-red-500 text-white text-[10px] rounded-lg font-bold hover:bg-red-600 transition-colors"
+                      >
+                        Löschen
+                      </button>
+                      <button
+                        onClick={() => setConfirmDeleteTopicId(null)}
+                        className="px-2.5 py-1 bg-[#E2E8D4] text-[#4A3A2F] text-[10px] rounded-lg font-bold"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setConfirmDeleteTopicId(topic.id); }}
+                      className="absolute top-3 right-3 p-1.5 text-[#4A3A2F]/0 group-hover:text-[#4A3A2F]/25 hover:!text-red-500 transition-colors rounded-lg"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+
                   <div className="mt-auto pt-3 flex items-center justify-between">
                     <span className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/25">Kapitel lesen</span>
                     <ArrowRight className="w-4 h-4 text-[#673147] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                   </div>
-                </motion.button>
+                </motion.div>
               ))}
             </AnimatePresence>
           </div>
@@ -139,7 +184,7 @@ export default function ContentLibrary() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-[#4A3A2F]/40 backdrop-blur-sm"
-            onClick={() => setSelectedTopic(null)}
+            onClick={() => { setSelectedTopic(null); setConfirmDeleteQuestionId(null); }}
           >
             <motion.div
               initial={{ scale: 0.95, y: 20 }}
@@ -151,7 +196,7 @@ export default function ContentLibrary() {
               <div className="flex items-center justify-between px-10 pt-10 pb-6 border-b border-[#4A3A2F]/8">
                 <h2 className="font-display text-4xl md:text-5xl text-[#673147] leading-tight pr-8"><DisplayText>{selectedTopic.title}</DisplayText></h2>
                 <button
-                  onClick={() => setSelectedTopic(null)}
+                  onClick={() => { setSelectedTopic(null); setConfirmDeleteQuestionId(null); }}
                   className="p-2.5 rounded-full border border-[#4A3A2F]/10 text-[#4A3A2F]/40 hover:text-[#673147] hover:border-[#673147]/30 transition-all shrink-0"
                 >
                   <X className="w-5 h-5" />
@@ -159,11 +204,54 @@ export default function ContentLibrary() {
               </div>
 
               <div className="p-10 md:p-12 overflow-y-auto">
+                {/* Content */}
                 <div className="font-serif text-lg leading-[1.85] text-[#4A3A2F]/80 space-y-5">
                   {selectedTopic.content.split('\n').map((line, i) => (
                     <p key={i}>{line}</p>
                   ))}
                 </div>
+
+                {/* Questions */}
+                {topicDetail?.questions && topicDetail.questions.filter(q => !deletedQuestionIds.includes(q.id)).length > 0 && (
+                  <div className="mt-10 pt-8 border-t border-[#4A3A2F]/8 space-y-4">
+                    <div className="text-[10px] font-black uppercase tracking-widest text-[#673147]/40 flex items-center gap-2">
+                      <CheckSquare className="w-3 h-3" />
+                      Klausurfragen ({topicDetail.questions.filter(q => !deletedQuestionIds.includes(q.id)).length})
+                    </div>
+                    <div className="space-y-2">
+                      {topicDetail.questions
+                        .filter(q => !deletedQuestionIds.includes(q.id))
+                        .map(q => (
+                          <div key={q.id} className="flex items-start gap-4 p-4 bg-[#E2E8D4]/40 rounded-2xl group/q">
+                            <p className="text-sm text-[#4A3A2F]/80 font-serif leading-snug flex-1">{q.text}</p>
+                            {confirmDeleteQuestionId === q.id ? (
+                              <div className="flex gap-1.5 shrink-0">
+                                <button
+                                  onClick={() => handleDeleteQuestion(q.id)}
+                                  className="px-2.5 py-1 bg-red-500 text-white text-[10px] rounded-lg font-bold hover:bg-red-600 transition-colors"
+                                >
+                                  Löschen
+                                </button>
+                                <button
+                                  onClick={() => setConfirmDeleteQuestionId(null)}
+                                  className="px-2.5 py-1 bg-white text-[#4A3A2F] text-[10px] rounded-lg font-bold"
+                                >
+                                  ×
+                                </button>
+                              </div>
+                            ) : (
+                              <button
+                                onClick={() => setConfirmDeleteQuestionId(q.id)}
+                                className="p-1.5 text-[#4A3A2F]/0 group-hover/q:text-[#4A3A2F]/25 hover:!text-red-500 transition-colors rounded-lg shrink-0"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </motion.div>
           </motion.div>

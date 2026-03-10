@@ -32,6 +32,16 @@ export function useDueFlashcards(subjectId?: string) {
   return { data, isLoading };
 }
 
+export function useDeleteFlashcard() {
+  const [isPending, setIsPending] = useState(false);
+  const mutate = async (id: string) => {
+    setIsPending(true);
+    try { await api.delete(`/flashcards/${id}`); }
+    finally { setIsPending(false); }
+  };
+  return { mutate, isPending };
+}
+
 export function useReviewFlashcard() {
   const [isPending, setIsPending] = useState(false);
 

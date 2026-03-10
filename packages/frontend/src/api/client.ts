@@ -22,6 +22,7 @@ export async function apiRequest<T>(
     throw new ApiError(res.status, msg || `HTTP ${res.status}`, errorBody.details);
   }
 
+  if (res.status === 204) return null as T;
   return res.json();
 }
 

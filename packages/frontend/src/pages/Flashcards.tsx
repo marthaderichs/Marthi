@@ -1,10 +1,10 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { useFlashcards, useDueFlashcards, useReviewFlashcard } from '../hooks/useFlashcards';
+import { useFlashcards, useDueFlashcards, useReviewFlashcard, useDeleteFlashcard } from '../hooks/useFlashcards';
 import { useSubjects } from '../hooks/useSubjects';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   ChevronLeft, ChevronRight, RotateCw, Loader2, Check, X,
-  Brain, Sparkles, Play, List, Trophy, Eye, Clock, Calendar, Layers
+  Brain, Sparkles, Play, List, Trophy, Eye, Clock, Calendar, Layers, Trash2
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { DisplayText } from '../components/DisplayText';
@@ -27,6 +27,9 @@ export default function Flashcards() {
   const { data: allCards, isLoading: allLoading } = useFlashcards(selectedSubjectId || undefined);
   const { data: dueCards, isLoading: dueLoading } = useDueFlashcards(selectedSubjectId || undefined);
   const reviewMutation = useReviewFlashcard();
+  const deleteMutation = useDeleteFlashcard();
+  const [confirmDeleteCardId, setConfirmDeleteCardId] = useState<string | null>(null);
+  const [deletedCardIds, setDeletedCardIds] = useState<string[]>([]);
 
   const activeSubject = useMemo(() => subjects?.find(s => s.id === selectedSubjectId), [subjects, selectedSubjectId]);
 
@@ -74,8 +77,15 @@ export default function Flashcards() {
     </div>
   );
 
+  const handleDeleteCard = async (id: string) => {
+    await deleteMutation.mutate(id);
+    setDeletedCardIds(prev => [...prev, id]);
+    setConfirmDeleteCardId(null);
+  };
+
   // --- VIEW: OVERVIEW ---
   if (view === 'overview' && activeSubject) {
+    const visibleCards = allCards?.filter(c => !deletedCardIds.includes(c.id)) ?? [];
     return (
       <div className="bg-white p-10 md:p-16 rounded-[48px] shadow-2xl space-y-10 max-w-4xl mx-auto border border-black/[0.02]">
         <div className="flex items-center justify-between border-b border-[#673147]/10 pb-8">
@@ -88,26 +98,55 @@ export default function Flashcards() {
           </button>
         </div>
         <div className="grid gap-4">
-          {allCards?.map((c, i) => (
-            <motion.div
-              key={c.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.02 }}
-              className="p-8 bg-[#E2E8D4]/30 rounded-3xl border border-black/[0.01] relative"
-            >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-2">
-                  <div className="text-[10px] font-black text-[#673147]/30 uppercase tracking-[0.2em]">Vorderseite</div>
-                  <p className="text-2xl font-display text-[#673147] leading-tight">{c.front}</p>
+          <AnimatePresence>
+            {visibleCards.map((c, i) => (
+              <motion.div
+                key={c.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.97 }}
+                transition={{ delay: i * 0.02 }}
+                className="p-8 bg-[#E2E8D4]/30 rounded-3xl border border-black/[0.01] relative group"
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-2">
+                    <div className="text-[10px] font-black text-[#673147]/30 uppercase tracking-[0.2em]">Vorderseite</div>
+                    <p className="text-2xl font-display text-[#673147] leading-tight">{c.front}</p>
+                  </div>
+                  <div className="space-y-2 md:border-l md:pl-8 border-black/[0.05]">
+                    <div className="text-[10px] font-black text-[#A3B18A] uppercase tracking-[0.2em]">Antwort</div>
+                    <p className="text-lg text-[#673147]/80 font-sans leading-relaxed italic">{c.back}</p>
+                  </div>
                 </div>
-                <div className="space-y-2 md:border-l md:pl-8 border-black/[0.05]">
-                  <div className="text-[10px] font-black text-[#A3B18A] uppercase tracking-[0.2em]">Antwort</div>
-                  <p className="text-lg text-[#673147]/80 font-sans leading-relaxed italic">{c.back}</p>
+                {/* Delete control */}
+                <div className="absolute top-4 right-4">
+                  {confirmDeleteCardId === c.id ? (
+                    <div className="flex gap-1.5">
+                      <button
+                        onClick={() => handleDeleteCard(c.id)}
+                        className="px-2.5 py-1 bg-red-500 text-white text-[10px] rounded-lg font-bold hover:bg-red-600 transition-colors"
+                      >
+                        Löschen
+                      </button>
+                      <button
+                        onClick={() => setConfirmDeleteCardId(null)}
+                        className="px-2.5 py-1 bg-white text-[#4A3A2F] text-[10px] rounded-lg font-bold"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => setConfirmDeleteCardId(c.id)}
+                      className="p-1.5 text-[#4A3A2F]/0 group-hover:text-[#4A3A2F]/25 hover:!text-red-500 transition-colors rounded-lg"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  )}
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       </div>
     );
