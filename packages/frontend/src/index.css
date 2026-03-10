@@ -9,11 +9,21 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "TinySsoHearts";
+  src: url('/fonts/TinySso-3.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  /* Only activate for lowercase i and j — the ones with heart dots */
+  unicode-range: U+0069, U+006A;
+}
+
 @theme {
-  --font-display: "SnackyPlop", cursive;
-  --font-sans: "Plus Jakarta Sans", sans-serif;
-  --font-serif: "Lora", serif;
-  --font-typewriter: "Special Elite", cursive;
+  --font-display: "TinySsoHearts", "SnackyPlop", cursive;
+  --font-sans: "TinySsoHearts", "Plus Jakarta Sans", sans-serif;
+  --font-serif: "TinySsoHearts", "Lora", serif;
+  --font-typewriter: "TinySsoHearts", "Special Elite", cursive;
 }
 
 :root {

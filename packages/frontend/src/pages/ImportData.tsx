@@ -66,7 +66,7 @@ INHALTE:
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-12 pb-20">
+    <div className="max-w-5xl mx-auto space-y-12 pb-20 pt-8 sm:pt-4">
       <div className="text-center space-y-4">
         <h1 className="text-7xl font-display text-[#673147]">Daten-Import</h1>
         <p className="text-xl text-[#673147]/50 font-typewriter">

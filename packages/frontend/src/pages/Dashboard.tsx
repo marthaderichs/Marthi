@@ -4,7 +4,6 @@ import { useSubjects } from '../hooks/useSubjects';
 import { NavLink } from 'react-router-dom';
 import { cn } from '../lib/utils';
 import { ArrowRight } from 'lucide-react';
-import { SketchBox } from '../components/SketchBox';
 
 // ── Handdrawn divider ─────────────────────────────────────────────────────────
 function Squiggle() {
@@ -28,7 +27,7 @@ const DASHES = Array.from({ length: NUM_DASHES }, (_, i) => {
 function CuteHeart({ color, index }: { color: string; index: number }) {
   return (
     <div className="w-[84px] h-[84px] flex items-center justify-center shrink-0">
-      <svg viewBox="-22 -22 144 144" className="w-full h-full" style={{ transform: `rotate(${TILTS[index % 4]}deg)` }}>
+      <svg viewBox="-30 -40 165 165" className="w-full h-full" style={{ transform: `rotate(${TILTS[index % 4]}deg)` }}>
         {DASHES.map((d, i) => (
           <line key={i} x1={d.x1} y1={d.y1} x2={d.x2} y2={d.y2} stroke="#3D2420" strokeWidth="3.5" strokeLinecap="round" opacity="0.6" />
         ))}
@@ -57,7 +56,7 @@ export default function Dashboard() {
     <div className="max-w-2xl mx-auto px-5 pt-16 pb-10 sm:py-10 space-y-7">
 
       {/* ── Greeting card ───────────────────────────────────────────────── */}
-      <SketchBox className="bg-[var(--light-cream)] px-8 pt-8 pb-7 space-y-3">
+      <div className="bg-[var(--light-cream)] px-8 pt-8 pb-7 space-y-3">
         <p className="text-[13px] font-typewriter tracking-[0.38em] text-[#673147]/38 uppercase">
           Willkommen
         </p>
@@ -68,7 +67,7 @@ export default function Dashboard() {
         <p className="font-typewriter text-[17px] text-[#4A3A2F]/52 pt-0.5">
           Wähle ein Fach und leg los.
         </p>
-      </SketchBox>
+      </div>
 
       {/* ── Nav circles ─────────────────────────────────────────────────── */}
       <div className="bg-[var(--light-cream)] px-6 py-7 border border-[#673147]/10">
@@ -100,7 +99,7 @@ export default function Dashboard() {
       </div>
 
       {/* ── Subjects ─────────────────────────────────────────────────────── */}
-      <SketchBox className="bg-[var(--light-cream)] px-7 py-6 space-y-1">
+      <div className="bg-[var(--light-cream)] px-7 py-6 space-y-1">
         <p className="text-[13px] font-typewriter tracking-[0.38em] text-[#673147]/35 uppercase mb-4">Fachbereiche</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8">
           {subjects?.slice(0, 8).map((s) => (
@@ -117,7 +116,7 @@ export default function Dashboard() {
             </NavLink>
           ))}
         </div>
-      </SketchBox>
+      </div>
     </div>
   );
 }

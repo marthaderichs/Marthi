@@ -4,12 +4,11 @@ import { useTopics } from '../hooks/useTopics';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   X, BookOpen, Loader2, Search, ChevronLeft,
-  Bookmark, Pencil, ArrowRight
+  Bookmark, Pencil, ArrowRight, Brain, CheckSquare
 } from 'lucide-react';
 import { Subject, Topic } from '@medilearn/shared';
 import { DisplayText } from '../components/DisplayText';
 import { cn } from '../lib/utils';
-import { SubjectBlob } from '../components/SubjectBlob';
 
 export default function ContentLibrary() {
   const { data: subjects, isLoading: subjectsLoading } = useSubjects();
@@ -44,15 +43,32 @@ export default function ContentLibrary() {
       </div>
 
       {!selectedSubject ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-          {subjects?.map((subject, i) => (
-            <SubjectBlob
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {subjects?.map((subject) => (
+            <motion.button
               key={subject.id}
-              color={subject.color}
-              index={i}
-              name={subject.name}
+              whileHover={{ y: -3 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => setSelectedSubject(subject)}
-            />
+              className="group p-6 bg-[#F9F4E8] rounded-2xl text-left space-y-4 border border-[#4A3A2F]/6 hover:shadow-md transition-all"
+              style={{ borderLeft: `4px solid ${subject.color}` }}
+            >
+              <div className="flex items-start justify-between gap-2">
+                <h2 className="font-display text-2xl text-[#673147] leading-tight">{subject.name}</h2>
+                <ArrowRight className="w-4 h-4 text-[#673147]/20 group-hover:text-[#673147] group-hover:translate-x-0.5 transition-all shrink-0 mt-1.5" />
+              </div>
+              <div className="flex gap-4 flex-wrap">
+                <span className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/45">
+                  <BookOpen className="w-3 h-3" /> {subject._count?.topics ?? 0} Kapitel
+                </span>
+                <span className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/45">
+                  <CheckSquare className="w-3 h-3" /> {subject._count?.questions ?? 0} Fragen
+                </span>
+                <span className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/45">
+                  <Brain className="w-3 h-3" /> {subject._count?.flashcards ?? 0} Karten
+                </span>
+              </div>
+            </motion.button>
           ))}
         </div>
       ) : (

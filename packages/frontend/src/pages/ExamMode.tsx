@@ -140,6 +140,17 @@ export default function ExamMode() {
         <h1 className="text-7xl font-display text-[#673147]">Klausur-Modus</h1>
         <p className="text-xl text-[#673147]/50 font-typewriter">Wähle ein Fach und leg los.</p>
       </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+        {subjects?.map((s, i) => (
+          <SubjectBlob
+            key={s.id}
+            color={s.color}
+            index={i}
+            name={s.name}
+            onClick={() => selectSubject(s.id)}
+          />
+        ))}
+      </div>
       <motion.button
         whileHover={{ y: -2 }}
         whileTap={{ scale: 0.98 }}
@@ -154,17 +165,6 @@ export default function ExamMode() {
           <p className="text-xs font-typewriter text-[#673147]/40">Fragen aus allen Fachbereichen in zufälliger Reihenfolge</p>
         </div>
       </motion.button>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-        {subjects?.map((s, i) => (
-          <SubjectBlob
-            key={s.id}
-            color={s.color}
-            index={i}
-            name={s.name}
-            onClick={() => selectSubject(s.id)}
-          />
-        ))}
-      </div>
     </div>
   );
 
