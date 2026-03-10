@@ -139,9 +139,23 @@ export default function Flashcards() {
                       "p-6 rounded-[24px] border-2 transition-all text-base font-bold shadow-sm font-display tracking-wide text-left relative overflow-hidden group",
                       selectedSubjectId === s.id
                         ? "shadow-md ring-4 ring-[#673147]/10 scale-[1.02]"
-                        : "bg-[#E2E8D4]/50 text-[#673147]/60 border-transparent hover:bg-white hover:border-[#673147]/10"
+                        : "bg-[#E2E8D4]/50 text-[#673147]/60 border-transparent hover:border-black/10 hover:text-white"
                     )}
-                    style={selectedSubjectId === s.id ? { backgroundColor: s.color, borderColor: s.color, color: 'white', textShadow: '0 1px 2px rgba(0,0,0,0.1)' } : {}}
+                    style={{
+                      ...(selectedSubjectId === s.id
+                        ? { backgroundColor: s.color, borderColor: s.color, color: 'white', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }
+                        : { '--hover-bg': s.color } as React.CSSProperties)
+                    }}
+                    onMouseEnter={(e) => {
+                      if (selectedSubjectId !== s.id) {
+                        e.currentTarget.style.backgroundColor = s.color;
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (selectedSubjectId !== s.id) {
+                        e.currentTarget.style.backgroundColor = '';
+                      }
+                    }}
                   >
                     {s.name}
                   </button>
