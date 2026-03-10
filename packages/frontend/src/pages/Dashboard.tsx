@@ -9,7 +9,7 @@ import {
 import { NavLink } from 'react-router-dom';
 import { cn } from '../lib/utils';
 
-const CARD = "bg-[#F2EDD7] p-7";
+const CARD = "bg-[#F5EDD5] px-7 pb-8 pt-10 border border-[#4A3A2F]/10 card-wobbly";
 
 export default function Dashboard() {
   const { data: subjects, isLoading: subjectsLoading } = useSubjects();
@@ -37,7 +37,7 @@ export default function Dashboard() {
   );
 
   return (
-    <div className="max-w-5xl mx-auto py-10 px-4 space-y-4">
+    <div className="max-w-5xl mx-auto pt-20 pb-10 px-4 space-y-4">
 
       {/* Top row: Welcome left + Stats right */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
@@ -48,10 +48,10 @@ export default function Dashboard() {
             <Sparkles className="w-3 h-3" /> hey marthi!
           </div>
           <h1 className="text-5xl md:text-6xl font-display text-[#8B1E1E] leading-tight">
-            Schön, dass du da bist
+            Schön, dass du da bist!
           </h1>
-          <p className="text-base text-[#4A3A2F]/60 font-serif italic">
-            Bereit für eine Prise medizinisches Wissen?
+          <p className="text-base text-[#4A3A2F]/60" style={{ fontFamily: 'var(--font-typewriter)' }}>
+            Wähle ein Fach und leg los.
           </p>
         </div>
 

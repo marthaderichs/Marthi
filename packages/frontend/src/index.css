@@ -1,5 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Fascinate&family=Gochi+Hand&family=Lora:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Special+Elite&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fascinate&family=Lora:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Special+Elite&display=swap');
 @import "tailwindcss";
+
+@font-face {
+  font-family: "Snacky Plop";
+  src: url('/fonts/SnackyPlop-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 @font-face {
   font-family: "Tiny SSO";
@@ -7,33 +15,34 @@
   font-weight: 400;
   font-style: normal;
   font-display: swap;
-  /* Hand off German umlauts to Gochi Hand */
-  unicode-range: U+0000-00C3, U+00C5-00D5, U+00D7-00DB, U+00DD-00DE, U+00E0-00F5, U+00F7-00FB, U+00FD-FFFF;
+  /* Nur i und j – für die Herzchen-Punkte */
+  unicode-range: U+0069, U+006A;
 }
 
 @theme {
-  --font-display: "Tiny SSO", "Gochi Hand", cursive;
+  --font-display: "Tiny SSO", "Snacky Plop", cursive;
   --font-sans: "Plus Jakarta Sans", sans-serif;
   --font-serif: "Lora", serif;
   --font-fascinate: "Fascinate", system-ui;
+  --font-typewriter: "Special Elite", cursive;
 }
 
 :root {
   /* The "marthi lernt!" Palette */
-  --main-cream: #E2E8D4; /* Sage Green instead of Yellowish Cream */
+  --main-cream: #F5EDD5; /* Warm Cream */
   --rust-red: #8B1E1E; /* Refined Strong Red from Image */
   --deep-brown: #4A3A2F;
-  
+
   /* Background Stripes */
   --stripe-tan: #9B9478;
   --stripe-blue: #B8D3E5;
-  
+
   /* Scandi Accents */
   --scandi-olive: #8B8D6F;
   --scandi-peach: #F2B091;
   --scandi-mustard: #E9C46A;
-  
-  --radius-scandi: 24px;
+
+  --radius-scandi: 0px;
 }
 
 html {
@@ -49,12 +58,15 @@ body {
   padding: 0;
 }
 
-/* Stripe background using actual image */
+/* Diagonal stripe background – CSS-basiert, keine Bildwiederholung */
 .main-bg-stripes {
-  background-image: url('/stripe-bg.jpg');
-  background-repeat: repeat;
-  background-size: 200px auto;
-  background-attachment: scroll;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #B8D3E5 0px,
+    #B8D3E5 80px,
+    #9B9478 80px,
+    #9B9478 160px
+  );
 }
 
 /* Subtle stripe texture for cards/sections */
@@ -88,9 +100,25 @@ h1, h2, h3, h4 {
   line-height: 1.1;
 }
 
+/* Hand-drawn Vibe: unregelmäßige Ecken + doppelter Strichrahmen */
+.card-wobbly {
+  border-radius: 3px 8px 5px 9px / 7px 3px 9px 4px;
+  position: relative;
+}
+
+.card-wobbly::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 5px 9px 4px 7px / 8px 4px 6px 9px;
+  border: 1px solid rgba(74, 58, 47, 0.08);
+  pointer-events: none;
+  z-index: 0;
+}
+
 .scandi-card {
   background-color: var(--main-cream);
-  border-radius: 12px;
+  border-radius: 0;
   box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
   border: 1px solid rgba(74, 58, 47, 0.05);
 }
@@ -98,7 +126,7 @@ h1, h2, h3, h4 {
 .doodle-button {
   font-family: var(--font-display);
   border: 1.5px solid var(--deep-brown);
-  border-radius: 8px;
+  border-radius: 0;
   background: white;
   transition: all 0.2s ease;
 }
