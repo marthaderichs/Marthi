@@ -31,8 +31,10 @@
 :root {
   /* The "marthi lernt!" Palette */
   --main-cream: #F5EDD5; /* Warm Cream */
-  --rust-red: #8B1E1E; /* Refined Strong Red from Image */
+  --rust-red: #673147; /* Refined Strong Red from Image */
   --deep-brown: #4A3A2F;
+  --plum: #673147;
+  --bright-red: #FF0000;
 
   /* Background Stripes */
   --stripe-tan: #9B9478;
@@ -93,9 +95,34 @@ body {
 
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-  color: var(--rust-red);
+  color: var(--plum);
   font-weight: 400;
   line-height: 1.1;
+}
+
+.font-typewriter {
+  font-family: var(--font-typewriter) !important;
+}
+
+.scribble-border {
+  position: relative;
+  border: none;
+  background: transparent;
+}
+
+.scribble-border::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border: 2px solid var(--plum);
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.scribble-border:hover::after {
+  opacity: 1;
+  transform: scale(1.02) rotate(-0.5deg);
 }
 
 /* Hand-drawn Vibe: unregelmäßige Ecken + doppelter Strichrahmen */

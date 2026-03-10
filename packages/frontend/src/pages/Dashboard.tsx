@@ -24,7 +24,7 @@ export default function Dashboard() {
   }, [subjects]);
 
   const quickLinks = [
-    { to: '/exam',       icon: CheckSquare, label: 'Klausur',    color: '#8B1E1E', desc: 'Wissen testen' },
+    { to: '/exam',       icon: CheckSquare, label: 'Klausur',    color: '#673147', desc: 'Wissen testen' },
     { to: '/content',    icon: BookOpen,    label: 'Bibliothek', color: '#A3B18A', desc: 'Kapitel lesen' },
     { to: '/flashcards', icon: Brain,       label: 'Karten',     color: '#E9C46A', desc: 'Fakten lernen' },
     { to: '/garden',     icon: Flower2,     label: 'Garten',     color: '#B8D3E5', desc: 'Fehler pflegen' },
@@ -32,7 +32,7 @@ export default function Dashboard() {
 
   if (subjectsLoading) return (
     <div className="flex justify-center py-32">
-      <Loader2 className="w-10 h-10 animate-spin text-[#8B1E1E]" />
+      <Loader2 className="w-10 h-10 animate-spin text-[#673147]" />
     </div>
   );
 
@@ -44,13 +44,13 @@ export default function Dashboard() {
 
         {/* Welcome */}
         <div className={cn(CARD, "lg:col-span-8 space-y-3")}>
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#8B1E1E]/10 text-[#8B1E1E] text-[10px] font-black uppercase tracking-[0.2em]">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#673147]/10 text-[#673147] text-[10px] font-black uppercase tracking-[0.2em]">
             <Sparkles className="w-3 h-3" /> hey marthi!
           </div>
-          <h1 className="text-5xl md:text-6xl font-display text-[#8B1E1E] leading-tight">
+          <h1 className="text-5xl md:text-6xl font-display text-[#673147] leading-tight">
             Schön, dass du da bist!
           </h1>
-          <p className="text-base text-[#4A3A2F]/60" style={{ fontFamily: 'var(--font-typewriter)' }}>
+          <p className="text-xl text-[#4A3A2F]/60 font-typewriter">
             Wähle ein Fach und leg los.
           </p>
         </div>
@@ -59,12 +59,12 @@ export default function Dashboard() {
         <div className={cn(CARD, "lg:col-span-4 flex flex-col justify-center gap-4")}>
           <div className="space-y-1">
             <div className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/40">Kapitel</div>
-            <div className="font-display text-5xl text-[#8B1E1E]">{stats.totalTopics}</div>
+            <div className="font-display text-5xl text-[#673147]">{stats.totalTopics}</div>
           </div>
           <div className="border-t border-[#4A3A2F]/10" />
           <div className="space-y-1">
             <div className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/40">Fragen</div>
-            <div className="font-display text-5xl text-[#8B1E1E]">{stats.totalQuestions}</div>
+            <div className="font-display text-5xl text-[#673147]">{stats.totalQuestions}</div>
           </div>
         </div>
       </div>
@@ -73,26 +73,28 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
 
         {/* Quick Actions */}
-        <div className={cn(CARD, "lg:col-span-7 space-y-2")}>
-          <div className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/40 mb-4">Schnellzugriff</div>
-          {quickLinks.map((link) => (
-            <NavLink
-              key={link.to}
-              to={link.to}
-              className="group flex items-center justify-between px-5 py-4 bg-white/80 hover:bg-white border border-[#4A3A2F]/6 hover:-translate-y-0.5 transition-all"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-8 h-8 flex items-center justify-center shrink-0" style={{ backgroundColor: `${link.color}18`, color: link.color }}>
-                  <link.icon className="w-4 h-4" />
+        <div className={cn(CARD, "lg:col-span-7 space-y-4")}>
+          <div className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/40 mb-2">Schnellzugriff</div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {quickLinks.map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                className="group scribble-border flex items-center justify-between px-6 py-5 bg-white/40 hover:bg-white/60 transition-all"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 flex items-center justify-center shrink-0 rounded-full" style={{ backgroundColor: `${link.color}18`, color: link.color }}>
+                    <link.icon className="w-5 h-5" />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-display text-2xl text-[#673147] leading-none">{link.label}</span>
+                    <span className="text-[9px] font-black uppercase tracking-widest text-[#4A3A2F]/30 mt-1">{link.desc}</span>
+                  </div>
                 </div>
-                <div className="flex items-baseline gap-3">
-                  <span className="font-display text-3xl text-[#4A3A2F]">{link.label}</span>
-                  <span className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/30 hidden sm:inline">{link.desc}</span>
-                </div>
-              </div>
-              <ArrowRight className="w-4 h-4 text-[#4A3A2F]/20 group-hover:text-[#8B1E1E] group-hover:translate-x-1 transition-all" />
-            </NavLink>
-          ))}
+                <ArrowRight className="w-4 h-4 text-[#4A3A2F]/20 group-hover:text-[#673147] group-hover:translate-x-1 transition-all" />
+              </NavLink>
+            ))}
+          </div>
         </div>
 
         {/* Sidebar */}
@@ -117,7 +119,7 @@ export default function Dashboard() {
                 </div>
               </div>
             ))}
-            <NavLink to="/content" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#8B1E1E]/50 hover:text-[#8B1E1E] hover:gap-3 transition-all">
+            <NavLink to="/content" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#673147]/50 hover:text-[#673147] hover:gap-3 transition-all">
               Alle Fächer <ArrowRight className="w-3 h-3" />
             </NavLink>
           </div>
@@ -134,7 +136,7 @@ export default function Dashboard() {
                     <Icon className="w-3 h-3" />
                   </div>
                   <span className="text-sm font-bold text-[#4A3A2F]/60 truncate flex-1 group-hover:text-[#4A3A2F] transition-colors">{s.name}</span>
-                  <ArrowRight className="w-3 h-3 text-[#4A3A2F]/20 group-hover:text-[#8B1E1E] transition-colors" />
+                  <ArrowRight className="w-3 h-3 text-[#4A3A2F]/20 group-hover:text-[#673147] transition-colors" />
                 </NavLink>
               );
             })}

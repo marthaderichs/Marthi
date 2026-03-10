@@ -17,6 +17,11 @@ export default function ContentLibrary() {
 
   const { data: topics, isLoading: topicsLoading } = useTopics(selectedSubject?.id);
 
+  const abbreviate = (name: string) => {
+    if (name.length <= 4) return name.toUpperCase();
+    return name.substring(0, 4).toUpperCase();
+  };
+
   const filteredTopics = useMemo(() => {
     if (!topics) return [];
     return topics.filter(t =>
@@ -25,19 +30,19 @@ export default function ContentLibrary() {
     );
   }, [topics, searchQuery]);
 
-  if (subjectsLoading) return <div className="flex justify-center py-32"><Loader2 className="w-10 h-10 animate-spin text-[#8B1E1E]/30" /></div>;
+  if (subjectsLoading) return <div className="flex justify-center py-32"><Loader2 className="w-10 h-10 animate-spin text-[#673147]/30" /></div>;
 
   return (
     <div className="max-w-7xl mx-auto space-y-12">
       <div className="text-center space-y-3">
-        <h1 className="text-7xl font-display text-[#8B1E1E]">Bibliothek</h1>
-        <p className="text-xl text-[#4A3A2F]/45 font-serif italic">
+        <h1 className="text-7xl font-display text-[#673147]">Bibliothek</h1>
+        <p className="text-xl text-[#4A3A2F]/45 font-typewriter">
           „Wiederholung ist das Fundament der Meisterschaft."
         </p>
       </div>
 
       {!selectedSubject ? (
-        <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-4">
+        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-6 gap-y-10">
           {subjects?.map((subject, i) => {
             const blobs = [
               '58% 42% 52% 48% / 48% 56% 44% 52%',
@@ -51,27 +56,31 @@ export default function ContentLibrary() {
             const br = blobs[i % blobs.length];
             const tilt = ((i * 7) % 11) - 5;
             return (
-              <motion.button
-                key={subject.id}
-                initial={{ rotate: tilt }}
-                whileHover={{ scale: 1.1, rotate: 0 }}
-                transition={{ type: 'spring', stiffness: 280, damping: 20 }}
-                onClick={() => setSelectedSubject(subject)}
-                className="aspect-square relative overflow-hidden flex items-center justify-center"
-                style={{ borderRadius: br }}
-              >
-                {/* Colour fill */}
-                <div className="absolute inset-0" style={{ backgroundColor: subject.color }} />
-                {/* Grain overlay – only on colour, not on text */}
-                <div
-                  className="absolute inset-0 mix-blend-soft-light opacity-40"
-                  style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: '180px 180px' }}
-                />
-                {/* Text – crisp, above grain */}
-                <span className="relative z-10 text-[9px] text-white text-center uppercase tracking-widest leading-snug px-1.5 [font-family:'Special_Elite',cursive] [text-shadow:0_1px_4px_rgba(0,0,0,0.55)]">
+              <div key={subject.id} className="flex flex-col items-center gap-3">
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#4A3A2F]/40 text-center px-1">
                   {subject.name}
                 </span>
-              </motion.button>
+                <motion.button
+                  initial={{ rotate: tilt }}
+                  whileHover={{ scale: 1.1, rotate: 0 }}
+                  transition={{ type: 'spring', stiffness: 280, damping: 20 }}
+                  onClick={() => setSelectedSubject(subject)}
+                  className="aspect-square w-full relative overflow-hidden flex items-center justify-center shadow-lg"
+                  style={{ borderRadius: br }}
+                >
+                  {/* Colour fill */}
+                  <div className="absolute inset-0" style={{ backgroundColor: subject.color }} />
+                  {/* Grain overlay – only on colour, not on text */}
+                  <div
+                    className="absolute inset-0 mix-blend-soft-light opacity-40"
+                    style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: '180px 180px' }}
+                  />
+                  {/* Text – crisp, above grain */}
+                  <span className="relative z-10 text-xl font-display text-white text-center uppercase tracking-widest px-2 [text-shadow:0_2px_10px_rgba(0,0,0,0.3)]">
+                    {abbreviate(subject.name)}
+                  </span>
+                </motion.button>
+              </div>
             );
           })}
         </div>
@@ -82,13 +91,13 @@ export default function ContentLibrary() {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setSelectedSubject(null)}
-                className="p-2 rounded-xl text-[#4A3A2F]/40 hover:text-[#8B1E1E] transition-colors"
+                className="p-2 rounded-xl text-[#4A3A2F]/40 hover:text-[#673147] transition-colors"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
               <div>
-                <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[#8B1E1E]/35">Fachbereich</div>
-                <h2 className="text-4xl font-display text-[#8B1E1E]">{selectedSubject.name}</h2>
+                <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[#673147]/35">Fachbereich</div>
+                <h2 className="text-4xl font-display text-[#673147]">{selectedSubject.name}</h2>
               </div>
             </div>
             <div className="relative w-full sm:w-72">
@@ -98,7 +107,7 @@ export default function ContentLibrary() {
                 placeholder="Thema suchen..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-[#F9F4E8] pl-11 pr-6 py-3 rounded-full border border-[#4A3A2F]/8 focus:outline-none focus:ring-2 focus:ring-[#8B1E1E]/10 text-sm font-medium placeholder:text-[#4A3A2F]/20"
+                className="w-full bg-[#F9F4E8] pl-11 pr-6 py-3 rounded-full border border-[#4A3A2F]/8 focus:outline-none focus:ring-2 focus:ring-[#673147]/10 text-sm font-medium placeholder:text-[#4A3A2F]/20"
               />
             </div>
           </div>
@@ -123,7 +132,7 @@ export default function ContentLibrary() {
                   <h3 className="font-serif text-lg text-[#4A3A2F] leading-snug mb-3">{topic.title}</h3>
                   <div className="mt-auto pt-3 flex items-center justify-between">
                     <span className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/25">Kapitel lesen</span>
-                    <ArrowRight className="w-4 h-4 text-[#8B1E1E] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                    <ArrowRight className="w-4 h-4 text-[#673147] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                   </div>
                 </motion.button>
               ))}
@@ -150,10 +159,10 @@ export default function ContentLibrary() {
               className="w-full max-w-3xl bg-[#F9F4E8] max-h-[90vh] rounded-[40px] shadow-2xl flex flex-col overflow-hidden"
             >
               <div className="flex items-center justify-between px-10 pt-10 pb-6 border-b border-[#4A3A2F]/8">
-                <h2 className="font-display text-4xl md:text-5xl text-[#8B1E1E] leading-tight pr-8">{selectedTopic.title}</h2>
+                <h2 className="font-display text-4xl md:text-5xl text-[#673147] leading-tight pr-8">{selectedTopic.title}</h2>
                 <button
                   onClick={() => setSelectedTopic(null)}
-                  className="p-2.5 rounded-full border border-[#4A3A2F]/10 text-[#4A3A2F]/40 hover:text-[#8B1E1E] hover:border-[#8B1E1E]/30 transition-all shrink-0"
+                  className="p-2.5 rounded-full border border-[#4A3A2F]/10 text-[#4A3A2F]/40 hover:text-[#673147] hover:border-[#673147]/30 transition-all shrink-0"
                 >
                   <X className="w-5 h-5" />
                 </button>

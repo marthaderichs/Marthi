@@ -34,7 +34,7 @@ const formatExplanation = (text: string) => {
           if (/^[A-E]$/.test(part)) return null;
           const lower = part.toLowerCase();
           if (lower === 'richtig') return <p key={i} className="font-semibold text-[#5C8E78]">{part}</p>;
-          if (lower === 'falsch') return <p key={i} className="font-semibold text-[#8B1E1E]/60">{part}</p>;
+          if (lower === 'falsch') return <p key={i} className="font-semibold text-[#673147]/60">{part}</p>;
           return <p key={i} className="leading-relaxed">{part}</p>;
         })}
       </div>
@@ -117,15 +117,20 @@ export default function ExamMode() {
     setQuizStarted(true);
   };
 
-  if (subjectsLoading) return <div className="flex justify-center py-32"><Loader2 className="w-10 h-10 animate-spin text-[#8B3E2F]/40" /></div>;
+  const abbreviate = (name: string) => {
+    if (name.length <= 4) return name.toUpperCase();
+    return name.substring(0, 4).toUpperCase();
+  };
+
+  if (subjectsLoading) return <div className="flex justify-center py-32"><Loader2 className="w-10 h-10 animate-spin text-[#673147]/40" /></div>;
 
   if (!quizStarted && !setupMode) return (
     <div className="w-full max-w-5xl mx-auto space-y-12">
       <div className="text-center space-y-4">
-        <h1 className="text-7xl font-display text-[#8B1E1E]">Klausur-Modus</h1>
-        <p className="text-xl text-[#4A3A2F]/50 font-serif italic">Wähle ein Fach und leg los.</p>
+        <h1 className="text-7xl font-display text-[#673147]">Klausur-Modus</h1>
+        <p className="text-xl text-[#673147]/50 font-typewriter">Wähle ein Fach und leg los.</p>
       </div>
-      <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-4">
+      <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-6 gap-y-10">
         {subjects?.map((s, i) => {
           const blobs = [
             '58% 42% 52% 48% / 48% 56% 44% 52%',
@@ -139,24 +144,28 @@ export default function ExamMode() {
           const br = blobs[i % blobs.length];
           const tilt = ((i * 7) % 11) - 5;
           return (
-            <motion.button
-              key={s.id}
-              initial={{ rotate: tilt }}
-              whileHover={{ scale: 1.1, rotate: 0 }}
-              transition={{ type: 'spring', stiffness: 280, damping: 20 }}
-              onClick={() => selectSubject(s.id)}
-              className="aspect-square relative overflow-hidden flex items-center justify-center"
-              style={{ borderRadius: br }}
-            >
-              <div className="absolute inset-0" style={{ backgroundColor: s.color }} />
-              <div
-                className="absolute inset-0 mix-blend-soft-light opacity-40"
-                style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: '180px 180px' }}
-              />
-              <span className="relative z-10 text-[9px] text-white text-center uppercase tracking-widest leading-snug px-1.5 [font-family:'Special_Elite',cursive] [text-shadow:0_1px_4px_rgba(0,0,0,0.55)]">
+            <div key={s.id} className="flex flex-col items-center gap-3">
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#4A3A2F]/40 text-center px-1">
                 {s.name}
               </span>
-            </motion.button>
+              <motion.button
+                initial={{ rotate: tilt }}
+                whileHover={{ scale: 1.1, rotate: 0 }}
+                transition={{ type: 'spring', stiffness: 280, damping: 20 }}
+                onClick={() => selectSubject(s.id)}
+                className="aspect-square w-full relative overflow-hidden flex items-center justify-center shadow-lg"
+                style={{ borderRadius: br }}
+              >
+                <div className="absolute inset-0" style={{ backgroundColor: s.color }} />
+                <div
+                  className="absolute inset-0 mix-blend-soft-light opacity-40"
+                  style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: '180px 180px' }}
+                />
+                <span className="relative z-10 text-xl font-display text-white text-center uppercase tracking-widest px-2 [text-shadow:0_2px_10px_rgba(0,0,0,0.3)]">
+                  {abbreviate(s.name)}
+                </span>
+              </motion.button>
+            </div>
           );
         })}
       </div>
@@ -171,28 +180,28 @@ export default function ExamMode() {
                     {React.createElement(getIcon(subject.icon), { className: "w-8 h-8 text-white" })}
                 </div>
                 <div>
-                    <h2 className="text-4xl font-display text-[#8B1E1E]">{subject.name}</h2>
-                    <button onClick={() => setSetupMode(false)} className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/30 hover:text-[#8B1E1E] transition-colors">Abbrechen</button>
+                    <h2 className="text-4xl font-display text-[#673147]">{subject.name}</h2>
+                    <button onClick={() => setSetupMode(false)} className="text-[10px] font-black uppercase tracking-widest text-[#673147]/30 hover:text-[#673147] transition-colors">Abbrechen</button>
                 </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-6">
-                  <h4 className="text-sm font-black uppercase tracking-widest text-[#4A3A2F]/50 flex items-center gap-2"><Settings2 className="w-3 h-3" /> Fragenanzahl</h4>
+                  <h4 className="text-sm font-black uppercase tracking-widest text-[#673147]/50 flex items-center gap-2"><Settings2 className="w-3 h-3" /> Fragenanzahl</h4>
                   <div className="flex gap-3">
                       {[5, 10, 20].map(count => (
-                          <button key={count} onClick={() => setQuizCount(count)} className={cn("flex-1 py-4 rounded-2xl font-display text-2xl border-2 transition-all", quizCount === count ? "bg-[#8B1E1E] text-white border-[#8B1E1E] shadow-lg" : "bg-[#E2E8D4]/50 border-transparent text-[#4A3A2F]/40 hover:bg-white")}>{count}</button>
+                          <button key={count} onClick={() => setQuizCount(count)} className={cn("flex-1 py-4 rounded-2xl font-display text-2xl border-2 transition-all", quizCount === count ? "bg-[#673147] text-white border-[#673147] shadow-lg" : "bg-[#E2E8D4]/50 border-transparent text-[#673147]/40 hover:bg-white")}>{count}</button>
                       ))}
                   </div>
               </div>
 
               <div className="space-y-6">
-                  <h4 className="text-sm font-black uppercase tracking-widest text-[#4A3A2F]/50 flex items-center gap-2"><Sparkles className="w-3 h-3" /> Filter</h4>
+                  <h4 className="text-sm font-black uppercase tracking-widest text-[#673147]/50 flex items-center gap-2"><Sparkles className="w-3 h-3" /> Filter</h4>
                   <button 
                     onClick={() => setOnlyNew(!onlyNew)}
                     className={cn(
                       "w-full py-4 rounded-2xl font-display text-xl border-2 transition-all flex items-center justify-center gap-3",
-                      onlyNew ? "bg-[#A3B18A] text-white border-[#A3B18A] shadow-lg" : "bg-[#E2E8D4]/50 border-transparent text-[#4A3A2F]/40 hover:bg-white"
+                      onlyNew ? "bg-[#A3B18A] text-white border-[#A3B18A] shadow-lg" : "bg-[#E2E8D4]/50 border-transparent text-[#673147]/40 hover:bg-white"
                     )}
                   >
                     {onlyNew ? 'Nur neue Fragen' : 'Alle Fragen'}
@@ -201,32 +210,32 @@ export default function ExamMode() {
             </div>
 
             <div className="space-y-6">
-                <h4 className="text-sm font-black uppercase tracking-widest text-[#4A3A2F]/50 flex items-center gap-2"><Layers className="w-3 h-3" /> Themen (optional)</h4>
+                <h4 className="text-sm font-black uppercase tracking-widest text-[#673147]/50 flex items-center gap-2"><Layers className="w-3 h-3" /> Themen (optional)</h4>
                 <div className="grid grid-cols-1 gap-2 max-h-[250px] overflow-y-auto pr-2 custom-scrollbar text-sm">
                     {subject.topics?.map(topic => (
-                        <button key={topic.id} onClick={() => setSelectedTopicIds(prev => prev.includes(topic.id) ? prev.filter(id => id !== topic.id) : [...prev, topic.id])} className={cn("text-left p-4 rounded-xl font-bold border-2 transition-all flex justify-between items-center group", selectedTopicIds.includes(topic.id) ? "bg-[#A3B18A]/10 border-[#A3B18A] text-[#1E3A1E]" : "bg-white border-black/[0.03] text-[#4A3A2F]/60")}>
+                        <button key={topic.id} onClick={() => setSelectedTopicIds(prev => prev.includes(topic.id) ? prev.filter(id => id !== topic.id) : [...prev, topic.id])} className={cn("text-left p-4 rounded-xl font-bold border-2 transition-all flex justify-between items-center group", selectedTopicIds.includes(topic.id) ? "bg-[#A3B18A]/10 border-[#A3B18A] text-[#1E3A1E]" : "bg-white border-black/[0.03] text-[#673147]/60")}>
                             <span className="truncate pr-4">{topic.title}</span>
                             <div className={cn("w-5 h-5 rounded-full border-2 transition-all shrink-0", selectedTopicIds.includes(topic.id) ? "bg-[#A3B18A] border-[#A3B18A]" : "border-black/10")} />
                         </button>
                     ))}
                 </div>
             </div>
-            <button onClick={startQuiz} className="w-full py-6 bg-[#8B1E1E] text-white rounded-[24px] font-display text-3xl shadow-xl hover:bg-[#763428] transition-all">Starten</button>
+            <button onClick={startQuiz} className="w-full py-6 bg-[#673147] text-white rounded-[24px] font-display text-3xl shadow-xl hover:bg-[#763428] transition-all">Starten</button>
         </div>
     </div>
   );
 
-  if (examLoading) return <div className="flex flex-col items-center justify-center py-40 gap-4"><Sparkles className="w-10 h-10 text-[#E9C46A] animate-pulse" /><p className="text-2xl font-bold text-[#8B1E1E] tracking-tight font-display">Lade Fragen...</p></div>;
+  if (examLoading) return <div className="flex flex-col items-center justify-center py-40 gap-4"><Sparkles className="w-10 h-10 text-[#E9C46A] animate-pulse" /><p className="text-2xl font-bold text-[#673147] tracking-tight font-display">Lade Fragen...</p></div>;
 
   if (showSummary) return (
     <div className="flex items-center justify-center min-h-[60vh]">
         <div className="max-w-md w-full text-center p-16 bg-[#F9F4E8] rounded-2xl border border-[#4A3A2F]/8" style={{ boxShadow: '2px 2px 0 rgba(74,58,47,0.07)' }}>
             <Trophy className="w-16 h-16 text-[#E9C46A] mx-auto mb-8" />
-            <h2 className="text-5xl font-bold text-[#8B1E1E] font-display mb-4">Ergebnis</h2>
-            <div className="text-8xl font-extrabold text-[#8B1E1E] mb-10 font-display">{Math.round((score / questions.length) * 100)}%</div>
+            <h2 className="text-5xl font-bold text-[#673147] font-display mb-4">Ergebnis</h2>
+            <div className="text-8xl font-extrabold text-[#673147] mb-10 font-display">{Math.round((score / questions.length) * 100)}%</div>
             <div className="space-y-4">
-                <button onClick={handleRestart} className="w-full py-5 bg-[#8B1E1E] text-white rounded-2xl font-bold text-xl font-display shadow-lg">Nochmal</button>
-                <button onClick={() => { setQuizStarted(false); setSetupMode(false); }} className="w-full py-2 text-[#4A3A2F]/30 font-bold text-xs uppercase font-sans">Beenden</button>
+                <button onClick={handleRestart} className="w-full py-5 bg-[#673147] text-white rounded-2xl font-bold text-xl font-display shadow-lg">Nochmal</button>
+                <button onClick={() => { setQuizStarted(false); setSetupMode(false); }} className="w-full py-2 text-[#673147]/30 font-bold text-xs uppercase font-sans">Beenden</button>
             </div>
         </div>
     </div>
@@ -234,19 +243,19 @@ export default function ExamMode() {
 
   return (
     <div className="bg-[#F9F4E8] p-8 md:p-16 rounded-2xl space-y-12 max-w-4xl mx-auto border border-[#4A3A2F]/8 relative overflow-hidden" style={{ boxShadow: '2px 2px 0 rgba(74,58,47,0.07)' }}>
-      <div className="absolute top-0 left-0 w-full h-2 bg-[#E2E8D4]"><motion.div className="h-full bg-[#8B1E1E]" initial={{ width: 0 }} animate={{ width: `${((currentIndex + (isAnswered ? 1 : 0)) / questions.length) * 100}%` }} transition={{ duration: 0.4 }} /></div>
+      <div className="absolute top-0 left-0 w-full h-2 bg-[#E2E8D4]"><motion.div className="h-full bg-[#673147]" initial={{ width: 0 }} animate={{ width: `${((currentIndex + (isAnswered ? 1 : 0)) / questions.length) * 100}%` }} transition={{ duration: 0.4 }} /></div>
       <div className="flex items-center justify-between">
-        <button onClick={() => { setQuizStarted(false); setSetupMode(false); }} className="text-[10px] font-black uppercase text-[#4A3A2F]/20 hover:text-[#8B1E1E] font-sans">Abbrechen</button>
-        <div className="px-4 py-1 bg-[#E2E8D4] rounded-full text-xl font-display text-[#8B1E1E]">{currentIndex + 1} / {questions.length}</div>
+        <button onClick={() => { setQuizStarted(false); setSetupMode(false); }} className="text-[10px] font-black uppercase text-[#673147]/20 hover:text-[#673147] font-sans">Abbrechen</button>
+        <div className="px-4 py-1 bg-[#E2E8D4] rounded-full text-xl font-display text-[#673147]">{currentIndex + 1} / {questions.length}</div>
       </div>
       <div className="space-y-12">
           <div className="space-y-4">
-             <div className="inline-flex items-center gap-2 text-[#4A3A2F]/30 text-[10px] font-black uppercase"><Info className="w-3 h-3" /> Frage {currentIndex + 1}</div>
-             <h3 className="text-4xl font-display text-[#4A3A2F] leading-tight">{question?.text}</h3>
+             <div className="inline-flex items-center gap-2 text-[#673147]/30 text-[10px] font-black uppercase"><Info className="w-3 h-3" /> Frage {currentIndex + 1}</div>
+             <h3 className="text-4xl font-display text-[#673147] leading-tight">{question?.text}</h3>
           </div>
           <div className="grid gap-3">
             {question?.options.map((option, index) => (
-                <button key={index} onClick={() => handleOptionClick(index)} disabled={isAnswered} className={cn("w-full text-left p-6 rounded-2xl font-bold text-lg border-2 transition-all min-h-[80px]", isAnswered ? (index === question.correctAnswerIndex ? "bg-[#A3B18A]/20 border-[#A3B18A] text-[#1E3A1E]" : (selectedOption === index ? "bg-[#8B1E1E]/10 border-[#8B1E1E] text-[#8B1E1E]" : "opacity-30")) : (selectedOption === index ? "border-[#8B1E1E] ring-4 ring-[#8B1E1E]/5 shadow-md" : "bg-[#E2E8D4]/50 border-transparent hover:bg-white"))}>
+                <button key={index} onClick={() => handleOptionClick(index)} disabled={isAnswered} className={cn("w-full text-left p-6 rounded-2xl font-bold text-lg border-2 transition-all min-h-[80px]", isAnswered ? (index === question.correctAnswerIndex ? "bg-[#A3B18A]/20 border-[#A3B18A] text-[#1E3A1E]" : (selectedOption === index ? "bg-[#673147]/10 border-[#673147] text-[#673147]" : "opacity-30")) : (selectedOption === index ? "border-[#673147] ring-4 ring-[#673147]/5 shadow-md" : "bg-[#E2E8D4]/50 border-transparent hover:bg-white"))}>
                   <span className="font-sans pr-4 leading-relaxed">{option}</span>
                 </button>
             ))}
@@ -255,12 +264,12 @@ export default function ExamMode() {
             {isAnswered && (
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="p-8 lg:p-12 bg-[#E2E8D4]/60 rounded-[40px] border border-black/[0.02] space-y-8 shadow-inner">
                   <div className="space-y-6">
-                     <h4 className="text-xl lg:text-2xl font-display text-[#8B1E1E] flex items-center gap-3"><Sparkles className="w-5 h-5" /> Erklärung</h4>
-                     <div className="text-xl text-[#4A3A2F]/80 leading-relaxed font-serif italic">
+                     <h4 className="text-xl lg:text-2xl font-display text-[#673147] flex items-center gap-3"><Sparkles className="w-5 h-5" /> Erklärung</h4>
+                     <div className="text-xl text-[#673147]/80 leading-relaxed font-serif italic">
                         {formatExplanation(question.explanation)}
                      </div>
                   </div>
-                  <button onClick={handleNext} className="w-full py-6 bg-[#8B1E1E] text-white rounded-3xl font-bold text-2xl hover:bg-[#763428] transition-all flex items-center justify-center gap-4 shadow-xl font-display"><span>{currentIndex < questions.length - 1 ? 'Nächste Frage' : 'Ergebnis anzeigen'}</span><ArrowRight className="w-6 h-6" /></button>
+                  <button onClick={handleNext} className="w-full py-6 bg-[#673147] text-white rounded-3xl font-bold text-2xl hover:bg-[#763428] transition-all flex items-center justify-center gap-4 shadow-xl font-display"><span>{currentIndex < questions.length - 1 ? 'Nächste Frage' : 'Ergebnis anzeigen'}</span><ArrowRight className="w-6 h-6" /></button>
                 </motion.div>
             )}
           </AnimatePresence>

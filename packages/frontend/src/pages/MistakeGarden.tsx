@@ -37,8 +37,8 @@ export default function MistakeGarden() {
         <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#DCE2C8] rounded-full text-[#344E41] text-xs font-black uppercase tracking-[0.2em]">
            <Sprout className="w-3 h-3" /> Wachstumszone
         </div>
-        <h1 className="text-7xl font-display text-[#8B1E1E]">Fehler-Garten</h1>
-        <p className="text-xl text-[#4A3A2F]/50 font-serif italic">
+        <h1 className="text-7xl font-display text-[#673147]">Fehler-Garten</h1>
+        <p className="text-xl text-[#4A3A2F]/50 font-typewriter">
           „Aus Fehlern wachsen die schönsten Erkenntnisse."
         </p>
       </div>
@@ -48,7 +48,7 @@ export default function MistakeGarden() {
            <div className="w-24 h-24 bg-[#E2E8D4]/40 rounded-full flex items-center justify-center">
               <Flower2 className="w-12 h-12 text-[#A3B18A]" />
            </div>
-           <h2 className="text-4xl font-display text-[#8B1E1E]">Dein Garten blüht prächtig!</h2>
+           <h2 className="text-4xl font-display text-[#673147]">Dein Garten blüht prächtig!</h2>
            <p className="text-[#4A3A2F]/50 font-sans text-lg">Keine Fehler mehr übrig. Zeit für eine neue Klausur?</p>
         </div>
       ) : (
@@ -78,7 +78,7 @@ export default function MistakeGarden() {
                     </div>
                     <button
                       onClick={(e) => { e.stopPropagation(); removeMistake(m.id); }}
-                      className="p-2 text-[#8B1E1E]/10 hover:text-[#8B1E1E] transition-colors"
+                      className="p-2 text-[#673147]/10 hover:text-[#673147] transition-colors"
                     >
                        <Trash2 className="w-4 h-4" />
                     </button>
@@ -117,15 +117,15 @@ export default function MistakeGarden() {
 
               <div className="p-10 md:p-14 overflow-y-auto custom-scrollbar space-y-8">
                 <div className="flex items-center justify-between mb-4">
-                   <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[#8B1E1E]/40">Frage korrigieren</div>
+                   <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[#673147]/40">Frage korrigieren</div>
                    {!isAnswered && (
-                     <button onClick={() => setActiveMistake(null)} className="p-2 bg-[#E2E8D4] rounded-full text-[#4A3A2F]/40 hover:text-[#8B1E1E] transition-colors">
+                     <button onClick={() => setActiveMistake(null)} className="p-2 bg-[#E2E8D4] rounded-full text-[#4A3A2F]/40 hover:text-[#673147] transition-colors">
                         <X className="w-5 h-5" />
                      </button>
                    )}
                 </div>
 
-                <h2 className="text-3xl md:text-4xl font-display text-[#8B1E1E] leading-tight text-center mb-8">{activeMistake.text}</h2>
+                <h2 className="text-3xl md:text-4xl font-display text-[#673147] leading-tight text-center mb-8">{activeMistake.text}</h2>
 
                 <div className="space-y-3">
                   {activeMistake.options.map((opt, idx) => {
@@ -135,7 +135,7 @@ export default function MistakeGarden() {
                     let classes = "bg-[#E2E8D4]/50 border-transparent hover:bg-white hover:border-black/5";
                     if (isAnswered) {
                       if (isCorrect) classes = "bg-[#A3B18A]/20 border-[#A3B18A] text-[#1E3A1E]";
-                      else if (isSelected) classes = "bg-[#8B1E1E]/10 border-[#8B1E1E] text-[#8B1E1E]";
+                      else if (isSelected) classes = "bg-[#673147]/10 border-[#673147] text-[#673147]";
                       else classes = "opacity-30 grayscale-[50%]";
                     }
 
@@ -152,7 +152,7 @@ export default function MistakeGarden() {
                         <span className="pr-4">{opt}</span>
                         <div className="shrink-0">
                           {isAnswered && isCorrect && <CheckCircle2 className="w-6 h-6 text-[#A3B18A]" />}
-                          {isAnswered && isSelected && !isCorrect && <XCircle className="w-6 h-6 text-[#8B1E1E]" />}
+                          {isAnswered && isSelected && !isCorrect && <XCircle className="w-6 h-6 text-[#673147]" />}
                         </div>
                       </button>
                     );
@@ -167,12 +167,12 @@ export default function MistakeGarden() {
                       className="mt-6 pt-6 border-t border-black/[0.03] space-y-6"
                     >
                       <div className="bg-[#E2E8D4]/50 p-6 rounded-3xl border border-black/[0.02]">
-                         <h4 className="text-[10px] font-black uppercase text-[#8B1E1E] mb-3">Erklärung</h4>
+                         <h4 className="text-[10px] font-black uppercase text-[#673147] mb-3">Erklärung</h4>
                          <p className="text-lg text-[#4A3A2F]/80 leading-relaxed font-serif italic">„{activeMistake.explanation}"</p>
                       </div>
                       <button
                         onClick={handleNext}
-                        className="w-full py-6 bg-[#8B1E1E] text-white rounded-3xl font-display text-3xl shadow-xl hover:bg-[#763428] transition-all flex items-center justify-center gap-4"
+                        className="w-full py-6 bg-[#673147] text-white rounded-3xl font-display text-3xl shadow-xl hover:bg-[#763428] transition-all flex items-center justify-center gap-4"
                       >
                          <span>{selectedOption === activeMistake.correctAnswerIndex ? 'Erledigt!' : 'Weiter üben'}</span>
                          <ArrowRight className="w-8 h-8" />

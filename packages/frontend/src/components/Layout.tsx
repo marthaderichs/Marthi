@@ -35,15 +35,15 @@ function FocusTimer({ onActiveChange }: { onActiveChange: (active: boolean) => v
 
   return (
     <div className="flex items-center gap-4 bg-white/50 px-4 py-2 rounded-full border border-black/[0.03] shadow-sm">
-      <div className="flex items-center gap-2 font-display text-xl text-[#8B1E1E]">
+      <div className="flex items-center gap-2 font-display text-xl text-[#673147]">
         <Timer className="w-4 h-4" />
         <span className="tabular-nums">{m}:{s < 10 ? '0' : ''}{s}</span>
       </div>
       <div className="flex items-center gap-1 border-l border-black/[0.05] pl-3">
-        <button onClick={toggle} className="p-1 hover:text-[#8B1E1E] transition-colors">
+        <button onClick={toggle} className="p-1 hover:text-[#673147] transition-colors">
           {isActive ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current" />}
         </button>
-        <button onClick={reset} className="p-1 hover:text-[#8B1E1E] transition-colors">
+        <button onClick={reset} className="p-1 hover:text-[#673147] transition-colors">
           <RotateCcw className="w-3 h-3" />
         </button>
       </div>
@@ -108,36 +108,36 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
         className="w-full max-w-2xl bg-[#F9F4E8] rounded-[32px] shadow-2xl overflow-hidden"
       >
         <div className="flex items-center gap-4 px-6 py-5 border-b border-[#4A3A2F]/8">
-          <Search className="w-5 h-5 text-[#4A3A2F]/30 shrink-0" />
+          <Search className="w-5 h-5 text-[#673147]/30 shrink-0" />
           <input
             ref={inputRef}
             type="text"
             placeholder="Themen, Fragen, Karteikarten durchsuchen…"
             value={query}
             onChange={handleChange}
-            className="flex-1 bg-transparent text-lg text-[#4A3A2F] placeholder:text-[#4A3A2F]/25 focus:outline-none font-serif"
+            className="flex-1 bg-transparent text-lg text-[#673147] placeholder:text-[#673147]/25 focus:outline-none font-serif"
           />
-          {loading && <div className="w-4 h-4 border-2 border-[#8B1E1E]/30 border-t-[#8B1E1E] rounded-full animate-spin shrink-0" />}
-          <button onClick={onClose} className="p-1.5 rounded-full text-[#4A3A2F]/30 hover:text-[#8B1E1E] transition-colors shrink-0">
+          {loading && <div className="w-4 h-4 border-2 border-[#673147]/30 border-t-[#673147] rounded-full animate-spin shrink-0" />}
+          <button onClick={onClose} className="p-1.5 rounded-full text-[#673147]/30 hover:text-[#673147] transition-colors shrink-0">
             <X className="w-4 h-4" />
           </button>
         </div>
 
         <div className="max-h-[60vh] overflow-y-auto">
           {!results && !loading && (
-            <div className="py-12 text-center text-[#4A3A2F]/25 font-serif italic text-sm">
+            <div className="py-12 text-center text-[#673147]/25 font-serif italic text-sm">
               Mindestens 2 Zeichen eingeben…
             </div>
           )}
           {results && totalResults === 0 && (
-            <div className="py-12 text-center text-[#4A3A2F]/25 font-serif italic text-sm">
+            <div className="py-12 text-center text-[#673147]/25 font-serif italic text-sm">
               Keine Ergebnisse für „{query}"
             </div>
           )}
 
           {results && results.topics.length > 0 && (
             <div className="p-4 space-y-1">
-              <div className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/30 px-3 py-2 flex items-center gap-2">
+              <div className="text-[10px] font-black uppercase tracking-widest text-[#673147]/30 px-3 py-2 flex items-center gap-2">
                 <BookOpen className="w-3 h-3" /> Bibliothek
               </div>
               {results.topics.map(t => (
@@ -145,8 +145,8 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
                   className="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-[#4A3A2F]/5 transition-colors group">
                   <div className="w-2 h-8 rounded-full shrink-0" style={{ backgroundColor: t.subject.color }} />
                   <div>
-                    <div className="font-serif text-base text-[#4A3A2F] group-hover:text-[#8B1E1E] transition-colors">{t.title}</div>
-                    <div className="text-[10px] text-[#4A3A2F]/35 font-black uppercase tracking-widest">{t.subject.name}</div>
+                    <div className="font-serif text-base text-[#673147] group-hover:text-[#673147] transition-colors">{t.title}</div>
+                    <div className="text-[10px] text-[#673147]/35 font-black uppercase tracking-widest">{t.subject.name}</div>
                   </div>
                 </NavLink>
               ))}
@@ -155,7 +155,7 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
 
           {results && results.questions.length > 0 && (
             <div className="p-4 space-y-1 border-t border-[#4A3A2F]/5">
-              <div className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/30 px-3 py-2 flex items-center gap-2">
+              <div className="text-[10px] font-black uppercase tracking-widest text-[#673147]/30 px-3 py-2 flex items-center gap-2">
                 <CheckSquare className="w-3 h-3" /> Klausurfragen
               </div>
               {results.questions.map(q => (
@@ -163,8 +163,8 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
                   className="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-[#4A3A2F]/5 transition-colors group">
                   <div className="w-2 h-8 rounded-full shrink-0" style={{ backgroundColor: q.subject.color }} />
                   <div>
-                    <div className="font-serif text-base text-[#4A3A2F] group-hover:text-[#8B1E1E] transition-colors line-clamp-1">{q.text}</div>
-                    <div className="text-[10px] text-[#4A3A2F]/35 font-black uppercase tracking-widest">{q.subject.name}</div>
+                    <div className="font-serif text-base text-[#673147] group-hover:text-[#673147] transition-colors line-clamp-1">{q.text}</div>
+                    <div className="text-[10px] text-[#673147]/35 font-black uppercase tracking-widest">{q.subject.name}</div>
                   </div>
                 </NavLink>
               ))}
@@ -173,7 +173,7 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
 
           {results && results.flashcards.length > 0 && (
             <div className="p-4 space-y-1 border-t border-[#4A3A2F]/5">
-              <div className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/30 px-3 py-2 flex items-center gap-2">
+              <div className="text-[10px] font-black uppercase tracking-widest text-[#673147]/30 px-3 py-2 flex items-center gap-2">
                 <Brain className="w-3 h-3" /> Karteikarten
               </div>
               {results.flashcards.map(f => (
@@ -181,8 +181,8 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
                   className="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-[#4A3A2F]/5 transition-colors group">
                   <div className="w-2 h-8 rounded-full shrink-0" style={{ backgroundColor: f.subject.color }} />
                   <div>
-                    <div className="font-serif text-base text-[#4A3A2F] group-hover:text-[#8B1E1E] transition-colors line-clamp-1">{f.front}</div>
-                    <div className="text-[10px] text-[#4A3A2F]/35 font-black uppercase tracking-widest">{f.subject.name}</div>
+                    <div className="font-serif text-base text-[#673147] group-hover:text-[#673147] transition-colors line-clamp-1">{f.front}</div>
+                    <div className="text-[10px] text-[#673147]/35 font-black uppercase tracking-widest">{f.subject.name}</div>
                   </div>
                 </NavLink>
               ))}
@@ -219,14 +219,14 @@ export default function Layout() {
 
   return (
     <div className={cn(
-      "min-h-screen flex flex-col font-sans selection:bg-[#8B3E2F]/20 transition-colors duration-1000",
+      "min-h-screen flex flex-col font-sans selection:bg-[#673147]/20 transition-colors duration-1000",
       location.pathname === '/' ? "main-bg-stripes" : "bg-[#F9F4E8]",
       isFocusMode && "opacity-90"
     )}>
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#F9F4E8] border-b border-[#4A3A2F]/5">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <NavLink to="/" className="flex items-center gap-3 group">
-            <span className="font-display text-5xl text-[#8B1E1E] tracking-tight">marthi lernt!</span>
+            <span className="font-display text-5xl text-[#FF0000] tracking-tight">marthi lernt!</span>
           </NavLink>
 
           <nav className="hidden lg:flex items-center gap-5">
@@ -238,8 +238,8 @@ export default function Layout() {
                 className={({ isActive }) => cn(
                   "text-xs font-bold tracking-widest transition-colors uppercase",
                   isActive
-                    ? "text-[#8B1E1E] border-b-2 border-[#8B1E1E]"
-                    : "text-[#4A3A2F]/60 hover:text-[#8B1E1E]"
+                    ? "text-[#673147] border-b-2 border-[#673147]"
+                    : "text-[#673147]/60 hover:text-[#673147]"
                 )}
               >
                 {item.label}
@@ -250,7 +250,7 @@ export default function Layout() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => setShowSearch(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-white/70 rounded-full border border-[#4A3A2F]/8 text-[#4A3A2F]/40 hover:text-[#8B1E1E] hover:border-[#8B1E1E]/20 transition-all text-xs font-bold shadow-sm"
+              className="flex items-center gap-2 px-4 py-2 bg-white/70 rounded-full border border-[#4A3A2F]/8 text-[#673147]/40 hover:text-[#673147] hover:border-[#673147]/20 transition-all text-xs font-bold shadow-sm"
             >
               <Search className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Suchen</span>
@@ -272,7 +272,7 @@ export default function Layout() {
             end={item.to === '/'}
             className={({ isActive }) => cn(
               "flex flex-col items-center gap-1 px-2 py-2 transition-all duration-300 rounded-xl",
-              isActive ? "bg-[#B8D3E5] text-[#4A3A2F]" : "text-[#4A3A2F]/60"
+              isActive ? "bg-[#B8D3E5] text-[#673147]" : "text-[#673147]/60"
             )}
           >
             <item.icon className="w-4 h-4 stroke-[2]" />
@@ -281,7 +281,7 @@ export default function Layout() {
         ))}
         <button
           onClick={() => setShowSearch(true)}
-          className="flex flex-col items-center gap-1 px-2 py-2 text-[#4A3A2F]/30 rounded-xl"
+          className="flex flex-col items-center gap-1 px-2 py-2 text-[#673147]/30 rounded-xl"
         >
           <Search className="w-4 h-4 stroke-[2]" />
           <span className="font-display text-[9px] font-bold tracking-wide">Suche</span>
@@ -297,7 +297,7 @@ export default function Layout() {
         )}
         <div className="max-w-6xl w-full px-6 pt-0 pb-12">
           {isFocusMode && (
-            <div className="flex items-center justify-center mb-8 gap-3 text-[#8B1E1E]/40 font-display text-2xl animate-pulse">
+            <div className="flex items-center justify-center mb-8 gap-3 text-[#673147]/40 font-display text-2xl animate-pulse">
                <Coffee className="w-6 h-6" />
                <span>Fokus-Zeit… genieße die Ruhe</span>
             </div>
