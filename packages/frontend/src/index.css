@@ -3,8 +3,7 @@
 
 @font-face {
   font-family: "Snacky Plop";
-  src: url('/fonts/SnackyPlop-Regular.woff2') format('woff2'),
-       url('/fonts/SnackyPlop-Regular.woff') format('woff');
+  src: url('/fonts/SnackyPlop-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -63,10 +62,10 @@ body {
 
 /* Stripe background – PNG in voller Breite, vertikal nahtlos */
 .main-bg-stripes {
-  background-image: url('/background-kopie.png');
-  background-size: 100% auto;
-  background-repeat: repeat-y;
-  background-position: top left;
+  background-image: url('/background-kopie.png') !important;
+  background-size: 100% auto !important;
+  background-repeat: repeat-y !important;
+  background-position: top center !important;
 }
 
 /* Subtle stripe texture for cards/sections */
@@ -94,7 +93,7 @@ body {
 }
 
 h1, h2, h3, h4 {
-  font-family: var(--font-display);
+  font-family: "Tiny SSO", "Snacky Plop", cursive;
   color: var(--plum);
   font-weight: 400;
   line-height: 1.1;
