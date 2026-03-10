@@ -4,7 +4,7 @@
 @font-face {
   font-family: "Royana";
   src: url('/fonts/Royana-Regular.ttf') format('truetype');
-  font-weight: 400;
+  font-weight: 400 700;
   font-style: normal;
   font-display: swap;
 }
@@ -86,7 +86,7 @@ body {
 h1, h2, h3, h4 {
   font-family: var(--font-display);
   color: var(--rust-red);
-  font-weight: 400;
+  font-weight: 700;
   line-height: 1.1;
 }
 
