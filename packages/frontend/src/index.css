@@ -58,15 +58,12 @@ body {
   padding: 0;
 }
 
-/* Diagonal stripe background – CSS-basiert, keine Bildwiederholung */
+/* Stripe background – Bild in voller Breite, vertikal nahtlos */
 .main-bg-stripes {
-  background-image: repeating-linear-gradient(
-    -45deg,
-    #B8D3E5 0px,
-    #B8D3E5 80px,
-    #9B9478 80px,
-    #9B9478 160px
-  );
+  background-image: url('/background-kopie.png');
+  background-size: 100% auto;
+  background-repeat: repeat-y;
+  background-position: top center;
 }
 
 /* Subtle stripe texture for cards/sections */
