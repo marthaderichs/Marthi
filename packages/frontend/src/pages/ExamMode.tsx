@@ -153,7 +153,7 @@ export default function ExamMode() {
                 className="absolute inset-0 mix-blend-soft-light opacity-40"
                 style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: '180px 180px' }}
               />
-              <span className="relative z-10 font-sans font-black text-[10px] text-white text-center uppercase tracking-wider leading-snug px-2 [text-shadow:0_1px_6px_rgba(0,0,0,0.7),0_2px_12px_rgba(0,0,0,0.4)]">
+              <span className="relative z-10 text-[9px] text-white text-center leading-snug px-2 [font-family:'Fascinate',system-ui] [text-shadow:0_1px_6px_rgba(0,0,0,0.6),0_2px_10px_rgba(0,0,0,0.35)]">
                 {s.name}
               </span>
             </motion.button>
