@@ -38,7 +38,7 @@ export default function Dashboard() {
         <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#8B1E1E]/8 rounded-full text-[#8B1E1E] text-[10px] font-black uppercase tracking-[0.2em]">
           <Sparkles className="w-3 h-3" /> hey marthi!
         </div>
-        <h1 className="text-5xl md:text-6xl font-display text-[#8B1E1E] leading-tight">Schön, dass du da bist</h1>
+        <h1 className="text-6xl md:text-7xl font-display text-[#8B1E1E] leading-tight">Schön, dass du da bist</h1>
         <div className="flex items-center gap-3 flex-wrap">
           <p className="text-lg text-[#4A3A2F]/60 font-serif italic">Bereit für eine Prise medizinisches Wissen?</p>
           <span className="px-4 py-1.5 bg-[#A3B18A]/20 rounded-full text-[#344E41] font-black text-xs">{stats.totalTopics} Kapitel</span>
@@ -63,7 +63,7 @@ export default function Dashboard() {
                   <link.icon className="w-5 h-5" />
                 </div>
                 <div className="flex items-baseline gap-3">
-                  <span className="font-display text-2xl text-[#4A3A2F]">{link.label}</span>
+                  <span className="font-display text-3xl text-[#4A3A2F]">{link.label}</span>
                   <span className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/35 hidden sm:inline">{link.desc}</span>
                 </div>
               </div>
@@ -76,7 +76,7 @@ export default function Dashboard() {
         <div className="lg:col-span-5 space-y-6 lg:pl-8 lg:border-l lg:border-[#4A3A2F]/10">
 
           <div className="space-y-4">
-            <h3 className="font-display text-2xl text-[#8B1E1E]">Dein Fortschritt</h3>
+            <h3 className="font-display text-3xl text-[#8B1E1E]">Dein Fortschritt</h3>
             <div className="space-y-3">
               {subjects?.slice(0, 4).map(s => (
                 <div key={s.id} className="space-y-1.5 pb-3 border-b border-[#4A3A2F]/8 last:border-0">
@@ -104,7 +104,7 @@ export default function Dashboard() {
           <div className="border-t border-[#4A3A2F]/10" />
 
           <div className="space-y-1">
-            <h4 className="text-2xl font-display text-[#8B1E1E] mb-3">Zuletzt besucht</h4>
+            <h4 className="text-3xl font-display text-[#8B1E1E] mb-3">Zuletzt besucht</h4>
             {subjects?.slice(4, 8).map((s) => {
               const Icon = getIcon(s.icon);
               return (

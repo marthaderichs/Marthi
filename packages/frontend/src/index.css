@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fascinate&family=Lora:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fascinate&family=Gochi+Hand&family=Lora:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 @import "tailwindcss";
 
 @font-face {
@@ -7,10 +7,12 @@
   font-weight: 400;
   font-style: normal;
   font-display: swap;
+  /* Hand off German umlauts to Gochi Hand */
+  unicode-range: U+0000-00C3, U+00C5-00D5, U+00D7-00DB, U+00DD-00DE, U+00E0-00F5, U+00F7-00FB, U+00FD-FFFF;
 }
 
 @theme {
-  --font-display: "Tiny SSO", cursive;
+  --font-display: "Tiny SSO", "Gochi Hand", cursive;
   --font-sans: "Plus Jakarta Sans", sans-serif;
   --font-serif: "Lora", serif;
   --font-fascinate: "Fascinate", system-ui;
