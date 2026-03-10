@@ -24,10 +24,10 @@ export default function Dashboard() {
   }, [subjects]);
 
   const quickLinks = [
-    { to: '/exam',       icon: CheckSquare, label: 'Klausur',    color: '#C96843', desc: 'Wissen testen' },
-    { to: '/content',    icon: BookOpen,    label: 'Bibliothek', color: '#2F9E98', desc: 'Kapitel lesen' },
-    { to: '/flashcards', icon: Brain,       label: 'Karten',     color: '#7F2982', desc: 'Fakten lernen' },
-    { to: '/garden',     icon: Flower2,     label: 'Garten',     color: '#899E70', desc: 'Fehler pflegen' },
+    { to: '/exam',       icon: CheckSquare, label: 'Klausur',    color: '#EA6C47', desc: 'Wissen testen' },
+    { to: '/content',    icon: BookOpen,    label: 'Bibliothek', color: '#009CA6', desc: 'Kapitel lesen' },
+    { to: '/flashcards', icon: Brain,       label: 'Karten',     color: '#8D377C', desc: 'Fakten lernen' },
+    { to: '/garden',     icon: Flower2,     label: 'Garten',     color: '#6A902C', desc: 'Fehler pflegen' },
   ];
 
   if (subjectsLoading) return (
@@ -90,15 +90,31 @@ export default function Dashboard() {
         <div className={cn(CARD_BASE, "lg:col-span-7 bg-[var(--light-cream)] scribble-border space-y-6")}>
           <div className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/40">Schnellzugriff</div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {quickLinks.map((link) => (
+            {quickLinks.map((link, i) => {
+              const filterId = `wc-dash-${i}`;
+              const seeds = [3, 7, 14, 21];
+              const offsets = [{ x: 44, y: 43 }, { x: 55, y: 46 }, { x: 42, y: 55 }, { x: 56, y: 44 }];
+              const off = offsets[i % offsets.length];
+              return (
               <NavLink
                 key={link.to}
                 to={link.to}
                 className="group scribble-border flex items-center justify-between px-6 py-5 bg-white/40 hover:bg-white/60 transition-all"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 flex items-center justify-center shrink-0 rounded-2xl shadow-sm transition-transform group-hover:scale-110" style={{ backgroundColor: `${link.color}`, color: 'white' }}>
-                    <link.icon className="w-6 h-6 stroke-[2.5]" />
+                  <div className="w-14 h-14 shrink-0 relative flex items-center justify-center transition-transform group-hover:scale-110">
+                    <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <filter id={filterId} x="-30%" y="-30%" width="160%" height="160%">
+                          <feTurbulence type="turbulence" baseFrequency="0.038" numOctaves="4" seed={seeds[i]} result="noise"/>
+                          <feDisplacementMap in="SourceGraphic" in2="noise" scale="11" xChannelSelector="R" yChannelSelector="G"/>
+                        </filter>
+                      </defs>
+                      <circle cx="50" cy="50" r="40" fill={link.color} filter={`url(#${filterId})`} opacity="0.88"/>
+                      <circle cx={off.x} cy={off.y} r="27" fill={link.color} filter={`url(#${filterId})`} opacity="0.28"/>
+                      <circle cx={100 - off.x} cy={100 - off.y} r="18" fill="white" filter={`url(#${filterId})`} opacity="0.18"/>
+                    </svg>
+                    <link.icon className="w-6 h-6 stroke-[2.5] text-white relative z-10" />
                   </div>
                   <div className="flex flex-col">
                     <span className="font-display text-3xl text-[#673147] leading-none">{link.label}</span>
