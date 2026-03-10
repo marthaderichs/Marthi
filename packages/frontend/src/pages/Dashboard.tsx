@@ -1,15 +1,15 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { motion } from 'motion/react';
 import { useSubjects } from '../hooks/useSubjects';
 import { NavLink } from 'react-router-dom';
 import { cn } from '../lib/utils';
-import { PenLine, BookOpen, BookMarked, Flower2, ArrowRight } from 'lucide-react';
+import { Heart, HeartPulse, HeartHandshake, Flower2, ArrowRight } from 'lucide-react';
 
 // ── Handdrawn divider ─────────────────────────────────────────────────────────
 function Squiggle() {
   return (
-    <svg viewBox="0 0 200 6" className="w-full h-1.5 text-[#673147]/15" preserveAspectRatio="none" aria-hidden>
-      <path d="M0,3 C30,1 60,5 100,3 S160,1 200,3" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    <svg viewBox="0 0 200 10" className="w-full h-2.5 text-[#673147]/20" preserveAspectRatio="none" aria-hidden>
+      <path d="M0,6 C6,2 12,8 20,5 S32,1 42,6 S54,9 64,4 S76,1 88,5 S100,8 112,4 S124,1 136,6 S148,9 160,4 S174,2 184,6 S194,8 200,5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
 }
@@ -57,23 +57,15 @@ function WcDot({ color, index, children }: { color: string; index: number; child
 
 // ── Quick links ───────────────────────────────────────────────────────────────
 const LINKS = [
-  { to: '/exam',       icon: PenLine,    label: 'Klausur',    color: '#EA6C47', desc: 'Wissen testen'  },
-  { to: '/content',    icon: BookOpen,   label: 'Bibliothek', color: '#009CA6', desc: 'Kapitel lesen'  },
-  { to: '/flashcards', icon: BookMarked, label: 'Karten',     color: '#8D377C', desc: 'Fakten lernen'  },
-  { to: '/garden',     icon: Flower2,    label: 'Garten',     color: '#6A902C', desc: 'Fehler pflegen' },
+  { to: '/exam',       icon: HeartPulse,    label: 'Klausur',    color: '#EA6C47', desc: 'Wissen testen'  },
+  { to: '/content',    icon: Heart,         label: 'Bibliothek', color: '#009CA6', desc: 'Kapitel lesen'  },
+  { to: '/flashcards', icon: HeartHandshake,label: 'Karten',     color: '#8D377C', desc: 'Fakten lernen'  },
+  { to: '/garden',     icon: Flower2,       label: 'Garten',     color: '#6A902C', desc: 'Fehler pflegen' },
 ] as const;
 
 // ── Dashboard ─────────────────────────────────────────────────────────────────
 export default function Dashboard() {
   const { data: subjects, isLoading } = useSubjects();
-
-  const stats = useMemo(() => {
-    if (!subjects) return { topics: 0, questions: 0 };
-    return subjects.reduce(
-      (a, s) => ({ topics: a.topics + (s._count?.topics || 0), questions: a.questions + (s._count?.questions || 0) }),
-      { topics: 0, questions: 0 }
-    );
-  }, [subjects]);
 
   if (isLoading) return <div className="flex justify-center py-40"><Spinner /></div>;
 
@@ -82,7 +74,7 @@ export default function Dashboard() {
 
       {/* ── Greeting card ───────────────────────────────────────────────── */}
       <div className="scribble-border bg-[var(--light-cream)] px-8 pt-8 pb-7 space-y-3">
-        <p className="text-[11px] font-typewriter tracking-[0.38em] text-[#673147]/38 uppercase">
+        <p className="text-[13px] font-typewriter tracking-[0.38em] text-[#673147]/38 uppercase">
           Willkommen
         </p>
         <h1 className="font-display text-[clamp(2.8rem,8vw,4.2rem)] text-[#673147] leading-[1.05]">
@@ -96,7 +88,7 @@ export default function Dashboard() {
 
       {/* ── Nav circles ─────────────────────────────────────────────────── */}
       <div className="bg-[var(--light-cream)] px-6 py-7 border border-[#673147]/10">
-        <p className="text-[11px] font-typewriter tracking-[0.38em] text-[#673147]/35 uppercase mb-6">
+        <p className="text-[13px] font-typewriter tracking-[0.38em] text-[#673147]/35 uppercase mb-6">
           Schnellzugriff
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -125,43 +117,24 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* ── Stats + Subjects ─────────────────────────────────────────────── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
-
-        {/* Stats */}
-        <div className="scribble-border bg-[var(--light-cream)] px-7 py-6 space-y-4">
-          <p className="text-[11px] font-typewriter tracking-[0.38em] text-[#673147]/35 uppercase">Inhalt</p>
-          <div className="flex items-end gap-6">
-            <div>
-              <div className="font-display text-[3.2rem] text-[#673147] leading-none tabular-nums">{stats.topics}</div>
-              <p className="text-[11px] font-typewriter uppercase tracking-[0.28em] text-[#4A3A2F]/42 mt-1">Kapitel</p>
-            </div>
-            <div className="mb-3 w-px h-10 bg-[#673147]/12 shrink-0" />
-            <div>
-              <div className="font-display text-[3.2rem] text-[#673147] leading-none tabular-nums">{stats.questions}</div>
-              <p className="text-[11px] font-typewriter uppercase tracking-[0.28em] text-[#4A3A2F]/42 mt-1">Fragen</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Subjects */}
-        <div className="scribble-border bg-[var(--light-cream)] px-7 py-6 space-y-1">
-          <p className="text-[11px] font-typewriter tracking-[0.38em] text-[#673147]/35 uppercase mb-3">Fachbereiche</p>
-          {subjects?.slice(0, 6).map((s) => (
+      {/* ── Subjects ─────────────────────────────────────────────────────── */}
+      <div className="scribble-border bg-[var(--light-cream)] px-7 py-6 space-y-1">
+        <p className="text-[13px] font-typewriter tracking-[0.38em] text-[#673147]/35 uppercase mb-4">Fachbereiche</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8">
+          {subjects?.slice(0, 8).map((s) => (
             <NavLink
               key={s.id}
               to="/content"
-              className="group flex items-center gap-2.5 py-1.5 border-b border-[#673147]/7 last:border-0 hover:border-[#673147]/18 transition-colors"
+              className="group flex items-center gap-3 py-2 border-b border-[#673147]/7 last:border-0 hover:border-[#673147]/18 transition-colors"
             >
-              <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: s.color, opacity: 0.8 }} />
-              <span className="font-typewriter text-[12.5px] text-[#4A3A2F]/60 group-hover:text-[#673147] transition-colors flex-1 truncate">
+              <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: s.color, opacity: 0.8 }} />
+              <span className="font-typewriter text-[14px] text-[#4A3A2F]/60 group-hover:text-[#673147] transition-colors flex-1 truncate">
                 {s.name}
               </span>
-              <ArrowRight className="w-3 h-3 text-[#673147]/15 group-hover:text-[#673147]/40 group-hover:translate-x-0.5 transition-all" />
+              <ArrowRight className="w-3.5 h-3.5 text-[#673147]/15 group-hover:text-[#673147]/40 group-hover:translate-x-0.5 transition-all" />
             </NavLink>
           ))}
         </div>
-
       </div>
     </div>
   );

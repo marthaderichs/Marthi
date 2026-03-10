@@ -37,7 +37,7 @@ export default function ContentLibrary() {
     <div className="max-w-7xl mx-auto space-y-12 header-padding">
       <div className="text-center space-y-3">
         <h1 className="text-7xl font-display text-[#673147]">Bibliothek</h1>
-        <p className="text-xl text-[#4A3A2F]/45 font-serif italic">
+        <p className="text-xl text-[#4A3A2F]/45 font-typewriter">
           „Wiederholung ist das Fundament der Meisterschaft."
         </p>
       </div>
@@ -139,7 +139,7 @@ export default function ContentLibrary() {
               </div>
 
               <div className="p-10 md:p-12 overflow-y-auto">
-                <div className="font-serif text-lg leading-[1.85] text-[#4A3A2F]/80 italic space-y-5">
+                <div className="font-serif text-lg leading-[1.85] text-[#4A3A2F]/80 space-y-5">
                   {selectedTopic.content.split('\n').map((line, i) => (
                     <p key={i}>{line}</p>
                   ))}

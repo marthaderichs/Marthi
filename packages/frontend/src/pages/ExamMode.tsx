@@ -229,7 +229,7 @@ export default function ExamMode() {
           <div className="grid gap-3">
             {question?.options.map((option, index) => (
                 <button key={index} onClick={() => handleOptionClick(index)} disabled={isAnswered} className={cn("w-full text-left p-6 rounded-2xl font-bold text-lg border-2 transition-all min-h-[80px]", isAnswered ? (index === question.correctAnswerIndex ? "bg-[#A3B18A]/20 border-[#A3B18A] text-[#1E3A1E]" : (selectedOption === index ? "bg-[#673147]/10 border-[#673147] text-[#673147]" : "opacity-30")) : (selectedOption === index ? "border-[#673147] ring-4 ring-[#673147]/5 shadow-md" : "bg-[#E2E8D4]/50 border-transparent hover:bg-white"))}>
-                  <span className="font-serif italic text-lg pr-4 leading-snug">{option}</span>
+                  <span className="font-serif text-lg pr-4 leading-snug">{option}</span>
                 </button>
             ))}
           </div>
@@ -240,11 +240,11 @@ export default function ExamMode() {
                      <h4 className="text-7xl lg:text-8xl font-display text-[#673147] flex items-center gap-4 mb-8">
                        <Sparkles className="w-8 h-8" /> Erklärung
                      </h4>
-                     <div className="text-xl text-[#673147]/80 leading-relaxed font-serif italic">
+                     <div className="text-xl text-[#673147]/80 leading-relaxed font-serif">
                         {formatExplanation(question.explanation)}
                      </div>
                   </div>
-                  <button onClick={handleNext} className="w-full py-6 bg-[#673147] text-white rounded-3xl font-bold text-2xl hover:bg-[#763428] transition-all flex items-center justify-center gap-4 shadow-xl font-display"><span style={{ fontFamily: 'inherit' }}>{currentIndex < questions.length - 1 ? 'Nächste Frage' : 'Ergebnis anzeigen'}</span><ArrowRight className="w-6 h-6" /></button>
+                  <button onClick={handleNext} className="w-full py-6 bg-[#673147] text-white rounded-3xl text-2xl hover:bg-[#763428] transition-all flex items-center justify-center gap-4 shadow-xl font-serif"><span>{currentIndex < questions.length - 1 ? 'Nächste Frage' : 'Ergebnis anzeigen'}</span><ArrowRight className="w-6 h-6" /></button>
                 </motion.div>
             )}
           </AnimatePresence>

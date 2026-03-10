@@ -248,7 +248,7 @@ export default function Flashcards() {
                 <button
                   onClick={handleStartSession}
                   disabled={!selectedSubjectId || sessionCards.length === 0}
-                  className="mx-auto flex items-center gap-2 px-8 py-3 border border-[#673147] text-[#673147] font-display text-xl rounded-full hover:bg-[#673147] hover:text-white transition-all disabled:opacity-20 group"
+                  className="mx-auto flex items-center gap-2 px-8 py-3 border border-[#673147] text-[#673147] font-serif text-xl rounded-full hover:bg-[#673147] hover:text-white transition-all disabled:opacity-20 group"
                 >
                   <span>Starten</span>
                   <Play className="w-6 h-6 fill-current group-hover:scale-110 transition-transform" />
