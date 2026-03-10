@@ -9,6 +9,62 @@ import {
 } from 'lucide-react';
 import { DisplayText } from '../components/DisplayText';
 
+// ── Tulip SVG (viewBox 0 0 100 180, base at y=178) ─────────────────────────
+function Tulip({ color, stemColor = '#6B6A18' }: { color: string; stemColor?: string }) {
+  return (
+    <>
+      {/* Stem */}
+      <path d="M 50 108 Q 51 140 50 176" stroke={stemColor} strokeWidth="4" strokeLinecap="round" fill="none" />
+      {/* Left leaf */}
+      <path d="M 48 125 C 36 116 10 122 8 144 C 6 159 32 154 48 137 Z" fill={stemColor} />
+      {/* Right leaf */}
+      <path d="M 52 132 C 64 123 90 128 92 150 C 94 165 68 160 52 143 Z" fill={stemColor} />
+      {/* Tulip head – 3 rounded petals */}
+      <path
+        d="M 50 110
+           C 24 110, 12 92, 12 72
+           C 12 46, 21 16, 32 14
+           C 36 13, 40 31, 43 37
+           C 45 25, 47 11, 50 9
+           C 53 11, 55 25, 57 37
+           C 60 31, 64 13, 68 14
+           C 79 16, 88 46, 88 72
+           C 88 92, 76 110, 50 110 Z"
+        fill={color}
+      />
+    </>
+  );
+}
+
+const GARDEN_TULIPS = [
+  { cx: 58,  s: 0.72, color: '#C2341E' },   // rot
+  { cx: 155, s: 0.94, color: '#E9C46A' },   // gelb
+  { cx: 268, s: 0.78, color: '#E07A8A' },   // rosa
+  { cx: 378, s: 1.00, color: '#673147' },   // pflaume
+  { cx: 490, s: 0.86, color: '#F2B091' },   // lachs
+  { cx: 600, s: 0.80, color: '#9B4F78' },   // lila
+  { cx: 700, s: 0.93, color: '#B8D3E5' },   // blau-lavendel
+  { cx: 792, s: 0.74, color: '#D98A5E' },   // terrakotta
+];
+
+function TulipGarden() {
+  return (
+    <div className="w-full overflow-hidden" style={{ height: 160 }}>
+      <svg
+        viewBox="0 0 850 200"
+        preserveAspectRatio="xMidYMax meet"
+        style={{ width: '100%', height: '100%', overflow: 'visible' }}
+      >
+        {GARDEN_TULIPS.map(({ cx, s, color }, i) => (
+          <g key={i} transform={`translate(${(cx - 50 * s).toFixed(1)}, ${(200 - 180 * s).toFixed(1)}) scale(${s})`}>
+            <Tulip color={color} />
+          </g>
+        ))}
+      </svg>
+    </div>
+  );
+}
+
 export default function MistakeGarden() {
   const { mistakes, removeMistake } = useMistakes();
   const { data: subjects } = useSubjects();
@@ -42,6 +98,7 @@ export default function MistakeGarden() {
         <p className="text-xl text-[#4A3A2F]/50 font-typewriter">
           „Aus Fehlern wachsen die schönsten Erkenntnisse."
         </p>
+        <TulipGarden />
       </div>
 
       {mistakes.length === 0 ? (
