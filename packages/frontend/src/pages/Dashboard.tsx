@@ -123,7 +123,8 @@ export default function Dashboard() {
                 </div>
                 <ArrowRight className="w-5 h-5 text-[#4A3A2F]/20 group-hover:text-[#673147] group-hover:translate-x-1 transition-all" />
               </NavLink>
-            ))}
+              );
+            })}
           </div>
         </div>
 
