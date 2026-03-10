@@ -52,26 +52,30 @@ export default function ContentLibrary() {
                   whileHover={{ scale: 1.1, rotate: 0 }}
                   transition={{ type: 'spring', stiffness: 280, damping: 20 }}
                   onClick={() => setSelectedSubject(subject)}
-                  className="aspect-square w-full relative overflow-hidden flex items-center justify-center group rounded-full"
-                  style={{ 
-                    boxShadow: '0 4px 15px rgba(0,0,0,0.05), inset 0 0 20px rgba(0,0,0,0.1)'
-                  }}
+                  className="aspect-square w-full relative flex items-center justify-center group"
                 >
-                  {/* Watercolor base */}
                   <div 
-                    className="absolute inset-0 opacity-80" 
+                    className="absolute inset-0 rounded-full overflow-hidden"
                     style={{ 
-                      background: `radial-gradient(circle at 35% 35%, ${subject.color} 0%, ${subject.color}ee 40%, ${subject.color}aa 100%)`,
-                      filter: 'blur(1px)'
-                    }} 
-                  />
-                  {/* Grain overlay */}
-                  <div
-                    className="absolute inset-0 mix-blend-multiply opacity-30"
-                    style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: '150px 150px' }}
-                  />
-                  {/* Paper texture overlay */}
-                  <div className="absolute inset-0 opacity-20 mix-blend-soft-light bg-[url('/stripe-bg.jpg')] bg-repeat" />
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.05), inset 0 0 20px rgba(0,0,0,0.1)'
+                    }}
+                  >
+                    {/* Watercolor base */}
+                    <div 
+                      className="absolute inset-0 opacity-80" 
+                      style={{ 
+                        background: `radial-gradient(circle at 35% 35%, ${subject.color} 0%, ${subject.color}ee 40%, ${subject.color}aa 100%)`,
+                        filter: 'blur(1px)'
+                      }} 
+                    />
+                    {/* Grain overlay */}
+                    <div
+                      className="absolute inset-0 mix-blend-multiply opacity-30"
+                      style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: '150px 150px' }}
+                    />
+                    {/* Paper texture overlay */}
+                    <div className="absolute inset-0 opacity-20 mix-blend-soft-light bg-[url('/stripe-bg.jpg')] bg-repeat" />
+                  </div>
                   
                   {/* Text – crisp, above grain */}
                   <div className="relative z-10 w-full px-2 text-center text-white font-typewriter uppercase tracking-widest [text-shadow:0_1px_3px_rgba(0,0,0,0.25)]">
