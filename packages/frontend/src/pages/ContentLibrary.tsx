@@ -45,16 +45,8 @@ export default function ContentLibrary() {
         <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-6 gap-y-10">
           {subjects?.map((subject, i) => {
             const tilt = ((i * 7) % 11) - 5;
-            // Imperfect blob shapes
-            const blobShapes = [
-              '42% 58% 70% 30% / 45% 45% 55% 55%',
-              '50% 50% 30% 70% / 50% 60% 40% 50%',
-              '58% 42% 62% 38% / 44% 56% 44% 56%',
-              '46% 54% 50% 50% / 35% 65% 35% 65%',
-              '50% 50% 50% 50% / 50% 50% 50% 50%', 
-              '40% 60% 40% 60% / 60% 40% 60% 40%',
-            ];
-            const br = blobShapes[i % blobShapes.length];
+            const filterId = `wc-lib-${i}`;
+            const seed = (i * 13 + 3) % 97;
 
             return (
               <div key={subject.id} className="flex flex-col items-center">
@@ -65,31 +57,17 @@ export default function ContentLibrary() {
                   onClick={() => setSelectedSubject(subject)}
                   className="aspect-square w-full relative flex items-center justify-center group"
                 >
-                  <div 
-                    className="absolute inset-0 overflow-hidden"
-                    style={{ 
-                      borderRadius: br,
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.05), inset 0 0 20px rgba(0,0,0,0.1)'
-                    }}
-                  >
-                    {/* Watercolor base - More saturated */}
-                    <div 
-                      className="absolute inset-0 opacity-90" 
-                      style={{ 
-                        background: `radial-gradient(circle at 30% 30%, ${subject.color} 0%, ${subject.color} 30%, ${subject.color}ee 60%, ${subject.color}cc 100%)`,
-                        filter: 'blur(0.5px)'
-                      }} 
-                    />
-                    {/* Grain overlay */}
-                    <div
-                      className="absolute inset-0 mix-blend-multiply opacity-30"
-                      style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: '150px 150px' }}
-                    />
-                    {/* Paper texture overlay */}
-                    <div className="absolute inset-0 opacity-20 mix-blend-soft-light bg-[url('/stripe-bg.jpg')] bg-repeat" />
-                  </div>
-                  
-                  {/* Text – crisp, above grain */}
+                  <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <filter id={filterId} x="-25%" y="-25%" width="150%" height="150%">
+                        <feTurbulence type="turbulence" baseFrequency="0.032" numOctaves="4" seed={seed} result="noise"/>
+                        <feDisplacementMap in="SourceGraphic" in2="noise" scale="10" xChannelSelector="R" yChannelSelector="G"/>
+                      </filter>
+                    </defs>
+                    <circle cx="50" cy="50" r="43" fill={subject.color} filter={`url(#${filterId})`}/>
+                  </svg>
+
+                  {/* Text */}
                   <div className="relative z-10 w-full px-2 text-center text-white font-typewriter uppercase tracking-widest [text-shadow:0_1px_3px_rgba(0,0,0,0.25)]">
                     <span className="text-lg group-hover:hidden">
                       {abbreviate(subject.name)}
