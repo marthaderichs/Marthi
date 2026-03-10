@@ -18,8 +18,8 @@ export default function ContentLibrary() {
   const { data: topics, isLoading: topicsLoading } = useTopics(selectedSubject?.id);
 
   const abbreviate = (name: string) => {
-    if (name.length <= 4) return name.toUpperCase();
-    return name.substring(0, 4).toUpperCase();
+    if (name.length <= 3) return name.toUpperCase();
+    return name.substring(0, 3).toUpperCase();
   };
 
   const filteredTopics = useMemo(() => {
@@ -56,16 +56,13 @@ export default function ContentLibrary() {
             const br = blobs[i % blobs.length];
             const tilt = ((i * 7) % 11) - 5;
             return (
-              <div key={subject.id} className="flex flex-col items-center gap-3">
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#4A3A2F]/40 text-center px-1">
-                  {subject.name}
-                </span>
+              <div key={subject.id} className="flex flex-col items-center">
                 <motion.button
                   initial={{ rotate: tilt }}
                   whileHover={{ scale: 1.1, rotate: 0 }}
                   transition={{ type: 'spring', stiffness: 280, damping: 20 }}
                   onClick={() => setSelectedSubject(subject)}
-                  className="aspect-square w-full relative overflow-hidden flex items-center justify-center shadow-lg"
+                  className="aspect-square w-full relative overflow-hidden flex items-center justify-center shadow-lg group"
                   style={{ borderRadius: br }}
                 >
                   {/* Colour fill */}
@@ -76,9 +73,14 @@ export default function ContentLibrary() {
                     style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: '180px 180px' }}
                   />
                   {/* Text – crisp, above grain */}
-                  <span className="relative z-10 text-xl font-display text-white text-center uppercase tracking-widest px-2 [text-shadow:0_2px_10px_rgba(0,0,0,0.3)]">
-                    {abbreviate(subject.name)}
-                  </span>
+                  <div className="relative z-10 w-full px-2 text-center text-white font-typewriter uppercase tracking-widest [text-shadow:0_2px_10px_rgba(0,0,0,0.3)]">
+                    <span className="text-2xl group-hover:hidden">
+                      {abbreviate(subject.name)}
+                    </span>
+                    <span className="text-[10px] hidden group-hover:block leading-tight">
+                      {subject.name}
+                    </span>
+                  </div>
                 </motion.button>
               </div>
             );

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fascinate&family=Lora:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Special+Elite&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fascinate&family=Gochi+Hand&family=Lora:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Special+Elite&display=swap');
 @import "tailwindcss";
 
 @font-face {
@@ -20,7 +20,7 @@
 }
 
 @theme {
-  --font-display: "Tiny SSO", "Snacky Plop", cursive;
+  --font-display: "Tiny SSO", "Gochi Hand", cursive;
   --font-sans: "Plus Jakarta Sans", sans-serif;
   --font-serif: "Lora", serif;
   --font-fascinate: "Fascinate", system-ui;
@@ -93,7 +93,7 @@ body {
 }
 
 h1, h2, h3, h4 {
-  font-family: "Tiny SSO", "Snacky Plop", cursive;
+  font-family: "Tiny SSO", "Gochi Hand", cursive;
   color: var(--plum);
   font-weight: 400;
   line-height: 1.1;
