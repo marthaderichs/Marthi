@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Fascinate&family=Lora:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Special+Elite&display=swap');
+@import "tailwindcss";
 
 @font-face {
   font-family: "Snacky Plop";
@@ -18,8 +19,6 @@
   /* Nur i und j – für die Herzchen-Punkte */
   unicode-range: U+0069, U+006A;
 }
-
-@import "tailwindcss";
 
 @theme {
   --font-display: "Tiny SSO", "Snacky Plop", cursive;
@@ -60,12 +59,12 @@ body {
   padding: 0;
 }
 
-/* Stripe background – Bild in voller Breite, vertikal nahtlos */
+/* Stripe background – PNG in voller Breite, vertikal nahtlos */
 .main-bg-stripes {
   background-image: url('/background-kopie.png');
   background-size: 100% auto;
   background-repeat: repeat-y;
-  background-position: top center;
+  background-position: top left;
 }
 
 /* Subtle stripe texture for cards/sections */

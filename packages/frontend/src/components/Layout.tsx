@@ -289,13 +289,13 @@ export default function Layout() {
       </nav>
 
       <main className={cn(
-        "flex-1 pb-32 w-full flex flex-col items-center transition-opacity duration-1000",
+        "flex-1 pb-32 w-full flex flex-col items-center transition-opacity duration-1000 pt-[90px]",
         isFocusMode && "opacity-80"
       )}>
         {location.pathname !== '/' && (
-          <div className="w-full main-bg-stripes flex-shrink-0" style={{ height: '150px' }} />
+          <div className="w-full main-bg-stripes flex-shrink-0" style={{ height: '180px' }} />
         )}
-        <div className="max-w-6xl w-full px-6 pt-8 pb-12">
+        <div className="max-w-6xl w-full px-6 pt-0 pb-12">
           {isFocusMode && (
             <div className="flex items-center justify-center mb-8 gap-3 text-[#8B1E1E]/40 font-display text-2xl animate-pulse">
                <Coffee className="w-6 h-6" />
