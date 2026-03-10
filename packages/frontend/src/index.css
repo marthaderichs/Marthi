@@ -3,8 +3,8 @@
 
 @font-face {
   font-family: "Snacky Plop";
-  src: url('/fonts/SnackyPlop-Regular.woff2') format('woff2'),
-       url('/fonts/SnackyPlop-Regular.woff') format('woff');
+  src: url('./assets/fonts/SnackyPlop-Regular.woff2') format('woff2'),
+       url('./assets/fonts/SnackyPlop-Regular.woff') format('woff');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
