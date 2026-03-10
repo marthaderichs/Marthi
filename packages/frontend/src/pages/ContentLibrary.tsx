@@ -9,6 +9,28 @@ import {
 import { Subject, Topic } from '@medilearn/shared';
 import { cn } from '../lib/utils';
 
+function getWobblyPath(seed: number): string {
+  const n = 9;
+  const cx = 50, cy = 50;
+  const baseR = 40;
+  const maxVar = 5;
+  const pts = Array.from({ length: n }, (_, i) => {
+    const angle = (i / n) * 2 * Math.PI - Math.PI / 2;
+    const v = Math.sin(seed * 1.9 + i * 2.4) * maxVar;
+    const r = baseR + v;
+    return [+(cx + r * Math.cos(angle)).toFixed(2), +(cy + r * Math.sin(angle)).toFixed(2)];
+  });
+  const mids = pts.map((p, i) => {
+    const q = pts[(i + 1) % n];
+    return [+((p[0] + q[0]) / 2).toFixed(2), +((p[1] + q[1]) / 2).toFixed(2)];
+  });
+  let d = `M${mids[0][0]},${mids[0][1]}`;
+  for (let i = 0; i < n; i++) {
+    d += ` Q${pts[i][0]},${pts[i][1]} ${mids[(i + 1) % n][0]},${mids[(i + 1) % n][1]}`;
+  }
+  return d + 'Z';
+}
+
 export default function ContentLibrary() {
   const { data: subjects, isLoading: subjectsLoading } = useSubjects();
   const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
@@ -45,8 +67,8 @@ export default function ContentLibrary() {
         <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-6 gap-y-10">
           {subjects?.map((subject, i) => {
             const tilt = ((i * 7) % 11) - 5;
-            const filterId = `wc-lib-${i}`;
-            const seed = (i * 13 + 3) % 97;
+            const seed = i * 13 + 3;
+            const path = getWobblyPath(seed);
 
             return (
               <div key={subject.id} className="flex flex-col items-center">
@@ -58,16 +80,9 @@ export default function ContentLibrary() {
                   className="aspect-square w-full relative flex items-center justify-center group"
                 >
                   <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                      <filter id={filterId} x="-25%" y="-25%" width="150%" height="150%">
-                        <feTurbulence type="turbulence" baseFrequency="0.032" numOctaves="4" seed={seed} result="noise"/>
-                        <feDisplacementMap in="SourceGraphic" in2="noise" scale="10" xChannelSelector="R" yChannelSelector="G"/>
-                      </filter>
-                    </defs>
-                    <circle cx="50" cy="50" r="43" fill={subject.color} filter={`url(#${filterId})`}/>
+                    <path d={path} fill={subject.color} />
                   </svg>
 
-                  {/* Text */}
                   <div className="relative z-10 w-full px-2 text-center text-white font-typewriter uppercase tracking-widest [text-shadow:0_1px_3px_rgba(0,0,0,0.25)]">
                     <span className="text-lg group-hover:hidden">
                       {abbreviate(subject.name)}
