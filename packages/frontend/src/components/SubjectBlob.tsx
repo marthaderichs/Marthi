@@ -34,7 +34,7 @@ function Text({ str }: { str: string }) {
     <>
       {parts.map((p, i) =>
         /^[äöüÄÖÜß]$/.test(p)
-          ? <span key={i} style={{ fontSize: '0.78em', verticalAlign: 'middle' }}>{p.toUpperCase()}</span>
+          ? <span key={i}>{p.toUpperCase()}</span>
           : <span key={i}>{p.toUpperCase()}</span>
       )}
     </>

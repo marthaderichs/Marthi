@@ -7,6 +7,7 @@ import {
   Flower2, ArrowRight, CheckCircle2, XCircle,
   Trash2, Sprout, X
 } from 'lucide-react';
+import { DisplayText } from '../components/DisplayText';
 
 export default function MistakeGarden() {
   const { mistakes, removeMistake } = useMistakes();
@@ -48,7 +49,7 @@ export default function MistakeGarden() {
            <div className="w-24 h-24 bg-[#E2E8D4]/40 rounded-full flex items-center justify-center">
               <Flower2 className="w-12 h-12 text-[#A3B18A]" />
            </div>
-           <h2 className="text-4xl font-display text-[#673147]">Dein Garten blüht prächtig!</h2>
+           <h2 className="text-4xl font-display text-[#673147]"><DisplayText>Dein Garten blüht prächtig!</DisplayText></h2>
            <p className="text-[#4A3A2F]/50 font-sans text-lg">Keine Fehler mehr übrig. Zeit für eine neue Klausur?</p>
         </div>
       ) : (

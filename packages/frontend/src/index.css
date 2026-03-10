@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fascinate&family=Gochi+Hand&family=Lora:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Short+Stack&family=Special+Elite&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fascinate&family=Gochi+Hand&family=Just+Me+Again+Down+Here&family=Lora:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Short+Stack&family=Special+Elite&display=swap');
 @import "tailwindcss";
 
 @font-face {
@@ -7,12 +7,22 @@
   font-weight: 400;
   font-style: normal;
   font-display: swap;
-  /* Exclude German umlauts — they fall back to Gochi Hand which has proper glyphs */
+  /* Exclude German umlauts (U+00C0–U+00FF) — handled by Just Me Again Down Here */
   unicode-range: U+0020-00BF, U+2000-206F;
 }
 
+@font-face {
+  font-family: "Just Me Again Down Here";
+  src: local("Just Me Again Down Here");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  /* Only activate for umlaut / accented Latin range */
+  unicode-range: U+00C0-00FF;
+}
+
 @theme {
-  --font-display: "Tiny SSO Main", "Gochi Hand", "Short Stack", cursive;
+  --font-display: "Tiny SSO Main", "Just Me Again Down Here", "Gochi Hand", "Short Stack", cursive;
   --font-sans: "Plus Jakarta Sans", sans-serif;
   --font-serif: "Lora", serif;
   --font-fascinate: "Fascinate", system-ui;

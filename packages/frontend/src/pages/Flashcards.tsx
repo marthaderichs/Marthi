@@ -7,6 +7,7 @@ import {
   Brain, Sparkles, Play, List, Trophy, Eye, Clock, Calendar, Layers
 } from 'lucide-react';
 import { cn } from '../lib/utils';
+import { DisplayText } from '../components/DisplayText';
 
 type ViewState = 'setup' | 'learning' | 'summary' | 'overview';
 type StudyMode = 'due' | 'all';
@@ -128,7 +129,7 @@ export default function Flashcards() {
             {/* Subject Selection */}
             <section className="bg-white p-10 rounded-2xl border border-[#4A3A2F]/6 space-y-6">
               <h2 className="text-3xl font-display text-[#673147] flex items-center gap-3">
-                 <Layers className="w-6 h-6" /> 1. Fachbereich wählen
+                 <Layers className="w-6 h-6" /> <DisplayText>1. Fachbereich wählen</DisplayText>
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {subjects?.map(s => (
@@ -193,7 +194,7 @@ export default function Flashcards() {
                     <div className="flex items-center gap-2 text-[#673147] font-bold uppercase tracking-widest text-[10px]">
                        <Calendar className="w-3 h-3" /> Alle Karten
                     </div>
-                    <div className="text-2xl font-display text-[#673147]">Stapel durchblättern</div>
+                    <div className="text-2xl font-display text-[#673147]"><DisplayText>Stapel durchblättern</DisplayText></div>
                     <p className="text-xs text-[#673147]/40 leading-relaxed font-sans">Alle Karten des Fachbereichs im Schnelldurchlauf lernen.</p>
                  </button>
               </div>
