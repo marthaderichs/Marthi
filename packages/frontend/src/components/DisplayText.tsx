@@ -11,7 +11,7 @@ export function DisplayText({ children }: { children: string }) {
     <>
       {parts.map((part, i) =>
         /^[äöüÄÖÜß]$/.test(part)
-          ? <span key={i} style={{ fontFamily: 'inherit' }}>{part}</span>
+          ? <span key={i} style={{ fontFamily: '"Just Me Again Down Here", "Gochi Hand", cursive' }}>{part}</span>
           : <React.Fragment key={i}>{part}</React.Fragment>
       )}
     </>

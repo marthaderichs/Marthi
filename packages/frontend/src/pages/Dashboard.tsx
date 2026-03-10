@@ -14,43 +14,42 @@ function Squiggle() {
   );
 }
 
-// ── Watercolor dot (nav) ──────────────────────────────────────────────────────
+// ── Scribbled heart (nav) ─────────────────────────────────────────────────────
+// Each heart is slightly tilted differently for a hand-drawn feel
+const HEART_TILTS = [-8, 6, -5, 9];
+// Slightly different heart paths per index for organic variation
+const HEART_PATHS = [
+  "M50,77 C18,62 3,44 3,29 Q3,11 22,11 Q37,11 50,27 Q63,11 78,11 Q97,11 97,29 C97,44 82,62 50,77 Z",
+  "M50,79 C17,63 2,45 2,30 Q2,10 21,10 Q36,10 50,27 Q64,10 79,10 Q98,10 98,30 C98,45 83,63 50,79 Z",
+  "M50,76 C19,61 4,43 4,28 Q4,10 23,10 Q37,10 50,26 Q63,10 77,10 Q96,10 96,28 C96,43 81,61 50,76 Z",
+  "M50,78 C18,63 3,45 3,30 Q3,11 22,11 Q36,11 50,28 Q64,11 78,11 Q97,11 97,30 C97,45 82,63 50,78 Z",
+];
+
 function WcDot({ color, index, children }: { color: string; index: number; children: React.ReactNode }) {
-  const a1 = -22 + (index % 5) * 9;
-  const a2 =  18 + (index % 4) * 11;
-  const off = (index % 5) * 1.3;
-  const hlX = 41 + (index % 6) * 2;
-  const hlY = 37 + (index % 5) * 2;
-  const gId = `wcd-g-${index}`;
-  const mId = `wcd-m-${index}`;
   const nId = `wcd-n-${index}`;
+  const tilt = HEART_TILTS[index % HEART_TILTS.length];
+  const path = HEART_PATHS[index % HEART_PATHS.length];
 
   return (
     <div className="w-[72px] h-[72px] relative flex items-center justify-center shrink-0">
-      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100">
+      <svg
+        className="absolute inset-0 w-full h-full"
+        viewBox="0 0 100 100"
+        style={{ transform: `rotate(${tilt}deg)` }}
+      >
         <defs>
-          <clipPath id={mId}><circle cx="50" cy="50" r="44"/></clipPath>
-          <radialGradient id={gId} cx={`${hlX}%`} cy={`${hlY}%`} r="60%">
-            <stop offset="0%"   stopColor="white" stopOpacity="0.26"/>
-            <stop offset="45%"  stopColor="white" stopOpacity="0.05"/>
-            <stop offset="72%"  stopColor={color} stopOpacity="0"/>
-            <stop offset="88%"  stopColor={color} stopOpacity="0.16"/>
-            <stop offset="100%" stopColor={color} stopOpacity="0.35"/>
-          </radialGradient>
-          <filter id={nId} x="-5%" y="-5%" width="110%" height="110%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="4" seed={index * 7 + 2} result="noise"/>
-            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.20 0" in="noise" result="g"/>
+          <filter id={nId} x="-8%" y="-8%" width="116%" height="116%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="4" seed={index * 7 + 2} result="noise"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.18 0" in="noise" result="g"/>
             <feBlend in="SourceGraphic" in2="g" mode="multiply"/>
           </filter>
         </defs>
-        <ellipse cx={50 - off * 0.5} cy={50 + off * 0.4} rx="37" ry="31" fill={color} opacity="0.58" transform={`rotate(${a1} 50 50)`} clipPath={`url(#${mId})`}/>
-        <ellipse cx={50 + off * 0.4} cy={50 - off * 0.5} rx="32" ry="26" fill={color} opacity="0.40" transform={`rotate(${a2} 50 50)`} clipPath={`url(#${mId})`}/>
-        <ellipse cx="50" cy={52 + off * 0.6} rx="22" ry="17" fill={color} opacity="0.27" transform={`rotate(${a1 * -0.5} 50 50)`} clipPath={`url(#${mId})`}/>
-        <circle cx="50" cy="50" r="44" fill="none" stroke={color} strokeWidth="6" opacity="0.17" clipPath={`url(#${mId})`}/>
-        <ellipse cx={hlX} cy={hlY} rx="14" ry="11" fill="white" opacity="0.17" clipPath={`url(#${mId})`}/>
-        <circle cx="50" cy="50" r="44" fill={color} opacity="0.08" filter={`url(#${nId})`}/>
+        {/* Filled heart with grain */}
+        <path d={path} fill={color} opacity="0.82" filter={`url(#${nId})`}/>
+        {/* Soft scribble outline */}
+        <path d={path} fill="none" stroke={color} strokeWidth="3" opacity="0.20" strokeLinecap="round" strokeLinejoin="round"/>
       </svg>
-      <div className="relative z-10">{children}</div>
+      <div className="relative z-10" style={{ marginTop: '6px' }}>{children}</div>
     </div>
   );
 }

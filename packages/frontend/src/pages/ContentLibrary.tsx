@@ -7,6 +7,7 @@ import {
   Bookmark, Pencil, ArrowRight
 } from 'lucide-react';
 import { Subject, Topic } from '@medilearn/shared';
+import { DisplayText } from '../components/DisplayText';
 import { cn } from '../lib/utils';
 import { SubjectBlob } from '../components/SubjectBlob';
 
@@ -67,7 +68,7 @@ export default function ContentLibrary() {
               </button>
               <div>
                 <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[#673147]/35">Fachbereich</div>
-                <h2 className="text-4xl font-display text-[#673147]">{selectedSubject.name}</h2>
+                <h2 className="text-4xl font-display text-[#673147]"><DisplayText>{selectedSubject.name}</DisplayText></h2>
               </div>
             </div>
             <div className="relative w-full sm:w-72">
@@ -129,7 +130,7 @@ export default function ContentLibrary() {
               className="w-full max-w-3xl bg-[#F9F4E8] max-h-[90vh] rounded-[40px] shadow-2xl flex flex-col overflow-hidden"
             >
               <div className="flex items-center justify-between px-10 pt-10 pb-6 border-b border-[#4A3A2F]/8">
-                <h2 className="font-display text-4xl md:text-5xl text-[#673147] leading-tight pr-8">{selectedTopic.title}</h2>
+                <h2 className="font-display text-4xl md:text-5xl text-[#673147] leading-tight pr-8"><DisplayText>{selectedTopic.title}</DisplayText></h2>
                 <button
                   onClick={() => setSelectedTopic(null)}
                   className="p-2.5 rounded-full border border-[#4A3A2F]/10 text-[#4A3A2F]/40 hover:text-[#673147] hover:border-[#673147]/30 transition-all shrink-0"

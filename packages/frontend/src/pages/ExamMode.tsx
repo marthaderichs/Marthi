@@ -5,6 +5,7 @@ import { useExamGenerate, useExamSubmit } from '../hooks/useExam';
 import { useMistakes } from '../hooks/useMistakes';
 import { cn } from '../lib/utils';
 import { CheckCircle2, XCircle, ArrowRight, Trophy, Loader2, RotateCcw, Sparkles, Settings2, Info, Layers } from 'lucide-react';
+import { DisplayText } from '../components/DisplayText';
 
 import { getIcon } from '../lib/icons';
 import { SubjectBlob } from '../components/SubjectBlob';
@@ -238,13 +239,13 @@ export default function ExamMode() {
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="p-8 lg:p-12 bg-[#E2E8D4]/60 rounded-[40px] border border-black/[0.02] space-y-8 shadow-inner">
                   <div className="space-y-6">
                      <h4 className="text-7xl lg:text-8xl font-display text-[#673147] flex items-center gap-4 mb-8">
-                       <Sparkles className="w-8 h-8" /> Erklärung
+                       <Sparkles className="w-8 h-8" /> <DisplayText>Erklärung</DisplayText>
                      </h4>
                      <div className="text-xl text-[#673147]/80 leading-relaxed font-serif">
                         {formatExplanation(question.explanation)}
                      </div>
                   </div>
-                  <button onClick={handleNext} className="w-full py-6 bg-[#673147] text-white rounded-3xl text-2xl hover:bg-[#763428] transition-all flex items-center justify-center gap-4 shadow-xl font-serif"><span>{currentIndex < questions.length - 1 ? 'Nächste Frage' : 'Ergebnis anzeigen'}</span><ArrowRight className="w-6 h-6" /></button>
+                  <button onClick={handleNext} className="w-full py-6 bg-[#673147] text-[#FAF9F2] rounded-3xl text-2xl hover:bg-[#763428] transition-all flex items-center justify-center gap-4 shadow-xl font-serif font-medium"><span>{currentIndex < questions.length - 1 ? 'Nächste Frage' : 'Ergebnis anzeigen'}</span><ArrowRight className="w-6 h-6" /></button>
                 </motion.div>
             )}
           </AnimatePresence>
