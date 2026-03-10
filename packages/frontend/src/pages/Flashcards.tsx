@@ -79,7 +79,7 @@ export default function Flashcards() {
     return (
       <div className="bg-white p-10 md:p-16 rounded-[48px] shadow-2xl space-y-10 max-w-4xl mx-auto border border-black/[0.02]">
         <div className="flex items-center justify-between border-b border-[#673147]/10 pb-8">
-          <h1 className="text-5xl font-display text-[#673147]">Karten: {activeSubject.name}</h1>
+          <h1 className="text-5xl font-display text-[#673147]">Karten: <DisplayText>{activeSubject.name}</DisplayText></h1>
           <button
             onClick={() => setView('setup')}
             className="px-6 py-2.5 bg-[#E2E8D4] rounded-full text-xs font-bold uppercase tracking-widest text-[#673147] hover:bg-[#673147] hover:text-white transition-all shadow-sm"

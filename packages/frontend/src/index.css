@@ -114,6 +114,12 @@ li:not(.font-display):not(.font-serif) {
   color: #3D2F26;
 }
 
+/* Spans inside buttons always inherit color + font from the button */
+button span {
+  color: inherit;
+  font-family: inherit;
+}
+
 .scribble-border {
   position: relative;
   border: none;

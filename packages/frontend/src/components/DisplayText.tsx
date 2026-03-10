@@ -1,19 +1,15 @@
 import React from 'react';
 
+const MAP: Record<string, string> = {
+  ä: 'ae', ö: 'oe', ü: 'ue',
+  Ä: 'Ae', Ö: 'Oe', Ü: 'Ue',
+  ß: 'ss',
+};
+
 /**
- * Renders a string in the display font with umlauts (ä ö ü Ä Ö Ü ß)
- * wrapped in a 0.78em span so the Gochi Hand fallback doesn't look oversized
- * next to Tiny SSO Main characters.
+ * Replaces German umlauts with two-letter equivalents so Tiny SSO Main
+ * can render them without any font fallback issues.
  */
 export function DisplayText({ children }: { children: string }) {
-  const parts = children.split(/([äöüÄÖÜß])/g);
-  return (
-    <>
-      {parts.map((part, i) =>
-        /^[äöüÄÖÜß]$/.test(part)
-          ? <span key={i} style={{ fontFamily: '"Just Me Again Down Here", "Gochi Hand", cursive' }}>{part}</span>
-          : <React.Fragment key={i}>{part}</React.Fragment>
-      )}
-    </>
-  );
+  return <>{children.replace(/[äöüÄÖÜß]/g, ch => MAP[ch] ?? ch)}</>;
 }

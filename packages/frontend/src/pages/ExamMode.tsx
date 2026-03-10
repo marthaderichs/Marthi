@@ -154,7 +154,7 @@ export default function ExamMode() {
                     {React.createElement(getIcon(subject.icon), { className: "w-8 h-8 text-white" })}
                 </div>
                 <div>
-                    <h2 className="text-4xl font-display text-[#673147]">{subject.name}</h2>
+                    <h2 className="text-4xl font-display text-[#673147]"><DisplayText>{subject.name}</DisplayText></h2>
                     <button onClick={() => setSetupMode(false)} className="text-[10px] font-black uppercase tracking-widest text-[#673147]/30 hover:text-[#673147] transition-colors">Abbrechen</button>
                 </div>
             </div>
@@ -225,7 +225,7 @@ export default function ExamMode() {
       <div className="space-y-12">
           <div className="space-y-4">
              <div className="inline-flex items-center gap-2 text-[#673147]/30 text-[10px] font-black uppercase"><Info className="w-3 h-3" /> Frage {currentIndex + 1}</div>
-             <h3 className="text-4xl font-display text-[#673147] leading-tight">{question?.text}</h3>
+             <h3 className="text-4xl font-display text-[#673147] leading-tight"><DisplayText>{question?.text ?? ''}</DisplayText></h3>
           </div>
           <div className="grid gap-3">
             {question?.options.map((option, index) => (
@@ -245,7 +245,7 @@ export default function ExamMode() {
                         {formatExplanation(question.explanation)}
                      </div>
                   </div>
-                  <button onClick={handleNext} className="w-full py-6 bg-[#673147] text-[#FAF9F2] rounded-3xl text-2xl hover:bg-[#763428] transition-all flex items-center justify-center gap-4 shadow-xl font-serif font-medium"><span>{currentIndex < questions.length - 1 ? 'Nächste Frage' : 'Ergebnis anzeigen'}</span><ArrowRight className="w-6 h-6" /></button>
+                  <button onClick={handleNext} className="w-full py-6 bg-[#673147] text-[#FAF9F2] rounded-3xl text-2xl hover:bg-[#763428] transition-all flex items-center justify-center gap-4 shadow-xl font-serif font-medium">{currentIndex < questions.length - 1 ? 'Nächste Frage' : 'Ergebnis anzeigen'}<ArrowRight className="w-6 h-6" /></button>
                 </motion.div>
             )}
           </AnimatePresence>

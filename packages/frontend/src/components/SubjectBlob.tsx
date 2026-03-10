@@ -24,21 +24,12 @@ function abbr(name: string): string {
     .toUpperCase();
 }
 
-/**
- * Renders text with umlaut characters (ä ö ü Ä Ö Ü ß) in a slightly smaller
- * span so the fallback-font size mismatch isn't visible.
- */
+const UMLAUT_MAP: Record<string, string> = {
+  ä: 'ae', ö: 'oe', ü: 'ue', Ä: 'AE', Ö: 'OE', Ü: 'UE', ß: 'ss',
+};
+
 function Text({ str }: { str: string }) {
-  const parts = str.split(/([äöüÄÖÜß])/g);
-  return (
-    <>
-      {parts.map((p, i) =>
-        /^[äöüÄÖÜß]$/.test(p)
-          ? <span key={i}>{p.toUpperCase()}</span>
-          : <span key={i}>{p.toUpperCase()}</span>
-      )}
-    </>
-  );
+  return <>{str.replace(/[äöüÄÖÜß]/g, ch => UMLAUT_MAP[ch] ?? ch).toUpperCase()}</>;
 }
 
 interface SubjectBlobProps {
