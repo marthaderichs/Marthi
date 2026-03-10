@@ -16,20 +16,12 @@ const BLOBS = [
 
 const GRAIN = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")`;
 
-/** 3-letter abbreviation, umlauts replaced so no fallback-font size clash */
 function abbr(name: string): string {
-  return name
-    .replace(/ä/gi, 'a').replace(/ö/gi, 'o').replace(/ü/gi, 'u').replace(/ß/g, 's')
-    .slice(0, 3)
-    .toUpperCase();
+  return name.slice(0, 3).toUpperCase();
 }
 
-const UMLAUT_MAP: Record<string, string> = {
-  ä: 'ae', ö: 'oe', ü: 'ue', Ä: 'AE', Ö: 'OE', Ü: 'UE', ß: 'ss',
-};
-
 function Text({ str }: { str: string }) {
-  return <>{str.replace(/[äöüÄÖÜß]/g, ch => UMLAUT_MAP[ch] ?? ch).toUpperCase()}</>;
+  return <>{str.toUpperCase()}</>;
 }
 
 interface SubjectBlobProps {
