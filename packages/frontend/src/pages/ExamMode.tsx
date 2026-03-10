@@ -159,7 +159,7 @@ export default function ExamMode() {
                   style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: '180px 180px' }}
                 />
                 <div className="relative z-10 w-full px-2 text-center text-white font-typewriter uppercase tracking-widest [text-shadow:0_2px_10px_rgba(0,0,0,0.3)]">
-                  <span className="text-2xl group-hover:hidden">
+                  <span className="text-lg group-hover:hidden">
                     {abbreviate(s.name)}
                   </span>
                   <span className="text-[10px] hidden group-hover:block leading-tight">

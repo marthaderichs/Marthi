@@ -74,7 +74,7 @@ export default function ContentLibrary() {
                   />
                   {/* Text – crisp, above grain */}
                   <div className="relative z-10 w-full px-2 text-center text-white font-typewriter uppercase tracking-widest [text-shadow:0_2px_10px_rgba(0,0,0,0.3)]">
-                    <span className="text-2xl group-hover:hidden">
+                    <span className="text-lg group-hover:hidden">
                       {abbreviate(subject.name)}
                     </span>
                     <span className="text-[10px] hidden group-hover:block leading-tight">

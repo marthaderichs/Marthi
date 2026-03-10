@@ -15,8 +15,6 @@
   font-weight: 400;
   font-style: normal;
   font-display: swap;
-  /* Nur i und j – für die Herzchen-Punkte */
-  unicode-range: U+0069, U+006A;
 }
 
 @theme {
@@ -30,10 +28,11 @@
 :root {
   /* The "marthi lernt!" Palette */
   --main-cream: #F5EDD5; /* Warm Cream */
+  --light-cream: #FAF9F2; /* Lighter Cream for cards */
   --rust-red: #673147; /* Refined Strong Red from Image */
   --deep-brown: #4A3A2F;
   --plum: #673147;
-  --bright-red: #FF0000;
+  --bright-red: #C2341E;
 
   /* Background Stripes */
   --stripe-tan: #9B9478;
@@ -112,16 +111,17 @@ h1, h2, h3, h4 {
 .scribble-border::after {
   content: "";
   position: absolute;
-  inset: -2px;
-  border: 2px solid var(--plum);
+  inset: -4px;
+  border: 3px solid var(--plum);
   border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
   pointer-events: none;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .scribble-border:hover::after {
   opacity: 1;
   transform: scale(1.02) rotate(-0.5deg);
+  border-width: 4px;
 }
 
 /* Hand-drawn Vibe: unregelmäßige Ecken + doppelter Strichrahmen */

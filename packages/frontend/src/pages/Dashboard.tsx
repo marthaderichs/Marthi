@@ -9,7 +9,7 @@ import {
 import { NavLink } from 'react-router-dom';
 import { cn } from '../lib/utils';
 
-const CARD = "bg-[#F5EDD5] px-7 pb-8 pt-10 border border-[#4A3A2F]/10 card-wobbly";
+const CARD_BASE = "px-7 pb-8 pt-10 transition-all";
 
 export default function Dashboard() {
   const { data: subjects, isLoading: subjectsLoading } = useSubjects();
@@ -37,26 +37,26 @@ export default function Dashboard() {
   );
 
   return (
-    <div className="max-w-5xl mx-auto pt-20 pb-10 px-4 space-y-4">
+    <div className="max-w-5xl mx-auto pt-20 pb-10 px-4 space-y-12">
 
       {/* Top row: Welcome left + Stats right */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      <div className="flex flex-wrap items-start gap-12">
 
         {/* Welcome */}
-        <div className={cn(CARD, "lg:col-span-8 space-y-3")}>
+        <div className={cn(CARD_BASE, "scribble-border bg-[var(--light-cream)] max-w-xl")}>
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#673147]/10 text-[#673147] text-[10px] font-black uppercase tracking-[0.2em]">
             <Sparkles className="w-3 h-3" /> hey marthi!
           </div>
-          <h1 className="text-5xl md:text-6xl font-display text-[#673147] leading-tight">
+          <h1 className="text-5xl md:text-6xl font-display text-[#673147] leading-tight mt-3">
             Schön, dass du da bist!
           </h1>
-          <p className="text-xl text-[#4A3A2F]/60 font-typewriter">
+          <p className="text-xl text-[#4A3A2F]/60 font-typewriter mt-4">
             Wähle ein Fach und leg los.
           </p>
         </div>
 
         {/* Stats */}
-        <div className={cn(CARD, "lg:col-span-4 flex flex-col justify-center gap-4")}>
+        <div className={cn(CARD_BASE, "scribble-border bg-[var(--light-cream)] flex flex-col justify-center gap-6 min-w-[200px]")}>
           <div className="space-y-1">
             <div className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/40">Kapitel</div>
             <div className="font-display text-5xl text-[#673147]">{stats.totalTopics}</div>
@@ -70,12 +70,12 @@ export default function Dashboard() {
       </div>
 
       {/* Bottom row: Quick Actions + Sidebar */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
 
         {/* Quick Actions */}
-        <div className={cn(CARD, "lg:col-span-7 space-y-4")}>
-          <div className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/40 mb-2">Schnellzugriff</div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className={cn(CARD_BASE, "lg:col-span-7 bg-[var(--light-cream)] scribble-border space-y-6")}>
+          <div className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/40">Schnellzugriff</div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {quickLinks.map((link) => (
               <NavLink
                 key={link.to}
@@ -98,9 +98,9 @@ export default function Dashboard() {
         </div>
 
         {/* Sidebar */}
-        <div className={cn(CARD, "lg:col-span-5 space-y-5")}>
+        <div className={cn(CARD_BASE, "lg:col-span-5 scribble-border bg-[var(--light-cream)] space-y-8")}>
 
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/40">Fortschritt</div>
             {subjects?.slice(0, 4).map(s => (
               <div key={s.id} className="space-y-1.5 pb-3 border-b border-[#4A3A2F]/8 last:border-0">

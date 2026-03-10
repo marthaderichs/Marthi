@@ -226,7 +226,7 @@ export default function Layout() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#F9F4E8] border-b border-[#4A3A2F]/5">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <NavLink to="/" className="flex items-center gap-3 group">
-            <span className="font-display text-5xl text-[#FF0000] tracking-tight">marthi lernt!</span>
+            <span className="font-display text-5xl text-[#C2341E] tracking-tight">marthi lernt!</span>
           </NavLink>
 
           <nav className="hidden lg:flex items-center gap-5">
