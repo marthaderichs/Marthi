@@ -2,15 +2,15 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: "Royana";
-  src: url('/fonts/Royana-Regular.ttf') format('truetype');
-  font-weight: 400 700;
+  font-family: "Tiny SSO";
+  src: url('/fonts/TinySso-Regular.otf') format('opentype');
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @theme {
-  --font-display: "Royana", cursive;
+  --font-display: "Tiny SSO", cursive;
   --font-sans: "Plus Jakarta Sans", sans-serif;
   --font-serif: "Lora", serif;
   --font-fascinate: "Fascinate", system-ui;
@@ -89,14 +89,6 @@ h1, h2, h3, h4 {
   font-weight: 400;
   line-height: 1.1;
 }
-
-.font-display {
-  -webkit-text-stroke: 0.6px currentColor;
-}
-
-h1 { -webkit-text-stroke: 1px currentColor; }
-h2 { -webkit-text-stroke: 0.8px currentColor; }
-h3, h4 { -webkit-text-stroke: 0.6px currentColor; }
 
 .scandi-card {
   background-color: var(--main-cream);
