@@ -8,28 +8,7 @@ import {
 } from 'lucide-react';
 import { Subject, Topic } from '@medilearn/shared';
 import { cn } from '../lib/utils';
-
-function getWobblyPath(seed: number): string {
-  const n = 9;
-  const cx = 50, cy = 50;
-  const baseR = 40;
-  const maxVar = 5;
-  const pts = Array.from({ length: n }, (_, i) => {
-    const angle = (i / n) * 2 * Math.PI - Math.PI / 2;
-    const v = Math.sin(seed * 1.9 + i * 2.4) * maxVar;
-    const r = baseR + v;
-    return [+(cx + r * Math.cos(angle)).toFixed(2), +(cy + r * Math.sin(angle)).toFixed(2)];
-  });
-  const mids = pts.map((p, i) => {
-    const q = pts[(i + 1) % n];
-    return [+((p[0] + q[0]) / 2).toFixed(2), +((p[1] + q[1]) / 2).toFixed(2)];
-  });
-  let d = `M${mids[0][0]},${mids[0][1]}`;
-  for (let i = 0; i < n; i++) {
-    d += ` Q${pts[i][0]},${pts[i][1]} ${mids[(i + 1) % n][0]},${mids[(i + 1) % n][1]}`;
-  }
-  return d + 'Z';
-}
+import { SubjectCircle } from '../components/SubjectCircle';
 
 export default function ContentLibrary() {
   const { data: subjects, isLoading: subjectsLoading } = useSubjects();
@@ -65,36 +44,16 @@ export default function ContentLibrary() {
 
       {!selectedSubject ? (
         <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-6 gap-y-10">
-          {subjects?.map((subject, i) => {
-            const tilt = ((i * 7) % 11) - 5;
-            const seed = i * 13 + 3;
-            const path = getWobblyPath(seed);
-
-            return (
-              <div key={subject.id} className="flex flex-col items-center">
-                <motion.button
-                  initial={{ rotate: tilt }}
-                  whileHover={{ scale: 1.1, rotate: 0 }}
-                  transition={{ type: 'spring', stiffness: 280, damping: 20 }}
-                  onClick={() => setSelectedSubject(subject)}
-                  className="aspect-square w-full relative flex items-center justify-center group"
-                >
-                  <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <path d={path} fill={subject.color} />
-                  </svg>
-
-                  <div className="relative z-10 w-full px-2 text-center text-white font-typewriter uppercase tracking-widest [text-shadow:0_1px_3px_rgba(0,0,0,0.25)]">
-                    <span className="text-lg group-hover:hidden">
-                      {abbreviate(subject.name)}
-                    </span>
-                    <span className="text-[10px] hidden group-hover:block leading-tight">
-                      {subject.name}
-                    </span>
-                  </div>
-                </motion.button>
-              </div>
-            );
-          })}
+          {subjects?.map((subject, i) => (
+            <SubjectCircle
+              key={subject.id}
+              color={subject.color}
+              index={i}
+              label={abbreviate(subject.name)}
+              fullName={subject.name}
+              onClick={() => setSelectedSubject(subject)}
+            />
+          ))}
         </div>
       ) : (
         <div className="space-y-8">

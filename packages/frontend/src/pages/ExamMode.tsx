@@ -7,6 +7,7 @@ import { cn } from '../lib/utils';
 import { CheckCircle2, XCircle, ArrowRight, Trophy, Loader2, RotateCcw, Sparkles, Settings2, Info, Layers } from 'lucide-react';
 
 import { getIcon } from '../lib/icons';
+import { SubjectCircle } from '../components/SubjectCircle';
 
 // Clean up AI-generated explanation texts
 const formatExplanation = (text: string) => {
@@ -131,52 +132,16 @@ export default function ExamMode() {
         <p className="text-xl text-[#673147]/50 font-typewriter">Wähle ein Fach und leg los.</p>
       </div>
       <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-6 gap-y-10">
-        {subjects?.map((s, i) => {
-          const tilt = ((i * 7) % 11) - 5;
-          return (
-            <div key={s.id} className="flex flex-col items-center">
-              <motion.button
-                initial={{ rotate: tilt }}
-                whileHover={{ scale: 1.1, rotate: 0 }}
-                transition={{ type: 'spring', stiffness: 280, damping: 20 }}
-                onClick={() => selectSubject(s.id)}
-                className="aspect-square w-full relative flex items-center justify-center group"
-              >
-                <div 
-                  className="absolute inset-0 rounded-full overflow-hidden"
-                  style={{ 
-                    boxShadow: '0 4px 15px rgba(0,0,0,0.05), inset 0 0 20px rgba(0,0,0,0.1)'
-                  }}
-                >
-                  {/* Watercolor base */}
-                  <div 
-                    className="absolute inset-0 opacity-80" 
-                    style={{ 
-                      background: `radial-gradient(circle at 35% 35%, ${s.color} 0%, ${s.color}ee 40%, ${s.color}aa 100%)`,
-                      filter: 'blur(1px)'
-                    }} 
-                  />
-                  {/* Grain overlay */}
-                  <div
-                    className="absolute inset-0 mix-blend-multiply opacity-30"
-                    style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: '150px 150px' }}
-                  />
-                  {/* Paper texture overlay */}
-                  <div className="absolute inset-0 opacity-20 mix-blend-soft-light bg-[url('/stripe-bg.jpg')] bg-repeat" />
-                </div>
-
-                <div className="relative z-10 w-full px-2 text-center text-white font-typewriter uppercase tracking-widest [text-shadow:0_1px_3px_rgba(0,0,0,0.25)]">
-                  <span className="text-lg group-hover:hidden">
-                    {abbreviate(s.name)}
-                  </span>
-                  <span className="text-[10px] hidden group-hover:block leading-tight">
-                    {s.name}
-                  </span>
-                </div>
-              </motion.button>
-            </div>
-          );
-        })}
+        {subjects?.map((s, i) => (
+          <SubjectCircle
+            key={s.id}
+            color={s.color}
+            index={i}
+            label={abbreviate(s.name)}
+            fullName={s.name}
+            onClick={() => selectSubject(s.id)}
+          />
+        ))}
       </div>
     </div>
   );
