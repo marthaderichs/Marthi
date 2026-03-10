@@ -49,14 +49,14 @@ body {
   padding: 0;
 }
 
-/* Wide Vertical Stripes like in the reference */
+/* Wide Vertical Stripes – wide tan, narrow blue like reference */
 .main-bg-stripes {
   background-image: repeating-linear-gradient(
     90deg,
     var(--stripe-tan),
-    var(--stripe-tan) 60px,
-    var(--stripe-blue) 60px,
-    var(--stripe-blue) 120px
+    var(--stripe-tan) 80px,
+    var(--stripe-blue) 80px,
+    var(--stripe-blue) 100px
   );
   background-attachment: scroll;
 }

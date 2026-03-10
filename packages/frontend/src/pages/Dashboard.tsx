@@ -28,39 +28,42 @@ export default function Dashboard() {
     { to: '/garden',     icon: Flower2,     label: 'Garten',     color: '#B8D3E5', desc: 'Fehler pflegen' },
   ];
 
-  if (subjectsLoading) return <div className="flex justify-center py-32"><Loader2 className="w-10 h-10 animate-spin text-[#8B1E1E]" /></div>;
+  if (subjectsLoading) return (
+    <div className="flex justify-center py-32">
+      <Loader2 className="w-10 h-10 animate-spin text-[#8B1E1E]" />
+    </div>
+  );
 
   return (
-    <div className="max-w-6xl mx-auto space-y-10">
+    <div className="max-w-5xl mx-auto space-y-5 py-10 px-4">
 
-      {/* Welcome */}
-      <div className="space-y-4">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#8B1E1E]/8 rounded-full text-[#8B1E1E] text-[10px] font-black uppercase tracking-[0.2em]">
+      {/* Welcome card */}
+      <div className="bg-[#E2E8D4] rounded-2xl px-8 py-7 space-y-3">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#8B1E1E]/10 rounded-full text-[#8B1E1E] text-[10px] font-black uppercase tracking-[0.2em]">
           <Sparkles className="w-3 h-3" /> hey marthi!
         </div>
         <h1 className="text-6xl md:text-7xl font-display text-[#8B1E1E] leading-tight">Schön, dass du da bist</h1>
-        <div className="flex items-center gap-3 flex-wrap">
+        <div className="flex items-center gap-3 flex-wrap pt-1">
           <p className="text-lg text-[#4A3A2F]/60 font-serif italic">Bereit für eine Prise medizinisches Wissen?</p>
-          <span className="px-4 py-1.5 bg-[#A3B18A]/20 rounded-full text-[#344E41] font-black text-xs">{stats.totalTopics} Kapitel</span>
-          <span className="px-4 py-1.5 bg-[#B8D3E5] rounded-full text-[#4A3A2F] font-black text-xs">{stats.totalQuestions} Fragen</span>
+          <span className="px-4 py-1.5 bg-white/60 rounded-full text-[#344E41] font-black text-xs">{stats.totalTopics} Kapitel</span>
+          <span className="px-4 py-1.5 bg-[#B8D3E5]/60 rounded-full text-[#4A3A2F] font-black text-xs">{stats.totalQuestions} Fragen</span>
         </div>
       </div>
 
-      {/* Main Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-8">
+      {/* Bottom grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
 
-        {/* Quick Actions */}
-        <div className="lg:col-span-7 space-y-3">
+        {/* Quick Actions card */}
+        <div className="lg:col-span-7 bg-[#E2E8D4] rounded-2xl p-6 space-y-3">
           {quickLinks.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
-              className="group flex items-center justify-between px-7 py-5 bg-white rounded-full border border-[#4A3A2F]/6 hover:-translate-y-0.5 transition-all"
-              style={{ boxShadow: '0 2px 10px rgba(74,58,47,0.08)' }}
+              className="group flex items-center justify-between px-6 py-4 bg-white/70 rounded-xl border border-white/80 hover:bg-white hover:-translate-y-0.5 transition-all"
             >
-              <div className="flex items-center gap-5">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: `${link.color}20`, color: link.color }}>
-                  <link.icon className="w-5 h-5" />
+              <div className="flex items-center gap-4">
+                <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: `${link.color}22`, color: link.color }}>
+                  <link.icon className="w-4 h-4" />
                 </div>
                 <div className="flex items-baseline gap-3">
                   <span className="font-display text-3xl text-[#4A3A2F]">{link.label}</span>
@@ -72,8 +75,8 @@ export default function Dashboard() {
           ))}
         </div>
 
-        {/* Sidebar */}
-        <div className="lg:col-span-5 space-y-6 lg:pl-8 lg:border-l lg:border-[#4A3A2F]/10">
+        {/* Sidebar card */}
+        <div className="lg:col-span-5 bg-[#E2E8D4] rounded-2xl p-6 space-y-6">
 
           <div className="space-y-4">
             <h3 className="font-display text-3xl text-[#8B1E1E]">Dein Fortschritt</h3>
@@ -84,7 +87,7 @@ export default function Dashboard() {
                     <span>{s.name}</span>
                     <span>{(s as any).progress || 0}%</span>
                   </div>
-                  <div className="h-1 w-full bg-[#4A3A2F]/10 rounded-full overflow-hidden">
+                  <div className="h-1.5 w-full bg-white/50 rounded-full overflow-hidden">
                     <motion.div
                       className="h-full rounded-full"
                       style={{ backgroundColor: s.color }}
@@ -109,7 +112,7 @@ export default function Dashboard() {
               const Icon = getIcon(s.icon);
               return (
                 <NavLink key={s.id} to="/content" className="flex items-center gap-3 py-2.5 border-b border-[#4A3A2F]/8 last:border-0 group">
-                  <div className="w-6 h-6 rounded-full shrink-0 flex items-center justify-center" style={{ backgroundColor: `${s.color}25`, color: s.color }}>
+                  <div className="w-6 h-6 rounded-full shrink-0 flex items-center justify-center" style={{ backgroundColor: `${s.color}30`, color: s.color }}>
                     <Icon className="w-3 h-3" />
                   </div>
                   <span className="text-sm font-bold text-[#4A3A2F]/60 truncate flex-1 group-hover:text-[#4A3A2F] transition-colors">{s.name}</span>
