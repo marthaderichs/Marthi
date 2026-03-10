@@ -18,7 +18,7 @@ function Squiggle() {
 const TILTS = [-7, 5, -4, 8];
 const HEART = "M50,74 C22,59 4,42 4,26 Q4,8 23,8 Q37,8 50,25 Q63,8 77,8 Q96,8 96,26 C96,42 78,59 50,74 Z";
 const NUM_DASHES = 16;
-const HCX = 50, HCY = 41, R1 = 53, R2 = 64;
+const HCX = 50, HCY = 41, R1 = 62, R2 = 76;
 const DASHES = Array.from({ length: NUM_DASHES }, (_, i) => {
   const a = (i / NUM_DASHES) * Math.PI * 2 - Math.PI / 2;
   return { x1: HCX + R1 * Math.cos(a), y1: HCY + R1 * Math.sin(a), x2: HCX + R2 * Math.cos(a), y2: HCY + R2 * Math.sin(a) };
@@ -53,7 +53,7 @@ export default function Dashboard() {
   if (isLoading) return <div className="flex justify-center py-40"><Spinner /></div>;
 
   return (
-    <div className="max-w-2xl mx-auto px-5 py-10 space-y-7">
+    <div className="max-w-2xl mx-auto px-5 pt-16 pb-10 sm:py-10 space-y-7">
 
       {/* ── Greeting card ───────────────────────────────────────────────── */}
       <div className="scribble-border bg-[var(--light-cream)] px-8 pt-8 pb-7 space-y-3">
