@@ -24,10 +24,10 @@ export default function Dashboard() {
   }, [subjects]);
 
   const quickLinks = [
-    { to: '/exam',       icon: CheckSquare, label: 'Klausur',    color: '#673147', desc: 'Wissen testen' },
-    { to: '/content',    icon: BookOpen,    label: 'Bibliothek', color: '#A3B18A', desc: 'Kapitel lesen' },
-    { to: '/flashcards', icon: Brain,       label: 'Karten',     color: '#E9C46A', desc: 'Fakten lernen' },
-    { to: '/garden',     icon: Flower2,     label: 'Garten',     color: '#B8D3E5', desc: 'Fehler pflegen' },
+    { to: '/exam',       icon: CheckSquare, label: 'Klausur',    color: '#C96843', desc: 'Wissen testen' },
+    { to: '/content',    icon: BookOpen,    label: 'Bibliothek', color: '#2F9E98', desc: 'Kapitel lesen' },
+    { to: '/flashcards', icon: Brain,       label: 'Karten',     color: '#7F2982', desc: 'Fakten lernen' },
+    { to: '/garden',     icon: Flower2,     label: 'Garten',     color: '#899E70', desc: 'Fehler pflegen' },
   ];
 
   if (subjectsLoading) return (
@@ -83,15 +83,15 @@ export default function Dashboard() {
                 className="group scribble-border flex items-center justify-between px-6 py-5 bg-white/40 hover:bg-white/60 transition-all"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 flex items-center justify-center shrink-0 rounded-full" style={{ backgroundColor: `${link.color}18`, color: link.color }}>
-                    <link.icon className="w-5 h-5" />
+                  <div className="w-12 h-12 flex items-center justify-center shrink-0 rounded-2xl shadow-sm transition-transform group-hover:scale-110" style={{ backgroundColor: `${link.color}`, color: 'white' }}>
+                    <link.icon className="w-6 h-6 stroke-[2.5]" />
                   </div>
                   <div className="flex flex-col">
-                    <span className="font-display text-2xl text-[#673147] leading-none">{link.label}</span>
-                    <span className="text-[9px] font-black uppercase tracking-widest text-[#4A3A2F]/30 mt-1">{link.desc}</span>
+                    <span className="font-display text-3xl text-[#673147] leading-none">{link.label}</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/40 mt-1">{link.desc}</span>
                   </div>
                 </div>
-                <ArrowRight className="w-4 h-4 text-[#4A3A2F]/20 group-hover:text-[#673147] group-hover:translate-x-1 transition-all" />
+                <ArrowRight className="w-5 h-5 text-[#4A3A2F]/20 group-hover:text-[#673147] group-hover:translate-x-1 transition-all" />
               </NavLink>
             ))}
           </div>
@@ -100,11 +100,11 @@ export default function Dashboard() {
         {/* Sidebar */}
         <div className={cn(CARD_BASE, "lg:col-span-5 scribble-border bg-[var(--light-cream)] space-y-8")}>
 
-          <div className="space-y-4">
+          <div className="space-y-6">
             <div className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/40">Fortschritt</div>
             {subjects?.slice(0, 4).map(s => (
-              <div key={s.id} className="space-y-1.5 pb-3 border-b border-[#4A3A2F]/8 last:border-0">
-                <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/50">
+              <div key={s.id} className="space-y-2 pb-4 border-b border-[#4A3A2F]/8 last:border-0">
+                <div className="flex justify-between text-xs font-black uppercase tracking-widest text-[#4A3A2F]/60">
                   <span>{s.name}</span>
                   <span>{(s as any).progress || 0}%</span>
                 </div>

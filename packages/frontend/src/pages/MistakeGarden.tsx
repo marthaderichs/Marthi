@@ -33,8 +33,8 @@ export default function MistakeGarden() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-12 pb-20">
-      <div className="text-center space-y-4">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#DCE2C8] rounded-full text-[#344E41] text-xs font-black uppercase tracking-[0.2em]">
+      <div className="text-center space-y-4 pt-4">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#DCE2C8] rounded-full text-[#344E41] text-xs font-black uppercase tracking-[0.2em] translate-y-1">
            <Sprout className="w-3 h-3" /> Wachstumszone
         </div>
         <h1 className="text-7xl font-display text-[#673147]">Fehler-Garten</h1>
