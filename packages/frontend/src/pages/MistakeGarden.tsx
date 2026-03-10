@@ -172,10 +172,10 @@ export default function MistakeGarden() {
                       </div>
                       <button
                         onClick={handleNext}
-                        className="w-full py-6 bg-[#673147] text-white rounded-3xl font-display text-3xl shadow-xl hover:bg-[#763428] transition-all flex items-center justify-center gap-4"
+                        className="mx-auto flex items-center gap-2 px-7 py-2.5 border border-[#673147] text-[#673147] font-display text-xl rounded-full hover:bg-[#673147] hover:text-white transition-all"
                       >
                          <span>{selectedOption === activeMistake.correctAnswerIndex ? 'Erledigt!' : 'Weiter üben'}</span>
-                         <ArrowRight className="w-8 h-8" />
+                         <ArrowRight className="w-4 h-4" />
                       </button>
                     </motion.div>
                   )}

@@ -126,7 +126,7 @@ export default function Flashcards() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-8 space-y-8">
             {/* Subject Selection */}
-            <section className="bg-white p-10 rounded-[40px] shadow-xl border border-black/[0.02] space-y-8">
+            <section className="bg-white p-10 rounded-2xl border border-[#4A3A2F]/6 space-y-6">
               <h2 className="text-3xl font-display text-[#673147] flex items-center gap-3">
                  <Layers className="w-6 h-6" /> 1. Fachbereich wählen
               </h2>
@@ -164,7 +164,7 @@ export default function Flashcards() {
             </section>
 
             {/* Study Mode */}
-            <section className="bg-white p-10 rounded-[40px] shadow-xl border border-black/[0.02] space-y-8">
+            <section className="bg-white p-10 rounded-2xl border border-[#4A3A2F]/6 space-y-6">
               <h2 className="text-3xl font-display text-[#673147] flex items-center gap-3">
                  <Brain className="w-6 h-6" /> 2. Lern-Modus
               </h2>
@@ -247,7 +247,7 @@ export default function Flashcards() {
                 <button
                   onClick={handleStartSession}
                   disabled={!selectedSubjectId || sessionCards.length === 0}
-                  className="w-full py-6 bg-[#673147] text-white rounded-[24px] font-display text-3xl shadow-xl hover:bg-[#763428] transition-all flex items-center justify-center gap-3 disabled:opacity-20 group"
+                  className="mx-auto flex items-center gap-2 px-8 py-3 border border-[#673147] text-[#673147] font-display text-xl rounded-full hover:bg-[#673147] hover:text-white transition-all disabled:opacity-20 group"
                 >
                   <span>Starten</span>
                   <Play className="w-6 h-6 fill-current group-hover:scale-110 transition-transform" />

@@ -37,7 +37,7 @@ export default function ContentLibrary() {
     <div className="max-w-7xl mx-auto space-y-12 header-padding">
       <div className="text-center space-y-3">
         <h1 className="text-7xl font-display text-[#673147]">Bibliothek</h1>
-        <p className="text-xl text-[#4A3A2F]/45 font-typewriter">
+        <p className="text-xl text-[#4A3A2F]/45 font-serif italic">
           „Wiederholung ist das Fundament der Meisterschaft."
         </p>
       </div>

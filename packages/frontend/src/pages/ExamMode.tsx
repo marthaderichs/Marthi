@@ -126,7 +126,7 @@ export default function ExamMode() {
   if (subjectsLoading) return <div className="flex justify-center py-32"><Loader2 className="w-10 h-10 animate-spin text-[#673147]/40" /></div>;
 
   if (!quizStarted && !setupMode) return (
-    <div className="w-full max-w-5xl mx-auto space-y-12">
+    <div className="w-full max-w-5xl mx-auto space-y-12 pt-10">
       <div className="text-center space-y-4">
         <h1 className="text-7xl font-display text-[#673147]">Klausur-Modus</h1>
         <p className="text-xl text-[#673147]/50 font-typewriter">Wähle ein Fach und leg los.</p>
@@ -229,7 +229,7 @@ export default function ExamMode() {
           <div className="grid gap-3">
             {question?.options.map((option, index) => (
                 <button key={index} onClick={() => handleOptionClick(index)} disabled={isAnswered} className={cn("w-full text-left p-6 rounded-2xl font-bold text-lg border-2 transition-all min-h-[80px]", isAnswered ? (index === question.correctAnswerIndex ? "bg-[#A3B18A]/20 border-[#A3B18A] text-[#1E3A1E]" : (selectedOption === index ? "bg-[#673147]/10 border-[#673147] text-[#673147]" : "opacity-30")) : (selectedOption === index ? "border-[#673147] ring-4 ring-[#673147]/5 shadow-md" : "bg-[#E2E8D4]/50 border-transparent hover:bg-white"))}>
-                  <span className="font-display text-[1.15rem] pr-4 leading-snug">{option}</span>
+                  <span className="font-serif italic text-lg pr-4 leading-snug">{option}</span>
                 </button>
             ))}
           </div>
@@ -237,7 +237,7 @@ export default function ExamMode() {
             {isAnswered && (
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="p-8 lg:p-12 bg-[#E2E8D4]/60 rounded-[40px] border border-black/[0.02] space-y-8 shadow-inner">
                   <div className="space-y-6">
-                     <h4 className="text-5xl lg:text-6xl font-display text-[#673147] flex items-center gap-4 mb-8">
+                     <h4 className="text-7xl lg:text-8xl font-display text-[#673147] flex items-center gap-4 mb-8">
                        <Sparkles className="w-8 h-8" /> Erklärung
                      </h4>
                      <div className="text-xl text-[#673147]/80 leading-relaxed font-serif italic">
