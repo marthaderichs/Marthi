@@ -97,8 +97,10 @@ h1, h2, h3, h4 {
   color: #2D241F !important; /* Darker, more saturated brown */
 }
 
-/* Global typewriter for basic text */
-p, span:not(.font-display):not(.uppercase), li {
+/* Global typewriter for basic descriptive text — excludes display/serif overrides */
+p:not(.font-display):not(.font-serif):not([class*="font-"]),
+span:not(.font-display):not(.font-serif):not(.uppercase):not([class*="font-"]),
+li:not(.font-display):not(.font-serif) {
   font-family: var(--font-typewriter);
   color: #3D2F26;
 }

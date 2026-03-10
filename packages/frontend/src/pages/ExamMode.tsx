@@ -230,7 +230,7 @@ export default function ExamMode() {
           <div className="grid gap-3">
             {question?.options.map((option, index) => (
                 <button key={index} onClick={() => handleOptionClick(index)} disabled={isAnswered} className={cn("w-full text-left p-6 rounded-2xl font-bold text-lg border-2 transition-all min-h-[80px]", isAnswered ? (index === question.correctAnswerIndex ? "bg-[#A3B18A]/20 border-[#A3B18A] text-[#1E3A1E]" : (selectedOption === index ? "bg-[#673147]/10 border-[#673147] text-[#673147]" : "opacity-30")) : (selectedOption === index ? "border-[#673147] ring-4 ring-[#673147]/5 shadow-md" : "bg-[#E2E8D4]/50 border-transparent hover:bg-white"))}>
-                  <span className="font-sans pr-4 leading-relaxed">{option}</span>
+                  <span className="font-display text-[1.15rem] pr-4 leading-snug">{option}</span>
                 </button>
             ))}
           </div>
