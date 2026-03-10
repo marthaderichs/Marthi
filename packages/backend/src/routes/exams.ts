@@ -16,7 +16,7 @@ examsRouter.get('/generate', async (req, res, next) => {
 
     if (!subjectId) return res.status(400).json({ error: 'subjectId is required' });
 
-    const where: any = { subjectId };
+    const where: any = subjectId === 'all' ? {} : { subjectId };
     
     if (topicIds && topicIds.trim() !== '') {
       where.topicId = { in: topicIds.split(',') };

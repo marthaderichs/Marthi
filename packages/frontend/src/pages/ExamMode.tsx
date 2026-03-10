@@ -4,7 +4,7 @@ import { useSubjects } from '../hooks/useSubjects';
 import { useExamGenerate, useExamSubmit } from '../hooks/useExam';
 import { useMistakes } from '../hooks/useMistakes';
 import { cn } from '../lib/utils';
-import { CheckCircle2, XCircle, ArrowRight, Trophy, Loader2, RotateCcw, Sparkles, Settings2, Info, Layers } from 'lucide-react';
+import { CheckCircle2, XCircle, ArrowRight, Trophy, Loader2, RotateCcw, Sparkles, Settings2, Info, Layers, Shuffle } from 'lucide-react';
 import { DisplayText } from '../components/DisplayText';
 
 import { getIcon } from '../lib/icons';
@@ -106,8 +106,16 @@ export default function ExamMode() {
     refetch();
   };
 
+  const isAllMode = selectedSubjectId === 'all';
+
   const selectSubject = (id: string) => {
     setSelectedSubjectId(id);
+    setSelectedTopicIds([]);
+    setSetupMode(true);
+  };
+
+  const selectAllSubjects = () => {
+    setSelectedSubjectId('all');
     setSelectedTopicIds([]);
     setSetupMode(true);
   };
@@ -132,6 +140,20 @@ export default function ExamMode() {
         <h1 className="text-7xl font-display text-[#673147]">Klausur-Modus</h1>
         <p className="text-xl text-[#673147]/50 font-typewriter">Wähle ein Fach und leg los.</p>
       </div>
+      <motion.button
+        whileHover={{ y: -2 }}
+        whileTap={{ scale: 0.98 }}
+        onClick={selectAllSubjects}
+        className="w-full p-5 border-2 border-[#673147]/20 rounded-2xl flex items-center gap-4 text-left hover:border-[#673147]/40 hover:bg-white/50 transition-all"
+      >
+        <div className="w-12 h-12 rounded-full bg-[#673147]/10 flex items-center justify-center shrink-0">
+          <Shuffle className="w-6 h-6 text-[#673147]" />
+        </div>
+        <div>
+          <div className="font-display text-2xl text-[#673147]">Alle Fächer gemischt</div>
+          <p className="text-xs font-typewriter text-[#673147]/40">Fragen aus allen Fachbereichen in zufälliger Reihenfolge</p>
+        </div>
+      </motion.button>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
         {subjects?.map((s, i) => (
           <SubjectBlob
@@ -146,15 +168,23 @@ export default function ExamMode() {
     </div>
   );
 
-  if (setupMode && subject) return (
+  if (setupMode && (subject || isAllMode)) return (
     <div className="max-w-2xl mx-auto space-y-8">
         <div className="bg-[#F9F4E8] p-10 rounded-2xl border border-[#4A3A2F]/8 space-y-8" style={{ boxShadow: '2px 2px 0 rgba(74,58,47,0.07)' }}>
             <div className="flex items-center gap-6 pb-6 border-b border-black/[0.03]">
-                <div className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm" style={{ backgroundColor: subject.color }}>
-                    {React.createElement(getIcon(subject.icon), { className: "w-8 h-8 text-white" })}
-                </div>
+                {isAllMode ? (
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm bg-[#673147]/10">
+                    <Shuffle className="w-8 h-8 text-[#673147]" />
+                  </div>
+                ) : (
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm" style={{ backgroundColor: subject!.color }}>
+                    {React.createElement(getIcon(subject!.icon), { className: "w-8 h-8 text-white" })}
+                  </div>
+                )}
                 <div>
-                    <h2 className="text-4xl font-display text-[#673147]"><DisplayText>{subject.name}</DisplayText></h2>
+                    <h2 className="text-4xl font-display text-[#673147]">
+                      {isAllMode ? 'Alle Fächer' : <DisplayText>{subject!.name}</DisplayText>}
+                    </h2>
                     <button onClick={() => setSetupMode(false)} className="text-[10px] font-black uppercase tracking-widest text-[#673147]/30 hover:text-[#673147] transition-colors">Abbrechen</button>
                 </div>
             </div>
@@ -171,7 +201,7 @@ export default function ExamMode() {
 
               <div className="space-y-6">
                   <h4 className="text-sm font-black uppercase tracking-widest text-[#673147]/50 flex items-center gap-2"><Sparkles className="w-3 h-3" /> Filter</h4>
-                  <button 
+                  <button
                     onClick={() => setOnlyNew(!onlyNew)}
                     className={cn(
                       "w-full py-4 rounded-2xl font-display text-xl border-2 transition-all flex items-center justify-center gap-3",
@@ -183,17 +213,19 @@ export default function ExamMode() {
               </div>
             </div>
 
-            <div className="space-y-6">
-                <h4 className="text-sm font-black uppercase tracking-widest text-[#673147]/50 flex items-center gap-2"><Layers className="w-3 h-3" /> Themen (optional)</h4>
-                <div className="grid grid-cols-1 gap-2 max-h-[250px] overflow-y-auto pr-2 custom-scrollbar text-sm">
-                    {subject.topics?.map(topic => (
-                        <button key={topic.id} onClick={() => setSelectedTopicIds(prev => prev.includes(topic.id) ? prev.filter(id => id !== topic.id) : [...prev, topic.id])} className={cn("text-left p-4 rounded-xl font-bold border-2 transition-all flex justify-between items-center group", selectedTopicIds.includes(topic.id) ? "bg-[#A3B18A]/10 border-[#A3B18A] text-[#1E3A1E]" : "bg-white border-black/[0.03] text-[#673147]/60")}>
-                            <span className="truncate pr-4">{topic.title}</span>
-                            <div className={cn("w-5 h-5 rounded-full border-2 transition-all shrink-0", selectedTopicIds.includes(topic.id) ? "bg-[#A3B18A] border-[#A3B18A]" : "border-black/10")} />
-                        </button>
-                    ))}
-                </div>
-            </div>
+            {!isAllMode && (
+              <div className="space-y-6">
+                  <h4 className="text-sm font-black uppercase tracking-widest text-[#673147]/50 flex items-center gap-2"><Layers className="w-3 h-3" /> Themen (optional)</h4>
+                  <div className="grid grid-cols-1 gap-2 max-h-[250px] overflow-y-auto pr-2 custom-scrollbar text-sm">
+                      {subject!.topics?.map(topic => (
+                          <button key={topic.id} onClick={() => setSelectedTopicIds(prev => prev.includes(topic.id) ? prev.filter(id => id !== topic.id) : [...prev, topic.id])} className={cn("text-left p-4 rounded-xl font-bold border-2 transition-all flex justify-between items-center group", selectedTopicIds.includes(topic.id) ? "bg-[#A3B18A]/10 border-[#A3B18A] text-[#1E3A1E]" : "bg-white border-black/[0.03] text-[#673147]/60")}>
+                              <span className="truncate pr-4">{topic.title}</span>
+                              <div className={cn("w-5 h-5 rounded-full border-2 transition-all shrink-0", selectedTopicIds.includes(topic.id) ? "bg-[#A3B18A] border-[#A3B18A]" : "border-black/10")} />
+                          </button>
+                      ))}
+                  </div>
+              </div>
+            )}
             <button onClick={startQuiz} className="w-full py-6 bg-[#673147] text-white rounded-[24px] font-display text-3xl shadow-xl hover:bg-[#763428] transition-all">Starten</button>
         </div>
     </div>
@@ -238,7 +270,7 @@ export default function ExamMode() {
             {isAnswered && (
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="p-8 lg:p-12 bg-[#E2E8D4]/60 rounded-[40px] border border-black/[0.02] space-y-8 shadow-inner">
                   <div className="space-y-6">
-                     <h4 className="text-7xl lg:text-8xl font-display text-[#673147] flex items-center gap-4 mb-8">
+                     <h4 className="text-3xl lg:text-4xl font-display text-[#673147] flex items-center gap-3 mb-6">
                        <Sparkles className="w-8 h-8" /> <DisplayText>Erklärung</DisplayText>
                      </h4>
                      <div className="text-xl text-[#673147]/80 leading-relaxed font-serif">

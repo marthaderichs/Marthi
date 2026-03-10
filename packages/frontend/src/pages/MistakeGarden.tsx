@@ -168,7 +168,7 @@ export default function MistakeGarden() {
                       className="mt-6 pt-6 border-t border-black/[0.03] space-y-6"
                     >
                       <div className="bg-[#E2E8D4]/50 p-6 rounded-3xl border border-black/[0.02]">
-                         <h4 className="text-[10px] font-black uppercase text-[#673147] mb-3">Erklärung</h4>
+                         <h4 className="text-2xl font-display text-[#673147] mb-3">Erklärung</h4>
                          <p className="text-lg text-[#4A3A2F]/80 leading-relaxed font-serif italic">„{activeMistake.explanation}"</p>
                       </div>
                       <button

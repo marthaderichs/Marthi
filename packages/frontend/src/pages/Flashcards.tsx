@@ -116,7 +116,7 @@ export default function Flashcards() {
   // --- VIEW: SETUP ---
   if (view === 'setup') {
     return (
-      <div className="w-full max-w-6xl mx-auto space-y-12">
+      <div className="w-full max-w-6xl mx-auto space-y-12 pt-8 sm:pt-4">
         <div className="text-center space-y-4">
           <h1 className="text-7xl text-[#673147] font-display">Karteikarten</h1>
           <p className="text-xl text-[#673147]/45 font-typewriter">

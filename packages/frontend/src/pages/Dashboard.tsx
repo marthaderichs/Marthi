@@ -4,6 +4,7 @@ import { useSubjects } from '../hooks/useSubjects';
 import { NavLink } from 'react-router-dom';
 import { cn } from '../lib/utils';
 import { ArrowRight } from 'lucide-react';
+import { SketchBox } from '../components/SketchBox';
 
 // ── Handdrawn divider ─────────────────────────────────────────────────────────
 function Squiggle() {
@@ -56,7 +57,7 @@ export default function Dashboard() {
     <div className="max-w-2xl mx-auto px-5 pt-16 pb-10 sm:py-10 space-y-7">
 
       {/* ── Greeting card ───────────────────────────────────────────────── */}
-      <div className="scribble-border bg-[var(--light-cream)] px-8 pt-8 pb-7 space-y-3">
+      <SketchBox className="bg-[var(--light-cream)] px-8 pt-8 pb-7 space-y-3">
         <p className="text-[13px] font-typewriter tracking-[0.38em] text-[#673147]/38 uppercase">
           Willkommen
         </p>
@@ -67,7 +68,7 @@ export default function Dashboard() {
         <p className="font-typewriter text-[17px] text-[#4A3A2F]/52 pt-0.5">
           Wähle ein Fach und leg los.
         </p>
-      </div>
+      </SketchBox>
 
       {/* ── Nav circles ─────────────────────────────────────────────────── */}
       <div className="bg-[var(--light-cream)] px-6 py-7 border border-[#673147]/10">
@@ -99,7 +100,7 @@ export default function Dashboard() {
       </div>
 
       {/* ── Subjects ─────────────────────────────────────────────────────── */}
-      <div className="scribble-border bg-[var(--light-cream)] px-7 py-6 space-y-1">
+      <SketchBox className="bg-[var(--light-cream)] px-7 py-6 space-y-1">
         <p className="text-[13px] font-typewriter tracking-[0.38em] text-[#673147]/35 uppercase mb-4">Fachbereiche</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8">
           {subjects?.slice(0, 8).map((s) => (
@@ -116,7 +117,7 @@ export default function Dashboard() {
             </NavLink>
           ))}
         </div>
-      </div>
+      </SketchBox>
     </div>
   );
 }

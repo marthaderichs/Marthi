@@ -101,28 +101,6 @@ li:not(.font-display):not(.font-serif) {
   font-family: var(--font-typewriter);
 }
 
-.scribble-border {
-  position: relative;
-  border: none;
-  background-color: var(--light-cream);
-  z-index: 1;
-}
-
-.scribble-border::after {
-  content: "";
-  position: absolute;
-  inset: -6px;
-  border: 5px solid var(--plum);
-  border-radius: 255px 25px 225px 25px/25px 225px 25px 255px;
-  pointer-events: none;
-  opacity: 1;
-  z-index: -1;
-}
-
-.scribble-border:hover::after {
-  transform: scale(1.02) rotate(-0.5deg);
-  border-width: 6px;
-}
 
 /* Hand-drawn Vibe: unregelmäßige Ecken + doppelter Strichrahmen */
 .card-wobbly {
