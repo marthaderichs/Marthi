@@ -150,15 +150,29 @@ export default function ExamMode() {
                 whileHover={{ scale: 1.1, rotate: 0 }}
                 transition={{ type: 'spring', stiffness: 280, damping: 20 }}
                 onClick={() => selectSubject(s.id)}
-                className="aspect-square w-full relative overflow-hidden flex items-center justify-center shadow-lg group"
-                style={{ borderRadius: br }}
+                className="aspect-square w-full relative overflow-hidden flex items-center justify-center group"
+                style={{ 
+                  borderRadius: br,
+                  boxShadow: '0 4px 15px rgba(0,0,0,0.05), inset 0 0 20px rgba(0,0,0,0.1)'
+                }}
               >
-                <div className="absolute inset-0" style={{ backgroundColor: s.color }} />
-                <div
-                  className="absolute inset-0 mix-blend-soft-light opacity-40"
-                  style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: '180px 180px' }}
+                {/* Watercolor base */}
+                <div 
+                  className="absolute inset-0 opacity-80" 
+                  style={{ 
+                    background: `radial-gradient(circle at 35% 35%, ${s.color} 0%, ${s.color}ee 40%, ${s.color}aa 100%)`,
+                    filter: 'blur(1px)'
+                  }} 
                 />
-                <div className="relative z-10 w-full px-2 text-center text-white font-typewriter uppercase tracking-widest [text-shadow:0_2px_10px_rgba(0,0,0,0.3)]">
+                {/* Grain overlay */}
+                <div
+                  className="absolute inset-0 mix-blend-multiply opacity-30"
+                  style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: '150px 150px' }}
+                />
+                {/* Paper texture overlay */}
+                <div className="absolute inset-0 opacity-20 mix-blend-soft-light bg-[url('/stripe-bg.jpg')] bg-repeat" />
+
+                <div className="relative z-10 w-full px-2 text-center text-white font-typewriter uppercase tracking-widest [text-shadow:0_1px_3px_rgba(0,0,0,0.25)]">
                   <span className="text-lg group-hover:hidden">
                     {abbreviate(s.name)}
                   </span>
@@ -266,7 +280,9 @@ export default function ExamMode() {
             {isAnswered && (
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="p-8 lg:p-12 bg-[#E2E8D4]/60 rounded-[40px] border border-black/[0.02] space-y-8 shadow-inner">
                   <div className="space-y-6">
-                     <h4 className="text-xl lg:text-2xl font-display text-[#673147] flex items-center gap-3"><Sparkles className="w-5 h-5" /> Erklärung</h4>
+                     <h4 className="text-5xl lg:text-6xl font-display text-[#673147] flex items-center gap-4 mb-8">
+                       <Sparkles className="w-8 h-8" /> Erklärung
+                     </h4>
                      <div className="text-xl text-[#673147]/80 leading-relaxed font-serif italic">
                         {formatExplanation(question.explanation)}
                      </div>

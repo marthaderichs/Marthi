@@ -58,13 +58,27 @@ export default function Dashboard() {
         {/* Stats */}
         <div className={cn(CARD_BASE, "scribble-border bg-[var(--light-cream)] flex flex-col justify-center gap-6 min-w-[200px]")}>
           <div className="space-y-1">
-            <div className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/40">Kapitel</div>
-            <div className="font-display text-5xl text-[#673147]">{stats.totalTopics}</div>
+            <div className="text-xl font-display text-[#4A3A2F]/40 leading-none">Kapitel</div>
+            <div className="font-display text-6xl text-[#673147]">{stats.totalTopics}</div>
           </div>
-          <div className="border-t border-[#4A3A2F]/10" />
+          
+          {/* Hand-drawn Divider */}
+          <div className="h-4 flex items-center justify-center -mx-4">
+            <svg viewBox="0 0 100 10" preserveAspectRatio="none" className="w-full h-full text-[#4A3A2F]/15">
+              <path 
+                d="M 5,5 Q 25,2 50,5 T 95,5" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                className="path-scribble"
+              />
+            </svg>
+          </div>
+
           <div className="space-y-1">
-            <div className="text-[10px] font-black uppercase tracking-widest text-[#4A3A2F]/40">Fragen</div>
-            <div className="font-display text-5xl text-[#673147]">{stats.totalQuestions}</div>
+            <div className="text-xl font-display text-[#4A3A2F]/40 leading-none">Fragen</div>
+            <div className="font-display text-6xl text-[#673147]">{stats.totalQuestions}</div>
           </div>
         </div>
       </div>

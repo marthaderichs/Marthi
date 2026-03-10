@@ -56,6 +56,7 @@ REGELN:
 - Sprache: Deutsch, professionell, präzise.
 - Korrekte deutsche Groß- und Kleinschreibung verwenden.
 - Erklärungen vollständig und klar formulieren.
+- KEINE Tabellen, KEINE Pipes (|) oder Trennstriche in den Erklärungen verwenden. Nur Fließtext oder einfache Zeilenumbrüche.
 
 INHALTE:
 [DEINE INHALTE HIER EINFÜGEN]`;
