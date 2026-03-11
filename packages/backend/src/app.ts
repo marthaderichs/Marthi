@@ -35,7 +35,30 @@ export function createApp() {
   // Serve frontend in production
   if (process.env.NODE_ENV === 'production') {
     const frontendDist = path.join(__dirname, '../../frontend/dist');
-    app.use(express.static(frontendDist));
+
+    // Explicitly serve all icon paths iOS may request
+    const iconFile = path.join(frontendDist, 'apple-touch-icon.png');
+    const iconPaths = [
+      '/apple-touch-icon.png',
+      '/apple-touch-icon-precomposed.png',
+      '/apple-touch-icon-180x180.png',
+      '/apple-touch-icon-180x180-precomposed.png',
+    ];
+    iconPaths.forEach(p => {
+      app.get(p, (_req, res) => {
+        res.setHeader('Content-Type', 'image/png');
+        res.setHeader('Cache-Control', 'public, max-age=86400');
+        res.sendFile(iconFile);
+      });
+    });
+
+    app.use(express.static(frontendDist, {
+      setHeaders: (res, filePath) => {
+        if (filePath.endsWith('.webmanifest')) {
+          res.setHeader('Content-Type', 'application/manifest+json');
+        }
+      }
+    }));
     app.get('*', (_req, res) => {
       res.sendFile(path.join(frontendDist, 'index.html'));
     });
