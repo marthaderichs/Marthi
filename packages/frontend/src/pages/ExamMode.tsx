@@ -267,17 +267,9 @@ export default function ExamMode() {
 
   if (!quizStarted && !setupMode) return (
     <div className="w-full max-w-5xl mx-auto space-y-12 pt-10">
-      <div className="flex items-start justify-between">
-        <div className="space-y-4">
-          <h1 className="text-7xl font-display text-[#673147]">Klausur-Modus</h1>
-          <p className="text-xl text-[#673147]/50 font-typewriter">Wähle ein Fach und leg los.</p>
-        </div>
-        <button
-          onClick={() => { setOverviewSubjectId(undefined); setShowOverview(true); }}
-          className="flex items-center gap-2 px-5 py-2.5 bg-[#E2E8D4] rounded-full text-xs font-bold uppercase tracking-widest text-[#673147] hover:bg-[#673147] hover:text-white transition-all mt-2 shrink-0"
-        >
-          <List className="w-3.5 h-3.5" /> Fragen verwalten
-        </button>
+      <div className="text-center space-y-4">
+        <h1 className="text-7xl font-display text-[#673147]">Klausur-Modus</h1>
+        <p className="text-xl text-[#673147]/50 font-typewriter">Wähle ein Fach und leg los.</p>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
         {subjects?.map((s, i) => (
@@ -304,6 +296,14 @@ export default function ExamMode() {
           <p className="text-xs font-typewriter text-[#673147]/40">Fragen aus allen Fachbereichen in zufälliger Reihenfolge</p>
         </div>
       </motion.button>
+      <div className="flex justify-center">
+        <button
+          onClick={() => { setOverviewSubjectId(undefined); setShowOverview(true); }}
+          className="flex items-center gap-2 px-5 py-2.5 bg-[#E2E8D4] rounded-full text-xs font-bold uppercase tracking-widest text-[#673147] hover:bg-[#673147] hover:text-white transition-all"
+        >
+          <List className="w-3.5 h-3.5" /> Fragen verwalten
+        </button>
+      </div>
     </div>
   );
 
