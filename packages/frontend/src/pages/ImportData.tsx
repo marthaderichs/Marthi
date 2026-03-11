@@ -235,8 +235,9 @@ export default function ImportData() {
       setEditing(null);
       setActiveTab(draft.topics.length > 0 ? 'topics' : draft.questions.length > 0 ? 'questions' : 'flashcards');
       setView('review');
-    } catch {
-      setParseError('Ungültiges JSON-Format. Bitte Eingabe prüfen (z. B. fehlende Anführungszeichen oder Kommas).');
+    } catch (err) {
+      const msg = err instanceof SyntaxError ? err.message : String(err);
+      setParseError(`Ungültiges JSON: ${msg}`);
     }
   };
 
