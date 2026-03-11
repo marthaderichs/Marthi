@@ -402,8 +402,10 @@ export default function Flashcards() {
                 <div className="px-5 py-2 bg-[#673147]/10 text-[#673147] text-[10px] font-black uppercase tracking-widest rounded-full">Die Antwort</div>
                 <RotateCw className="w-5 h-5 text-[#673147]/10" />
               </div>
-              <div className="flex-1 flex items-center justify-center overflow-y-auto pr-2 custom-scrollbar">
-                <p className="text-xl md:text-2xl text-[#673147] text-center leading-[1.6] font-serif italic">{currentCard?.back}</p>
+              <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
+                <div className="min-h-full flex items-center justify-center py-2">
+                  <p className="text-xl md:text-2xl text-[#673147] text-center leading-[1.6] font-serif italic">{currentCard?.back}</p>
+                </div>
               </div>
               <div className="grid grid-cols-2 gap-4 mt-8" onClick={e => e.stopPropagation()}>
                 <button
