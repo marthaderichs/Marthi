@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useSubjects } from '../hooks/useSubjects';
 import { useTopics, useTopic, useDeleteTopic, useDeleteQuestion } from '../hooks/useTopics';
 import { motion, AnimatePresence } from 'motion/react';
@@ -13,6 +14,7 @@ import { SubjectBlob } from '../components/SubjectBlob';
 
 export default function ContentLibrary() {
   const { data: subjects, isLoading: subjectsLoading } = useSubjects();
+  const [searchParams] = useSearchParams();
   const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
   const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -21,10 +23,28 @@ export default function ContentLibrary() {
   const [confirmDeleteQuestionId, setConfirmDeleteQuestionId] = useState<string | null>(null);
   const [deletedQuestionIds, setDeletedQuestionIds] = useState<string[]>([]);
 
+  // Auto-select subject/topic from URL params (from search)
+  useEffect(() => {
+    const subjectId = searchParams.get('subjectId');
+    if (subjectId && subjects && !selectedSubject) {
+      const subject = subjects.find(s => s.id === subjectId);
+      if (subject) setSelectedSubject(subject);
+    }
+  }, [subjects, searchParams]);
+
   const { data: topics, isLoading: topicsLoading } = useTopics(selectedSubject?.id);
   const { data: topicDetail } = useTopic(selectedTopic?.id ?? null);
   const deleteTopic = useDeleteTopic();
   const deleteQuestion = useDeleteQuestion();
+
+  // Auto-open topic from URL param once topics are loaded
+  useEffect(() => {
+    const topicId = searchParams.get('topicId');
+    if (topicId && topics && !selectedTopic) {
+      const topic = topics.find(t => t.id === topicId);
+      if (topic) setSelectedTopic(topic);
+    }
+  }, [topics, searchParams]);
 
   const filteredTopics = useMemo(() => {
     if (!topics) return [];

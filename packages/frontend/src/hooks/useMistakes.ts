@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { api } from '../api/client';
 
 export interface Mistake {
   id: string;
@@ -8,50 +9,55 @@ export interface Mistake {
   correctAnswerIndex: number;
   explanation: string;
   addedAt: number;
-  masteredCount: number; // Count how many times it was correctly answered in the garden
+  masteredCount: number;
+}
+
+type RawMistake = Omit<Mistake, 'options' | 'addedAt'> & {
+  options: string;
+  addedAt: string;
+};
+
+function parse(m: RawMistake): Mistake {
+  return {
+    ...m,
+    options: typeof m.options === 'string' ? JSON.parse(m.options) : m.options,
+    addedAt: new Date(m.addedAt).getTime(),
+  };
 }
 
 export function useMistakes() {
   const [mistakes, setMistakes] = useState<Mistake[]>([]);
 
   useEffect(() => {
-    const saved = localStorage.getItem('medilearn_mistakes');
-    if (saved) {
-      try {
-        setMistakes(JSON.parse(saved));
-      } catch (e) {
-        console.error('Failed to load mistakes', e);
-      }
-    }
+    api.get<RawMistake[]>('/mistakes').then(data => setMistakes(data.map(parse)));
   }, []);
 
-  const saveMistakes = (newMistakes: Mistake[]) => {
-    setMistakes(newMistakes);
-    localStorage.setItem('medilearn_mistakes', JSON.stringify(newMistakes));
-  };
-
-  const addMistake = (q: any) => {
+  const addMistake = async (q: any) => {
     if (mistakes.some(m => m.id === q.id)) return;
-    const newMistake: Mistake = {
-      ...q,
-      addedAt: Date.now(),
-      masteredCount: 0
-    };
-    saveMistakes([newMistake, ...mistakes]);
+    const created = await api.post<RawMistake>('/mistakes', {
+      id: q.id,
+      subjectId: q.subjectId,
+      text: q.text,
+      options: q.options,
+      correctAnswerIndex: q.correctAnswerIndex,
+      explanation: q.explanation,
+    });
+    setMistakes(prev => [parse(created), ...prev]);
   };
 
-  const masterMistake = (id: string) => {
-    const updated = mistakes.map(m => {
-      if (m.id === id) {
-        return { ...m, masteredCount: m.masteredCount + 1 };
-      }
-      return m;
-    }).filter(m => m.masteredCount < 2); // Remove if correctly answered 2 times
-    saveMistakes(updated);
+  const masterMistake = async (id: string) => {
+    const res = await fetch(`/api/mistakes/${id}/master`, { method: 'PATCH' });
+    if (res.status === 204) {
+      setMistakes(prev => prev.filter(m => m.id !== id));
+    } else {
+      const updated: RawMistake = await res.json();
+      setMistakes(prev => prev.map(m => m.id === id ? parse(updated) : m));
+    }
   };
 
-  const removeMistake = (id: string) => {
-    saveMistakes(mistakes.filter(m => m.id !== id));
+  const removeMistake = async (id: string) => {
+    await api.delete(`/mistakes/${id}`);
+    setMistakes(prev => prev.filter(m => m.id !== id));
   };
 
   return { mistakes, addMistake, masterMistake, removeMistake };

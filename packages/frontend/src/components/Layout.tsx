@@ -141,7 +141,7 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
                 <BookOpen className="w-3 h-3" /> Bibliothek
               </div>
               {results.topics.map(t => (
-                <NavLink key={t.id} to="/content" onClick={onClose}
+                <NavLink key={t.id} to={`/content?subjectId=${t.subjectId}&topicId=${t.id}`} onClick={onClose}
                   className="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-[#4A3A2F]/5 transition-colors group">
                   <div className="w-2 h-8 rounded-full shrink-0" style={{ backgroundColor: t.subject.color }} />
                   <div>
@@ -159,7 +159,7 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
                 <CheckSquare className="w-3 h-3" /> Klausurfragen
               </div>
               {results.questions.map(q => (
-                <NavLink key={q.id} to="/exam" onClick={onClose}
+                <NavLink key={q.id} to={`/exam?subjectId=${q.subjectId}`} onClick={onClose}
                   className="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-[#4A3A2F]/5 transition-colors group">
                   <div className="w-2 h-8 rounded-full shrink-0" style={{ backgroundColor: q.subject.color }} />
                   <div>
@@ -177,7 +177,7 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
                 <Brain className="w-3 h-3" /> Karteikarten
               </div>
               {results.flashcards.map(f => (
-                <NavLink key={f.id} to="/flashcards" onClick={onClose}
+                <NavLink key={f.id} to={`/flashcards?subjectId=${f.subjectId}`} onClick={onClose}
                   className="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-[#4A3A2F]/5 transition-colors group">
                   <div className="w-2 h-8 rounded-full shrink-0" style={{ backgroundColor: f.subject.color }} />
                   <div>

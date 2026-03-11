@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useFlashcards, useDueFlashcards, useReviewFlashcard, useDeleteFlashcard } from '../hooks/useFlashcards';
 import { useSubjects } from '../hooks/useSubjects';
 import { motion, AnimatePresence } from 'motion/react';
@@ -15,6 +16,7 @@ type StudyMode = 'due' | 'all';
 export default function Flashcards() {
   const { data: subjects, isLoading: subjectsLoading } = useSubjects();
 
+  const [searchParams] = useSearchParams();
   const [view, setView] = useState<ViewState>('setup');
   const [selectedSubjectId, setSelectedSubjectId] = useState<string | null>(null);
   const [studyMode, setStudyMode] = useState<StudyMode>('due');
@@ -30,6 +32,11 @@ export default function Flashcards() {
   const deleteMutation = useDeleteFlashcard();
   const [confirmDeleteCardId, setConfirmDeleteCardId] = useState<string | null>(null);
   const [deletedCardIds, setDeletedCardIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    const subjectId = searchParams.get('subjectId');
+    if (subjectId && !selectedSubjectId) setSelectedSubjectId(subjectId);
+  }, [searchParams]);
 
   const activeSubject = useMemo(() => subjects?.find(s => s.id === selectedSubjectId), [subjects, selectedSubjectId]);
 

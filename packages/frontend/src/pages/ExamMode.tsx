@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { useSubjects } from '../hooks/useSubjects';
 import { useExamGenerate, useExamSubmit } from '../hooks/useExam';
@@ -55,7 +56,8 @@ const formatExplanation = (text: string) => {
 export default function ExamMode() {
   const { data: subjects, isLoading: subjectsLoading } = useSubjects();
   const { addMistake } = useMistakes();
-  
+  const [searchParams] = useSearchParams();
+
   const [selectedSubjectId, setSelectedSubjectId] = useState<string | null>(null);
   const [selectedTopicIds, setSelectedTopicIds] = useState<string[]>([]);
   const [quizStarted, setQuizStarted] = useState(false);
@@ -64,6 +66,11 @@ export default function ExamMode() {
   const [overviewSubjectId, setOverviewSubjectId] = useState<string | undefined>(undefined);
   const [confirmDeleteQuestionId, setConfirmDeleteQuestionId] = useState<string | null>(null);
   const [deletedQuestionIds, setDeletedQuestionIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    const subjectId = searchParams.get('subjectId');
+    if (subjectId && !selectedSubjectId) setSelectedSubjectId(subjectId);
+  }, [searchParams]);
 
   const { data: allQuestions, isLoading: questionsLoading } = useQuestions(showOverview ? overviewSubjectId : undefined);
   const deleteQuestion = useDeleteQuestion();

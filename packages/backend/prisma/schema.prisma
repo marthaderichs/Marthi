@@ -148,6 +148,22 @@ model Note {
 }
 
 // ============================================
+// MISTAKES (Fehlergarten – geräteübergreifend)
+// ============================================
+model Mistake {
+  id                 String   @id              // same as Question id
+  subjectId          String
+  text               String
+  options            String                   // JSON-String: ["A","B","C","D"]
+  correctAnswerIndex Int
+  explanation        String
+  addedAt            DateTime @default(now())
+  masteredCount      Int      @default(0)
+
+  @@index([subjectId])
+}
+
+// ============================================
 // STUDY PLAN (Lernplan)
 // ============================================
 model StudyPlanItem {

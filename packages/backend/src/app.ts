@@ -10,6 +10,7 @@ import { importRouter } from './routes/import';
 import { notesRouter } from './routes/notes';
 import { studyplanRouter } from './routes/studyplan';
 import { searchRouter } from './routes/search';
+import { mistakesRouter } from './routes/mistakes';
 import { errorHandler } from './middleware/errorHandler';
 
 export function createApp() {
@@ -31,6 +32,7 @@ export function createApp() {
   app.use('/api/notes', notesRouter);
   app.use('/api/studyplan', studyplanRouter);
   app.use('/api/search', searchRouter);
+  app.use('/api/mistakes', mistakesRouter);
 
   // Serve frontend in production
   if (process.env.NODE_ENV === 'production') {
