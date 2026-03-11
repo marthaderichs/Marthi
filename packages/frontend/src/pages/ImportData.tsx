@@ -451,15 +451,12 @@ INHALTE:
               <CheckCircle2 className="w-8 h-8" />
               <span>Prüfen & Bearbeiten</span>
             </button>
-            <AnimatePresence>
-              {parseError && (
-                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-                  className="p-6 bg-[#673147]/10 rounded-3xl flex items-start gap-4 text-[#673147]">
-                  <XCircle className="w-6 h-6 shrink-0" />
-                  <p className="text-xs">{parseError}</p>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {parseError && (
+              <div className="p-5 bg-red-50 border border-red-200 rounded-2xl flex items-start gap-3 text-red-700">
+                <XCircle className="w-5 h-5 shrink-0 mt-0.5" />
+                <p className="text-sm font-mono break-all">{parseError}</p>
+              </div>
+            )}
           </div>
         </div>
 
