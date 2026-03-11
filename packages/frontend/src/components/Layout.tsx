@@ -210,19 +210,18 @@ export default function Layout() {
   }, []);
 
   const navItems = [
-    { to: '/',           icon: CheckSquare,  label: 'Dashboard' },
-    { to: '/exam',       icon: Play,         label: 'Klausur' },
-    { to: '/content',    icon: Layers,       label: 'Bibliothek' },
-    { to: '/flashcards', icon: Brain,        label: 'Karten' },
-    { to: '/garden',     icon: Flower2,      label: 'Garten' },
-    { to: '/import',     icon: Upload,       label: 'Import' },
+    { to: '/',           icon: CheckSquare,  label: 'Dashboard',  heart: '#C2341E' },
+    { to: '/exam',       icon: Play,         label: 'Klausur',    heart: '#673147' },
+    { to: '/content',    icon: Layers,       label: 'Bibliothek', heart: '#E9C46A' },
+    { to: '/flashcards', icon: Brain,        label: 'Karten',     heart: '#A3B18A' },
+    { to: '/garden',     icon: Flower2,      label: 'Garten',     heart: '#E07A8A' },
+    { to: '/import',     icon: Upload,       label: 'Import',     heart: '#B8D3E5' },
   ];
 
   return (
     <div className={cn(
       "min-h-screen flex flex-col font-sans selection:bg-[#673147]/20 transition-colors duration-1000",
-      location.pathname === '/' ? "main-bg-stripes" : "bg-[#F9F4E8]",
-      isFocusMode && "opacity-90"
+      location.pathname === '/' ? "main-bg-stripes" : "bg-[#F9F4E8]"
     )}>
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#F9F4E8] border-b border-[#4A3A2F]/5">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -300,11 +299,11 @@ export default function Layout() {
                     className={({ isActive }) => cn(
                       "flex items-center gap-5 px-5 py-4 rounded-2xl transition-all",
                       isActive
-                        ? "bg-[#B8D3E5]/50 text-[#673147]"
-                        : "text-[#673147]/50 hover:bg-[#E2E8D4]/60 hover:text-[#673147]"
+                        ? "bg-[#E2E8D4]/80 text-[#673147]"
+                        : "text-[#673147]/50 hover:bg-[#E2E8D4]/40 hover:text-[#673147]"
                     )}
                   >
-                    <item.icon className="w-6 h-6 shrink-0" />
+                    <span className="text-2xl shrink-0 leading-none" style={{ color: item.heart }}>♥</span>
                     <span className="font-display text-3xl">{item.label}</span>
                   </NavLink>
                 ))}
@@ -317,10 +316,7 @@ export default function Layout() {
         )}
       </AnimatePresence>
 
-      <main className={cn(
-        "flex-1 pb-12 w-full flex flex-col items-center transition-opacity duration-1000 pt-[90px]",
-        isFocusMode && "opacity-80"
-      )}>
+      <main className="flex-1 pb-12 w-full flex flex-col items-center pt-[90px]">
         {location.pathname !== '/' && (
           <div className="w-full main-bg-stripes flex-shrink-0" style={{ height: '180px' }} />
         )}
