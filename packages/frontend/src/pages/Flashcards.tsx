@@ -13,6 +13,31 @@ import { DisplayText } from '../components/DisplayText';
 type ViewState = 'setup' | 'learning' | 'summary' | 'overview';
 type StudyMode = 'due' | 'all';
 
+function DonutChart({ progress, color }: { progress: number; color: string }) {
+  const r = 40;
+  const circ = 2 * Math.PI * r;
+  const offset = circ * (1 - progress / 100);
+  return (
+    <div className="relative flex items-center justify-center">
+      <svg width="110" height="110" viewBox="0 0 110 110" className="-rotate-90">
+        <circle cx="55" cy="55" r={r} fill="none" stroke="#E2E8D4" strokeWidth="10" />
+        <circle
+          cx="55" cy="55" r={r} fill="none"
+          stroke={color} strokeWidth="10"
+          strokeLinecap="round"
+          strokeDasharray={circ}
+          strokeDashoffset={offset}
+          style={{ transition: 'stroke-dashoffset 0.6s ease' }}
+        />
+      </svg>
+      <div className="absolute text-center">
+        <div className="text-2xl font-display" style={{ color }}>{progress}%</div>
+        <div className="text-[9px] font-black uppercase tracking-widest text-[#673147]/30">gelernt</div>
+      </div>
+    </div>
+  );
+}
+
 export default function Flashcards() {
   const { data: subjects, isLoading: subjectsLoading } = useSubjects();
 
@@ -222,15 +247,6 @@ export default function Flashcards() {
                     }}
                   >
                     {s.name}
-                    {/* Flashcard progress bar */}
-                    {(s.flashcardProgress ?? 0) > 0 && (
-                      <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/10 rounded-b-[24px]">
-                        <div
-                          className="h-full bg-white/60 rounded-b-[24px]"
-                          style={{ width: `${s.flashcardProgress}%` }}
-                        />
-                      </div>
-                    )}
                   </button>
                 ))}
               </div>
@@ -298,16 +314,26 @@ export default function Flashcards() {
             <div className="bg-white p-10 rounded-[40px] shadow-2xl border border-black/[0.01] sticky top-32 space-y-8 text-center overflow-hidden">
               <div className="absolute inset-0 opacity-[0.03] bg-stripes-blue -z-10" />
 
-              <div className="w-20 h-20 bg-[#E2E8D4] rounded-[24px] flex items-center justify-center mx-auto mb-6">
-                 <Brain className="w-10 h-10 text-[#673147]" />
-              </div>
-
               <div className="space-y-2">
                  <h3 className="text-4xl font-display text-[#673147]">Dein Stapel</h3>
                  <p className="text-xs font-black uppercase tracking-widest text-[#673147]/30">
                     {selectedSubjectId === '__all__' ? 'Alle Fächer' : activeSubject ? activeSubject.name : 'Fach wählen'}
                  </p>
               </div>
+
+              {/* Donut chart — nur wenn Fach gewählt */}
+              {selectedSubjectId !== null && (
+                <DonutChart
+                  progress={
+                    selectedSubjectId === '__all__'
+                      ? (allCards && allCards.length > 0
+                          ? Math.round(allCards.filter(c => (c.repetitions ?? 0) > 0).length / allCards.length * 100)
+                          : 0)
+                      : (activeSubject?.flashcardProgress ?? 0)
+                  }
+                  color={activeSubject?.color ?? '#673147'}
+                />
+              )}
 
               <div className="bg-[#E2E8D4]/50 p-6 rounded-3xl border border-black/[0.02]">
                  <div className="text-5xl font-display text-[#673147]">{sessionCards.length}</div>
