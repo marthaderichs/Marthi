@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { Brain, CheckSquare, Layers, Upload, Flower2, Timer, Coffee, Play, Pause, RotateCcw, Search, X, BookOpen } from 'lucide-react';
+import { Brain, CheckSquare, Layers, Upload, Flower2, Timer, Coffee, Play, Pause, RotateCcw, Search, X, BookOpen, Menu } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -199,6 +199,7 @@ export default function Layout() {
   const location = useLocation();
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -256,40 +257,68 @@ export default function Layout() {
               <span className="hidden sm:inline">Suchen</span>
               <span className="hidden sm:inline text-[10px] opacity-50 ml-1">⌘K</span>
             </button>
-            <FocusTimer onActiveChange={setIsFocusMode} />
+            <div className="hidden lg:block">
+              <FocusTimer onActiveChange={setIsFocusMode} />
+            </div>
+            <button
+              onClick={() => setShowMobileMenu(true)}
+              className="lg:hidden p-2 text-[#673147] hover:bg-[#E2E8D4] rounded-xl transition-colors"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
           </div>
         </div>
         <div className="border-checker" />
       </header>
 
-      {/* Mobile Nav */}
-      <nav className="lg:hidden fixed bottom-6 left-4 right-4 p-2 bg-[#F9F4E8] rounded-2xl flex justify-around z-50 shadow-xl border border-black/[0.03] overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.03] bg-stripes-blue -z-10" />
-        {navItems.slice(0, 5).map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            end={item.to === '/'}
-            className={({ isActive }) => cn(
-              "flex flex-col items-center gap-1 px-2 py-2 transition-all duration-300 rounded-xl",
-              isActive ? "bg-[#B8D3E5] text-[#673147]" : "text-[#673147]/60"
-            )}
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {showMobileMenu && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="lg:hidden fixed inset-0 z-[150] bg-[#F9F4E8]"
           >
-            <item.icon className="w-4 h-4 stroke-[2]" />
-            <span className="font-display text-[9px] font-bold tracking-wide">{item.label}</span>
-          </NavLink>
-        ))}
-        <button
-          onClick={() => setShowSearch(true)}
-          className="flex flex-col items-center gap-1 px-2 py-2 text-[#673147]/30 rounded-xl"
-        >
-          <Search className="w-4 h-4 stroke-[2]" />
-          <span className="font-display text-[9px] font-bold tracking-wide">Suche</span>
-        </button>
-      </nav>
+            <div className="flex flex-col h-full">
+              <div className="flex items-center justify-between px-6 py-5 border-b border-[#4A3A2F]/8">
+                <span className="font-display text-4xl text-[#C2341E]">marthi lernt!</span>
+                <button
+                  onClick={() => setShowMobileMenu(false)}
+                  className="p-2 text-[#673147]/50 hover:text-[#673147] hover:bg-[#E2E8D4] rounded-xl transition-colors"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+              <nav className="flex-1 flex flex-col justify-center gap-2 px-6">
+                {navItems.map((item) => (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    end={item.to === '/'}
+                    onClick={() => setShowMobileMenu(false)}
+                    className={({ isActive }) => cn(
+                      "flex items-center gap-5 px-5 py-4 rounded-2xl transition-all",
+                      isActive
+                        ? "bg-[#B8D3E5]/50 text-[#673147]"
+                        : "text-[#673147]/50 hover:bg-[#E2E8D4]/60 hover:text-[#673147]"
+                    )}
+                  >
+                    <item.icon className="w-6 h-6 shrink-0" />
+                    <span className="font-display text-3xl">{item.label}</span>
+                  </NavLink>
+                ))}
+              </nav>
+              <div className="px-6 pb-10">
+                <FocusTimer onActiveChange={setIsFocusMode} />
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <main className={cn(
-        "flex-1 pb-32 w-full flex flex-col items-center transition-opacity duration-1000 pt-[90px]",
+        "flex-1 pb-12 w-full flex flex-col items-center transition-opacity duration-1000 pt-[90px]",
         isFocusMode && "opacity-80"
       )}>
         {location.pathname !== '/' && (
