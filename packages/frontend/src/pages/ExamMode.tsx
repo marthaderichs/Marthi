@@ -286,7 +286,6 @@ export default function ExamMode() {
             index={i}
             name={s.name}
             onClick={() => selectSubject(s.id)}
-            progress={s.progress}
           />
         ))}
       </div>
@@ -335,6 +334,27 @@ export default function ExamMode() {
                     <button onClick={() => setSetupMode(false)} className="text-[10px] font-black uppercase tracking-widest text-[#673147]/30 hover:text-[#673147] transition-colors">Abbrechen</button>
                 </div>
             </div>
+
+            {/* Fortschritt */}
+            {!isAllMode && subject && (
+              <div className="flex items-center gap-6 py-4 px-6 bg-white rounded-2xl border border-[#4A3A2F]/6">
+                <div className="flex-1 space-y-2">
+                  <div className="flex justify-between text-xs font-black uppercase tracking-widest text-[#673147]/40">
+                    <span>Fortschritt</span>
+                    <span style={{ color: subject.color }}>{subject.progress ?? 0}%</span>
+                  </div>
+                  <div className="h-2 bg-[#E2E8D4] rounded-full overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all duration-700"
+                      style={{ width: `${subject.progress ?? 0}%`, backgroundColor: subject.color }}
+                    />
+                  </div>
+                  <div className="flex justify-between text-[10px] text-[#673147]/30 font-typewriter">
+                    <span>{Math.round((subject.progress ?? 0) * (subject._count?.questions ?? 0) / 100)} von {subject._count?.questions ?? 0} Fragen richtig beantwortet</span>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-6">
