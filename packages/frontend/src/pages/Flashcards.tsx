@@ -69,6 +69,15 @@ export default function Flashcards() {
     return subjects?.find(s => s.id === selectedSubjectId);
   }, [subjects, selectedSubjectId]);
 
+  const flashcardLearnedCount = useMemo(() => allCards?.filter(c => (c.repetitions ?? 0) > 0).length ?? 0, [allCards]);
+  const flashcardTotalCount = useMemo(() => allCards?.length ?? 0, [allCards]);
+  const flashcardProgressPct = useMemo(() => {
+    if (selectedSubjectId === '__all__') {
+      return flashcardTotalCount > 0 ? Math.round(flashcardLearnedCount / flashcardTotalCount * 100) : 0;
+    }
+    return activeSubject?.flashcardProgress ?? 0;
+  }, [selectedSubjectId, activeSubject, flashcardLearnedCount, flashcardTotalCount]);
+
   const sessionCards = useMemo(() => {
     const source = studyMode === 'due' ? dueCards : allCards;
     if (!source) return [];
@@ -334,28 +343,20 @@ export default function Flashcards() {
                  </p>
               </div>
 
-              {/* Donut chart + Stats — nur wenn Fach gewählt */}
-              {selectedSubjectId !== null && (() => {
-                const learnedCount = allCards?.filter(c => (c.repetitions ?? 0) > 0).length ?? 0;
-                const totalCount = allCards?.length ?? 0;
-                const chartProgress = selectedSubjectId === '__all__'
-                  ? (totalCount > 0 ? Math.round(learnedCount / totalCount * 100) : 0)
-                  : (activeSubject?.flashcardProgress ?? 0);
-                const chartColor = activeSubject?.color ?? '#673147';
-                return (
-                  <div className="space-y-3">
-                    <DonutChart progress={chartProgress} color={chartColor} />
-                    {totalCount > 0 && (
-                      <div className="text-[11px] font-typewriter text-[#673147]/40 text-center leading-relaxed">
-                        <span style={{ color: chartColor }} className="font-bold">{learnedCount}</span>
-                        {' von '}
-                        <span className="font-bold">{totalCount}</span>
-                        {' Karten gelernt'}
-                      </div>
-                    )}
-                  </div>
-                );
-              })()}
+              {/* Fortschritt — nur wenn Fach gewählt */}
+              {selectedSubjectId !== null && (
+                <div className="space-y-3">
+                  <DonutChart progress={flashcardProgressPct} color={activeSubject?.color ?? '#673147'} />
+                  {flashcardTotalCount > 0 && (
+                    <div className="text-[11px] font-typewriter text-[#673147]/40 text-center leading-relaxed">
+                      <span style={{ color: activeSubject?.color ?? '#673147' }} className="font-bold">{flashcardLearnedCount}</span>
+                      {' von '}
+                      <span className="font-bold">{flashcardTotalCount}</span>
+                      {' Karten gelernt'}
+                    </div>
+                  )}
+                </div>
+              )}
 
               <div className="bg-[#E2E8D4]/50 p-6 rounded-3xl border border-black/[0.02]">
                  <div className="text-5xl font-display text-[#673147]">{sessionCards.length}</div>
