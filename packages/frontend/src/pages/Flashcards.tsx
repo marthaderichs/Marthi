@@ -247,6 +247,19 @@ export default function Flashcards() {
                     }}
                   >
                     {s.name}
+                    {/* Flashcard progress bar at bottom */}
+                    {(s.flashcardProgress ?? 0) > 0 && (
+                      <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/10 rounded-b-[24px]">
+                        <div
+                          className="h-full rounded-b-[24px]"
+                          style={{
+                            width: `${s.flashcardProgress}%`,
+                            backgroundColor: selectedSubjectId === s.id ? 'rgba(255,255,255,0.6)' : s.color,
+                            opacity: selectedSubjectId === s.id ? 1 : 0.5,
+                          }}
+                        />
+                      </div>
+                    )}
                   </button>
                 ))}
               </div>
@@ -321,19 +334,28 @@ export default function Flashcards() {
                  </p>
               </div>
 
-              {/* Donut chart — nur wenn Fach gewählt */}
-              {selectedSubjectId !== null && (
-                <DonutChart
-                  progress={
-                    selectedSubjectId === '__all__'
-                      ? (allCards && allCards.length > 0
-                          ? Math.round(allCards.filter(c => (c.repetitions ?? 0) > 0).length / allCards.length * 100)
-                          : 0)
-                      : (activeSubject?.flashcardProgress ?? 0)
-                  }
-                  color={activeSubject?.color ?? '#673147'}
-                />
-              )}
+              {/* Donut chart + Stats — nur wenn Fach gewählt */}
+              {selectedSubjectId !== null && (() => {
+                const learnedCount = allCards?.filter(c => (c.repetitions ?? 0) > 0).length ?? 0;
+                const totalCount = allCards?.length ?? 0;
+                const chartProgress = selectedSubjectId === '__all__'
+                  ? (totalCount > 0 ? Math.round(learnedCount / totalCount * 100) : 0)
+                  : (activeSubject?.flashcardProgress ?? 0);
+                const chartColor = activeSubject?.color ?? '#673147';
+                return (
+                  <div className="space-y-3">
+                    <DonutChart progress={chartProgress} color={chartColor} />
+                    {totalCount > 0 && (
+                      <div className="text-[11px] font-typewriter text-[#673147]/40 text-center leading-relaxed">
+                        <span style={{ color: chartColor }} className="font-bold">{learnedCount}</span>
+                        {' von '}
+                        <span className="font-bold">{totalCount}</span>
+                        {' Karten gelernt'}
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
 
               <div className="bg-[#E2E8D4]/50 p-6 rounded-3xl border border-black/[0.02]">
                  <div className="text-5xl font-display text-[#673147]">{sessionCards.length}</div>

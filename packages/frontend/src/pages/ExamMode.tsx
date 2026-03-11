@@ -286,6 +286,7 @@ export default function ExamMode() {
             index={i}
             name={s.name}
             onClick={() => selectSubject(s.id)}
+            progress={s.progress}
           />
         ))}
       </div>
