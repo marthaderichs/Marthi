@@ -37,12 +37,14 @@ export function createApp() {
     const frontendDist = path.join(__dirname, '../../frontend/dist');
 
     // Explicitly serve all icon paths iOS may request
-    const iconFile = path.join(frontendDist, 'apple-touch-icon.png');
+    const iconFile = path.join(frontendDist, 'apple-touch-icon-v2.png');
     const iconPaths = [
       '/apple-touch-icon.png',
       '/apple-touch-icon-precomposed.png',
       '/apple-touch-icon-180x180.png',
       '/apple-touch-icon-180x180-precomposed.png',
+      '/apple-touch-icon-v2.png',
+      '/apple-touch-icon-v2-precomposed.png',
     ];
     iconPaths.forEach(p => {
       app.get(p, (_req, res) => {
