@@ -31,16 +31,18 @@ subjectsRouter.get('/', async (_req, res, next) => {
         },
       });
 
-      // Simple progress: (correct answers / total questions) * 100
-      // Note: This is a simplification, but better than random!
-      const progress = s._count.questions > 0 
+      const progress = s._count.questions > 0
         ? Math.min(100, Math.round((correctQuestionsCount / s._count.questions) * 100))
         : 0;
 
-      return {
-        ...s,
-        progress
-      };
+      const learnedFlashcards = await prisma.flashcard.count({
+        where: { subjectId: s.id, repetitions: { gt: 0 } },
+      });
+      const flashcardProgress = s._count.flashcards > 0
+        ? Math.min(100, Math.round((learnedFlashcards / s._count.flashcards) * 100))
+        : 0;
+
+      return { ...s, progress, flashcardProgress };
     }));
 
     res.json(subjectsWithProgress);

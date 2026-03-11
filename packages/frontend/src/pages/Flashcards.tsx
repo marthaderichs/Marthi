@@ -26,8 +26,9 @@ export default function Flashcards() {
   const [isFlipped, setIsFlipped] = useState(false);
   const [completedCount, setCompletedCount] = useState(0);
 
-  const { data: allCards, isLoading: allLoading } = useFlashcards(selectedSubjectId || undefined);
-  const { data: dueCards, isLoading: dueLoading } = useDueFlashcards(selectedSubjectId || undefined);
+  const subjectParam = selectedSubjectId === '__all__' ? undefined : (selectedSubjectId || undefined);
+  const { data: allCards, isLoading: allLoading } = useFlashcards(subjectParam);
+  const { data: dueCards, isLoading: dueLoading } = useDueFlashcards(subjectParam);
   const reviewMutation = useReviewFlashcard();
   const deleteMutation = useDeleteFlashcard();
   const [confirmDeleteCardId, setConfirmDeleteCardId] = useState<string | null>(null);
@@ -38,7 +39,10 @@ export default function Flashcards() {
     if (subjectId && !selectedSubjectId) setSelectedSubjectId(subjectId);
   }, [searchParams]);
 
-  const activeSubject = useMemo(() => subjects?.find(s => s.id === selectedSubjectId), [subjects, selectedSubjectId]);
+  const activeSubject = useMemo(() => {
+    if (selectedSubjectId === '__all__') return undefined;
+    return subjects?.find(s => s.id === selectedSubjectId);
+  }, [subjects, selectedSubjectId]);
 
   const sessionCards = useMemo(() => {
     const source = studyMode === 'due' ? dueCards : allCards;
@@ -178,6 +182,19 @@ export default function Flashcards() {
                  <Layers className="w-6 h-6" /> <DisplayText>1. Fachbereich wählen</DisplayText>
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                {/* Alle Fächer */}
+                <button
+                  onClick={() => setSelectedSubjectId('__all__')}
+                  className={cn(
+                    "col-span-2 sm:col-span-3 p-4 rounded-[24px] border-2 transition-all text-base font-bold shadow-sm font-display tracking-wide text-left relative overflow-hidden",
+                    selectedSubjectId === '__all__'
+                      ? "bg-[#673147] border-[#673147] text-white shadow-md ring-4 ring-[#673147]/10"
+                      : "bg-[#E2E8D4]/50 text-[#673147]/60 border-transparent hover:bg-[#673147]/10 hover:text-[#673147]"
+                  )}
+                >
+                  Alle Fächer
+                </button>
+
                 {subjects?.map(s => (
                   <button
                     key={s.id}
@@ -205,6 +222,15 @@ export default function Flashcards() {
                     }}
                   >
                     {s.name}
+                    {/* Flashcard progress bar */}
+                    {(s.flashcardProgress ?? 0) > 0 && (
+                      <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/10 rounded-b-[24px]">
+                        <div
+                          className="h-full bg-white/60 rounded-b-[24px]"
+                          style={{ width: `${s.flashcardProgress}%` }}
+                        />
+                      </div>
+                    )}
                   </button>
                 ))}
               </div>
@@ -279,7 +305,7 @@ export default function Flashcards() {
               <div className="space-y-2">
                  <h3 className="text-4xl font-display text-[#673147]">Dein Stapel</h3>
                  <p className="text-xs font-black uppercase tracking-widest text-[#673147]/30">
-                    {activeSubject ? activeSubject.name : 'Fach wählen'}
+                    {selectedSubjectId === '__all__' ? 'Alle Fächer' : activeSubject ? activeSubject.name : 'Fach wählen'}
                  </p>
               </div>
 
@@ -293,7 +319,7 @@ export default function Flashcards() {
               <div className="space-y-4 pt-4">
                 <button
                   onClick={handleStartSession}
-                  disabled={!selectedSubjectId || sessionCards.length === 0}
+                  disabled={selectedSubjectId === null || sessionCards.length === 0}
                   className="mx-auto flex items-center gap-2 px-8 py-3 border border-[#673147] text-[#673147] font-serif text-xl rounded-full hover:bg-[#673147] hover:text-white transition-all disabled:opacity-20 group"
                 >
                   <span>Starten</span>
@@ -302,7 +328,7 @@ export default function Flashcards() {
 
                 <button
                   onClick={() => setView('overview')}
-                  disabled={!selectedSubjectId || !allCards?.length}
+                  disabled={selectedSubjectId === null || !allCards?.length}
                   className="w-full py-2 text-[#673147]/30 font-bold text-[10px] uppercase tracking-widest hover:text-[#673147] transition-all flex items-center justify-center gap-2 disabled:opacity-0"
                 >
                   <Eye className="w-4 h-4" /> Alle Karten ansehen
@@ -386,9 +412,14 @@ export default function Flashcards() {
               style={{ backfaceVisibility: 'hidden', zIndex: isFlipped ? 0 : 1 }}
             >
               <div className="flex items-center justify-between mb-auto">
-                <div className="px-5 py-2 text-[10px] font-black uppercase tracking-widest text-white rounded-full shadow-sm" style={{ backgroundColor: activeSubject?.color }}>
-                  {activeSubject?.name}
-                </div>
+                {(() => {
+                  const cardSubject = activeSubject ?? subjects?.find(s => s.id === currentCard?.subjectId);
+                  return (
+                    <div className="px-5 py-2 text-[10px] font-black uppercase tracking-widest text-white rounded-full shadow-sm" style={{ backgroundColor: cardSubject?.color ?? '#673147' }}>
+                      {cardSubject?.name ?? ''}
+                    </div>
+                  );
+                })()}
                 <RotateCw className="w-5 h-5 text-[#673147]/20" />
               </div>
               <div className="flex-1 flex items-center justify-center">

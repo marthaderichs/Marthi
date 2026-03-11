@@ -29,9 +29,10 @@ interface SubjectBlobProps {
   index: number;
   name: string;
   onClick: () => void;
+  progress?: number;
 }
 
-export function SubjectBlob({ color, index, name, onClick }: SubjectBlobProps) {
+export function SubjectBlob({ color, index, name, onClick, progress }: SubjectBlobProps) {
   const shape = BLOBS[index % BLOBS.length];
   const tilt  = ((index * 7) % 9) - 4;
 
@@ -62,6 +63,13 @@ export function SubjectBlob({ color, index, name, onClick }: SubjectBlobProps) {
       <span className="relative z-10 font-typewriter text-white text-[11px] tracking-[0.15em] [text-shadow:0_1px_3px_rgba(0,0,0,0.25)] hidden group-hover:block text-center px-3 leading-snug">
         <Text str={name} />
       </span>
+
+      {/* Progress indicator */}
+      {progress !== undefined && progress > 0 && (
+        <span className="absolute bottom-3 z-10 text-white/75 text-[9px] font-black tracking-widest [text-shadow:0_1px_2px_rgba(0,0,0,0.3)]">
+          {progress}%
+        </span>
+      )}
     </motion.button>
   );
 }

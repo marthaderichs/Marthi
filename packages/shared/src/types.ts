@@ -11,6 +11,8 @@ export interface Subject {
     questions: number;
     flashcards: number;
   };
+  progress?: number;          // Klausur-Fortschritt (0–100)
+  flashcardProgress?: number; // Karteikarten-Fortschritt (0–100)
 }
 
 export interface Topic {
