@@ -11,7 +11,7 @@ import { cn } from '../lib/utils';
 import { DisplayText } from '../components/DisplayText';
 
 type ViewState = 'setup' | 'learning' | 'summary' | 'overview';
-type StudyMode = 'due' | 'all';
+type StudyMode = 'due' | 'all' | 'mistakes';
 
 function DonutChart({ progress, color }: { progress: number; color: string }) {
   const r = 40;
@@ -50,6 +50,7 @@ export default function Flashcards() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [completedCount, setCompletedCount] = useState(0);
+  const [sessionMistakeIds, setSessionMistakeIds] = useState<string[]>([]);
 
   const subjectParam = selectedSubjectId === '__all__' ? undefined : (selectedSubjectId || undefined);
   const { data: allCards, isLoading: allLoading } = useFlashcards(subjectParam);
@@ -79,20 +80,30 @@ export default function Flashcards() {
   }, [selectedSubjectId, activeSubject, flashcardLearnedCount, flashcardTotalCount]);
 
   const sessionCards = useMemo(() => {
+    if (studyMode === 'mistakes') {
+      const mistakes = allCards?.filter(c => sessionMistakeIds.includes(c.id)) ?? [];
+      return [...mistakes].sort(() => Math.random() - 0.5);
+    }
     const source = studyMode === 'due' ? dueCards : allCards;
     if (!source) return [];
-
-    // Shuffle
     const shuffled = [...source].sort(() => Math.random() - 0.5);
-
-    if (studyMode === 'due') return shuffled; // Due cards should all be done
+    if (studyMode === 'due') return shuffled;
     return sessionSize === 'all' ? shuffled : shuffled.slice(0, sessionSize);
-  }, [allCards, dueCards, studyMode, sessionSize, view === 'learning']);
+  }, [allCards, dueCards, studyMode, sessionSize, sessionMistakeIds, view === 'learning']);
 
   const currentCard = sessionCards[currentIndex];
 
   const handleStartSession = () => {
     if (sessionCards.length === 0) return;
+    setCurrentIndex(0);
+    setCompletedCount(0);
+    setIsFlipped(false);
+    if (studyMode !== 'mistakes') setSessionMistakeIds([]);
+    setView('learning');
+  };
+
+  const handleStartMistakesSession = () => {
+    setStudyMode('mistakes');
     setCurrentIndex(0);
     setCompletedCount(0);
     setIsFlipped(false);
@@ -110,6 +121,9 @@ export default function Flashcards() {
 
   const handleReview = (quality: number) => {
     if (currentCard) {
+      if (quality < 3) {
+        setSessionMistakeIds(prev => prev.includes(currentCard.id) ? prev : [...prev, currentCard.id]);
+      }
       reviewMutation.mutate({ id: currentCard.id, quality });
       setCompletedCount(c => c + 1);
       handleNext();
@@ -256,15 +270,14 @@ export default function Flashcards() {
                     }}
                   >
                     {s.name}
-                    {/* Flashcard progress bar at bottom */}
+                    {/* Flashcard progress bar — nur bei Hover */}
                     {(s.flashcardProgress ?? 0) > 0 && (
-                      <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/10 rounded-b-[24px]">
+                      <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/10 rounded-b-[24px] opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                         <div
                           className="h-full rounded-b-[24px]"
                           style={{
                             width: `${s.flashcardProgress}%`,
-                            backgroundColor: selectedSubjectId === s.id ? 'rgba(255,255,255,0.6)' : s.color,
-                            opacity: selectedSubjectId === s.id ? 1 : 0.5,
+                            backgroundColor: 'rgba(255,255,255,0.7)',
                           }}
                         />
                       </div>
@@ -406,11 +419,19 @@ export default function Flashcards() {
           <p className="text-lg text-[#673147]/40 mb-12 px-4 font-typewriter">„Du hast heute {completedCount} Karten gelernt. Dein Gehirn wird es dir danken!"</p>
           <div className="space-y-4">
             <button
-              onClick={() => setView('setup')}
+              onClick={() => { setStudyMode('due'); setView('setup'); }}
               className="w-full py-5 bg-[#673147] text-white rounded-2xl font-display text-2xl shadow-xl hover:bg-[#763428] transition-all"
             >
               Nächste Lerneinheit
             </button>
+            {sessionMistakeIds.length > 0 && (
+              <button
+                onClick={handleStartMistakesSession}
+                className="w-full py-4 bg-red-50 border-2 border-red-200 text-red-600 rounded-2xl font-bold text-sm hover:bg-red-100 transition-all flex items-center justify-center gap-2"
+              >
+                <X className="w-4 h-4" /> Nur Fehler wiederholen ({sessionMistakeIds.length})
+              </button>
+            )}
             <button
               onClick={handleStartSession}
               className="w-full py-3 text-[#673147]/30 font-bold text-xs hover:text-[#673147] transition-all uppercase tracking-widest"
