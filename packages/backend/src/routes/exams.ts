@@ -22,19 +22,25 @@ examsRouter.get('/generate', async (req, res, next) => {
       where.topicId = { in: topicIds.split(',') };
     }
 
+    const answeredResults = await prisma.examResult.findMany({
+      select: { questionId: true },
+      distinct: ['questionId'],
+    });
+    const answeredIds = new Set(answeredResults.map(r => r.questionId));
+
     if (onlyNew) {
-      // Get IDs of questions already answered
-      const answeredResults = await prisma.examResult.findMany({
-        select: { questionId: true },
-        distinct: ['questionId']
-      });
-      const answeredIds = answeredResults.map(r => r.questionId);
-      where.id = { notIn: answeredIds };
+      where.id = { notIn: Array.from(answeredIds) };
     }
 
     const allQuestions = await prisma.question.findMany({ where });
-    const shuffled = [...allQuestions].sort(() => Math.random() - 0.5);
-    const selected = shuffled.slice(0, Math.min(count, shuffled.length));
+
+    // Unanswered questions first, then answered — prevents repeats until all done
+    const unanswered = allQuestions.filter(q => !answeredIds.has(q.id));
+    const answered   = allQuestions.filter(q =>  answeredIds.has(q.id));
+    const shuffledUnanswered = [...unanswered].sort(() => Math.random() - 0.5);
+    const shuffledAnswered   = [...answered  ].sort(() => Math.random() - 0.5);
+    const combined = [...shuffledUnanswered, ...shuffledAnswered];
+    const selected = combined.slice(0, Math.min(count, combined.length));
 
     res.json({
       sessionId: uuidv4(),

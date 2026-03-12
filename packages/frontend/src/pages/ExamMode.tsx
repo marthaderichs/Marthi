@@ -80,12 +80,12 @@ export default function ExamMode() {
     setDeletedQuestionIds(prev => [...prev, id]);
     setConfirmDeleteQuestionId(null);
   };
-  const [quizCount, setQuizCount] = useState(10);
+  const [quizCount, setQuizCount] = useState<number | 'all'>(10);
   const [onlyNew, setOnlyNew] = useState(false);
 
   const { data: examSession, isLoading: examLoading, refetch } = useExamGenerate(
-    quizStarted ? selectedSubjectId : null, 
-    quizCount, 
+    quizStarted ? selectedSubjectId : null,
+    quizCount === 'all' ? 9999 : quizCount,
     selectedTopicIds,
     onlyNew
   );
@@ -360,8 +360,10 @@ export default function ExamMode() {
               <div className="space-y-6">
                   <h4 className="text-sm font-black uppercase tracking-widest text-[#673147]/50 flex items-center gap-2"><Settings2 className="w-3 h-3" /> Fragenanzahl</h4>
                   <div className="flex gap-3">
-                      {[5, 10, 20].map(count => (
-                          <button key={count} onClick={() => setQuizCount(count)} className={cn("flex-1 py-4 rounded-2xl font-display text-2xl border-2 transition-all", quizCount === count ? "bg-[#673147] text-white border-[#673147] shadow-lg" : "bg-[#E2E8D4]/50 border-transparent text-[#673147]/40 hover:bg-white")}>{count}</button>
+                      {([5, 10, 20, 'all'] as const).map(count => (
+                          <button key={count} onClick={() => setQuizCount(count)} className={cn("flex-1 py-4 rounded-2xl font-display text-2xl border-2 transition-all", quizCount === count ? "bg-[#673147] text-white border-[#673147] shadow-lg" : "bg-[#E2E8D4]/50 border-transparent text-[#673147]/40 hover:bg-white")}>
+                            {count === 'all' ? 'Alle' : count}
+                          </button>
                       ))}
                   </div>
               </div>
