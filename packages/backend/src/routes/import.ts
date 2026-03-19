@@ -51,6 +51,26 @@ importRouter.post('/', async (req, res, next) => {
   try {
     const parsed = ImportPayloadSchema.parse(req.body);
 
+    // Validate all referenced subjectIds exist
+    const usedSubjectIds = new Set([
+      ...parsed.topics.map(t => t.subjectId),
+      ...parsed.questions.map(q => q.subjectId),
+      ...parsed.flashcards.map(f => f.subjectId),
+    ]);
+    const existingSubjects = await prisma.subject.findMany({
+      where: { id: { in: Array.from(usedSubjectIds) } },
+      select: { id: true },
+    });
+    const existingIds = new Set(existingSubjects.map(s => s.id));
+    const missingIds = Array.from(usedSubjectIds).filter(id => !existingIds.has(id));
+    if (missingIds.length > 0) {
+      const available = await prisma.subject.findMany({ select: { id: true, name: true }, orderBy: { name: 'asc' } });
+      return res.status(400).json({
+        error: `Unbekannte subjectId(s): ${missingIds.join(', ')}`,
+        message: `Erlaubte IDs: ${available.map(s => `${s.id} (${s.name})`).join(', ')}`,
+      });
+    }
+
     const result = await prisma.$transaction(async (tx) => {
       // Upsert Topics (create or update if ID already exists)
       const createdTopics = await Promise.all(
