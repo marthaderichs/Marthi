@@ -95,7 +95,7 @@ importRouter.post('/', async (req, res, next) => {
       // Create Questions
       const createdQuestions = await Promise.all(
         parsed.questions.map((q) => {
-          const resolvedTopicId = q.topicId ? topicIdMap.get(q.topicId) || q.topicId : null;
+          const resolvedTopicId = q.topicId ? (topicIdMap.get(q.topicId) ?? null) : null;
           return tx.question.create({
             data: {
               subjectId: q.subjectId,
@@ -112,7 +112,7 @@ importRouter.post('/', async (req, res, next) => {
       // Create Flashcards
       const createdFlashcards = await Promise.all(
         parsed.flashcards.map((fc) => {
-          const resolvedTopicId = fc.topicId ? topicIdMap.get(fc.topicId) || fc.topicId : null;
+          const resolvedTopicId = fc.topicId ? (topicIdMap.get(fc.topicId) ?? null) : null;
           return tx.flashcard.create({
             data: {
               subjectId: fc.subjectId,
