@@ -362,9 +362,21 @@ INHALTE:
           )}
           {importMutation.isError && (
             <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
-              className="p-5 bg-[#673147]/10 rounded-2xl flex items-center gap-3 text-[#673147]">
-              <XCircle className="w-5 h-5 shrink-0" />
-              <span className="text-sm font-bold">Fehler beim Import. Bitte erneut versuchen.</span>
+              className="p-5 bg-[#673147]/10 rounded-2xl flex items-start gap-3 text-[#673147]">
+              <XCircle className="w-5 h-5 shrink-0 mt-0.5" />
+              <div className="space-y-1">
+                <span className="text-sm font-bold block">Fehler beim Import.</span>
+                {importMutation.error?.message && (
+                  <span className="text-xs font-mono block opacity-70">{importMutation.error.message}</span>
+                )}
+                {importMutation.error?.details && (
+                  <ul className="text-xs font-mono opacity-70 list-disc pl-4 space-y-0.5">
+                    {importMutation.error.details.map((d: { path: string; message: string }, i: number) => (
+                      <li key={i}>{d.path ? `${d.path}: ` : ''}{d.message}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
