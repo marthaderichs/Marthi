@@ -1,9 +1,10 @@
-import React from 'react';
-import { motion } from 'motion/react';
-import { useSubjects } from '../hooks/useSubjects';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { useSubjects, useDeleteSubject } from '../hooks/useSubjects';
+import { Subject } from '@medilearn/shared';
 import { NavLink } from 'react-router-dom';
 import { cn } from '../lib/utils';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Trash2, X, AlertTriangle } from 'lucide-react';
 
 // ── Handdrawn divider ─────────────────────────────────────────────────────────
 function Squiggle() {
@@ -46,9 +47,90 @@ const LINKS = [
   { to: '/garden',     label: 'Garten',     color: '#6A902C', desc: 'Fehler pflegen' },
 ] as const;
 
+// ── Subject row ───────────────────────────────────────────────────────────────
+function SubjectRow({
+  subject,
+  confirmId,
+  onConfirmStart,
+  onConfirmCancel,
+  onDelete,
+}: {
+  subject: Subject;
+  confirmId: string | null;
+  onConfirmStart: (id: string) => void;
+  onConfirmCancel: () => void;
+  onDelete: (id: string) => void;
+}) {
+  const isConfirming = confirmId === subject.id;
+
+  if (isConfirming) {
+    return (
+      <div className="flex flex-col gap-2 py-2 border-b border-[#673147]/7">
+        <div className="flex items-center gap-2 text-xs text-red-600">
+          <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+          <span className="font-bold">Alle Themen, Fragen und Karteikarten werden unwiderruflich gelöscht.</span>
+        </div>
+        <div className="flex gap-2">
+          <button
+            onClick={() => onDelete(subject.id)}
+            className="px-3 py-1 bg-red-500 text-white rounded-lg text-xs font-bold hover:bg-red-600 transition-colors"
+          >
+            Ja, löschen
+          </button>
+          <button
+            onClick={onConfirmCancel}
+            className="px-3 py-1 bg-black/5 text-[#4A3A2F]/60 rounded-lg text-xs font-bold hover:bg-black/10 transition-colors"
+          >
+            Abbrechen
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="group flex items-center gap-3 py-2 border-b border-[#673147]/7 last:border-0 hover:border-[#673147]/18 transition-colors">
+      <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: subject.color, opacity: 0.8 }} />
+      <NavLink
+        to="/content"
+        className="font-typewriter text-[14px] text-[#4A3A2F]/60 hover:text-[#673147] transition-colors flex-1 truncate"
+      >
+        {subject.name}
+      </NavLink>
+      <button
+        onClick={() => onConfirmStart(subject.id)}
+        className="opacity-0 group-hover:opacity-100 p-1 text-[#673147]/20 hover:text-red-500 transition-all"
+        title="Fachbereich löschen"
+      >
+        <Trash2 className="w-3.5 h-3.5" />
+      </button>
+      <NavLink to="/content">
+        <ArrowRight className="w-3.5 h-3.5 text-[#673147]/15 group-hover:text-[#673147]/40 group-hover:translate-x-0.5 transition-all" />
+      </NavLink>
+    </div>
+  );
+}
+
 // ── Dashboard ─────────────────────────────────────────────────────────────────
 export default function Dashboard() {
-  const { data: subjects, isLoading } = useSubjects();
+  const { data: subjectsData, isLoading } = useSubjects();
+  const [subjects, setSubjects] = useState<Subject[] | undefined>(undefined);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const deleteSubject = useDeleteSubject();
+
+  // Sync local state from hook data
+  React.useEffect(() => {
+    if (subjectsData) setSubjects(subjectsData);
+  }, [subjectsData]);
+
+  const handleDelete = (id: string) => {
+    deleteSubject.mutate(id, {
+      onSuccess: () => {
+        setSubjects(prev => prev?.filter(s => s.id !== id));
+        setConfirmDeleteId(null);
+      },
+    });
+  };
 
   if (isLoading) return <div className="flex justify-center py-40"><Spinner /></div>;
 
@@ -102,18 +184,15 @@ export default function Dashboard() {
       <div className="bg-[var(--light-cream)] px-7 py-6 space-y-1">
         <p className="text-[13px] font-typewriter tracking-[0.38em] text-[#673147]/35 uppercase mb-4">Fachbereiche</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8">
-          {subjects?.slice(0, 8).map((s) => (
-            <NavLink
+          {subjects?.map((s) => (
+            <SubjectRow
               key={s.id}
-              to="/content"
-              className="group flex items-center gap-3 py-2 border-b border-[#673147]/7 last:border-0 hover:border-[#673147]/18 transition-colors"
-            >
-              <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: s.color, opacity: 0.8 }} />
-              <span className="font-typewriter text-[14px] text-[#4A3A2F]/60 group-hover:text-[#673147] transition-colors flex-1 truncate">
-                {s.name}
-              </span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#673147]/15 group-hover:text-[#673147]/40 group-hover:translate-x-0.5 transition-all" />
-            </NavLink>
+              subject={s}
+              confirmId={confirmDeleteId}
+              onConfirmStart={setConfirmDeleteId}
+              onConfirmCancel={() => setConfirmDeleteId(null)}
+              onDelete={handleDelete}
+            />
           ))}
         </div>
       </div>

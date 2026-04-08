@@ -164,6 +164,39 @@ model Mistake {
 }
 
 // ============================================
+// LECTURE CARDS (Vorlesungskarteikarten)
+// ============================================
+model LectureCard {
+  id          String    @id @default(uuid())
+  front       String
+  back        String
+  lectureTag  String?
+  easeFactor  Float     @default(2.5)
+  interval    Int       @default(0)
+  repetitions Int       @default(0)
+  nextReview  DateTime  @default(now())
+  lastReview  DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([nextReview])
+  @@index([lectureTag])
+}
+
+// ============================================
+// LECTURE SUMMARIES (Vorlesungszusammenfassungen)
+// ============================================
+model LectureSummary {
+  id         String   @id @default(uuid())
+  title      String
+  content    String
+  lectureTag String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([lectureTag])
+}
+
+// ============================================
 // STUDY PLAN (Lernplan)
 // ============================================
 model StudyPlanItem {

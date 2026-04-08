@@ -11,6 +11,9 @@ import { notesRouter } from './routes/notes';
 import { studyplanRouter } from './routes/studyplan';
 import { searchRouter } from './routes/search';
 import { mistakesRouter } from './routes/mistakes';
+import { lectureCardsRouter } from './routes/lectureCards';
+import { lectureSummariesRouter } from './routes/lectureSummaries';
+import { lectureImportRouter } from './routes/lectureImport';
 import { errorHandler } from './middleware/errorHandler';
 
 export function createApp() {
@@ -33,6 +36,9 @@ export function createApp() {
   app.use('/api/studyplan', studyplanRouter);
   app.use('/api/search', searchRouter);
   app.use('/api/mistakes', mistakesRouter);
+  app.use('/api/lecture-cards', lectureCardsRouter);
+  app.use('/api/lecture-summaries', lectureSummariesRouter);
+  app.use('/api/lecture-import', lectureImportRouter);
 
   // Serve frontend in production
   if (process.env.NODE_ENV === 'production') {

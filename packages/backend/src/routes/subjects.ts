@@ -51,6 +51,16 @@ subjectsRouter.get('/', async (_req, res, next) => {
   }
 });
 
+// DELETE /api/subjects/:id
+subjectsRouter.delete('/:id', async (req, res, next) => {
+  try {
+    await prisma.subject.delete({ where: { id: req.params.id } });
+    res.status(204).send();
+  } catch (error) {
+    next(error);
+  }
+});
+
 // GET /api/subjects/:id
 subjectsRouter.get('/:id', async (req, res, next) => {
   try {

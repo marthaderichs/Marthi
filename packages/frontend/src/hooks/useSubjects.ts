@@ -2,6 +2,18 @@ import { useState, useEffect } from 'react';
 import { api } from '../api/client';
 import { Subject } from '@medilearn/shared';
 
+export function useDeleteSubject() {
+  const [isPending, setIsPending] = useState(false);
+  const mutate = (id: string, callbacks?: { onSuccess?: () => void; onError?: (err: any) => void }) => {
+    setIsPending(true);
+    api.delete(`/subjects/${id}`)
+      .then(() => callbacks?.onSuccess?.())
+      .catch((err) => callbacks?.onError?.(err))
+      .finally(() => setIsPending(false));
+  };
+  return { mutate, isPending };
+}
+
 const WATERCOLOR_PALETTE = [
   '#C96843', // Red-Orange
   '#2F9E98', // Teal

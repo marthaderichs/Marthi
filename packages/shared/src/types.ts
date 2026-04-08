@@ -34,6 +34,28 @@ export interface Question {
   explanation: string;
 }
 
+export interface LectureCard {
+  id: string;
+  front: string;
+  back: string;
+  lectureTag?: string | null;
+  easeFactor?: number;
+  interval?: number;
+  repetitions?: number;
+  nextReview?: string | Date;
+  lastReview?: string | Date | null;
+  createdAt?: string | Date;
+}
+
+export interface LectureSummary {
+  id: string;
+  title: string;
+  content: string;
+  lectureTag?: string | null;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
+}
+
 export interface Flashcard {
   id: string;
   subjectId: string;

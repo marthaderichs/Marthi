@@ -12,6 +12,7 @@ import ContentLibrary from './pages/ContentLibrary';
 import Flashcards from './pages/Flashcards';
 import ImportData from './pages/ImportData';
 import MistakeGarden from './pages/MistakeGarden';
+import VorlesungsKarteikarten from './pages/VorlesungsKarteikarten';
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
         <Route path="flashcards" element={<Flashcards />} />
         <Route path="garden" element={<MistakeGarden />} />
         <Route path="import" element={<ImportData />} />
+        <Route path="vorlesungen" element={<VorlesungsKarteikarten />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

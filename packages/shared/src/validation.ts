@@ -36,6 +36,31 @@ export const ImportPayloadSchema = z.object({
   flashcards: z.array(FlashcardCreateSchema).default([]),
 });
 
+export const LectureCardCreateSchema = z.object({
+  front: z.string().min(1),
+  back: z.string().min(1),
+  lectureTag: z.string().optional().nullable(),
+});
+
+export const LectureSummaryCreateSchema = z.object({
+  title: z.string().min(1).max(500),
+  content: z.string().min(1),
+  lectureTag: z.string().optional().nullable(),
+});
+
+export const LectureImportPayloadSchema = z.object({
+  lectureCards: z.array(LectureCardCreateSchema).default([]),
+  lectureSummaries: z.array(LectureSummaryCreateSchema).default([]),
+});
+
+export const LectureCardReviewSchema = z.object({
+  quality: z.number().int().min(0).max(5),
+});
+
+export type LectureCardCreate = z.infer<typeof LectureCardCreateSchema>;
+export type LectureSummaryCreate = z.infer<typeof LectureSummaryCreateSchema>;
+export type LectureImportPayload = z.infer<typeof LectureImportPayloadSchema>;
+
 export const ExamAnswerSchema = z.object({
   questionId: z.string().uuid(),
   selectedIndex: z.number().int().min(0),
