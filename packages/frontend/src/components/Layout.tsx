@@ -231,14 +231,14 @@ export default function Layout() {
             <span className="font-display text-5xl text-[#C2341E] tracking-tight">marthi lernt!</span>
           </NavLink>
 
-          <nav className="hidden lg:flex items-center gap-5">
+          <nav className="hidden lg:flex items-center gap-3 overflow-x-auto">
             {navItems.map((item) => (
               <NavLink
                 key={item.to}
                 to={item.to}
                 end={item.to === '/'}
                 className={({ isActive }) => cn(
-                  "text-xs font-bold tracking-widest transition-colors uppercase",
+                  "text-[11px] font-bold tracking-widest transition-colors uppercase whitespace-nowrap",
                   isActive
                     ? "text-[#673147] border-b-2 border-[#673147]"
                     : "text-[#673147]/60 hover:text-[#673147]"
