@@ -226,28 +226,11 @@ export default function Layout() {
       location.pathname === '/' ? "main-bg-stripes" : "bg-[#F9F4E8]"
     )}>
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#F9F4E8] border-b border-[#4A3A2F]/5">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        {/* Row 1: Logo + Search + Timer */}
+        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
           <NavLink to="/" className="flex items-center gap-3 group">
-            <span className="font-display text-3xl xl:text-5xl text-[#C2341E] tracking-tight">marthi lernt!</span>
+            <span className="font-display text-5xl text-[#C2341E] tracking-tight">marthi lernt!</span>
           </NavLink>
-
-          <nav className="hidden lg:flex items-center gap-3 overflow-x-auto">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                end={item.to === '/'}
-                className={({ isActive }) => cn(
-                  "text-[11px] font-bold tracking-widest transition-colors uppercase whitespace-nowrap",
-                  isActive
-                    ? "text-[#673147] border-b-2 border-[#673147]"
-                    : "text-[#673147]/60 hover:text-[#673147]"
-                )}
-              >
-                {item.label}
-              </NavLink>
-            ))}
-          </nav>
 
           <div className="flex items-center gap-3">
             <button
@@ -258,7 +241,7 @@ export default function Layout() {
               <span className="hidden sm:inline">Suchen</span>
               <span className="hidden sm:inline text-[10px] opacity-50 ml-1">⌘K</span>
             </button>
-            <div className="hidden xl:block">
+            <div className="hidden lg:block">
               <FocusTimer onActiveChange={setIsFocusMode} />
             </div>
             <button
@@ -269,6 +252,26 @@ export default function Layout() {
             </button>
           </div>
         </div>
+
+        {/* Row 2: Nav (desktop only) */}
+        <nav className="hidden lg:flex items-center gap-6 max-w-7xl mx-auto px-6 pb-2">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.to === '/'}
+              className={({ isActive }) => cn(
+                "text-xs font-bold tracking-widest transition-colors uppercase whitespace-nowrap",
+                isActive
+                  ? "text-[#673147] border-b-2 border-[#673147]"
+                  : "text-[#673147]/60 hover:text-[#673147]"
+              )}
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </nav>
+
         <div className="border-checker" />
       </header>
 
@@ -318,7 +321,7 @@ export default function Layout() {
         )}
       </AnimatePresence>
 
-      <main className="flex-1 pb-12 w-full flex flex-col items-center pt-[90px]">
+      <main className="flex-1 pb-12 w-full flex flex-col items-center pt-[90px] lg:pt-[118px]">
         {location.pathname !== '/' && (
           <div className="w-full main-bg-stripes flex-shrink-0" style={{ height: '180px' }} />
         )}
