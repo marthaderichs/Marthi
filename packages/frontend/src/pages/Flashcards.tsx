@@ -1,17 +1,19 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useFlashcards, useDueFlashcards, useReviewFlashcard, useDeleteFlashcard } from '../hooks/useFlashcards';
+import { useLectureCards, useDueLectureCards, useReviewLectureCard } from '../hooks/useLectureCards';
 import { useSubjects } from '../hooks/useSubjects';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   ChevronLeft, ChevronRight, RotateCw, Loader2, Check, X,
-  Brain, Sparkles, Play, List, Trophy, Eye, Clock, Calendar, Layers, Trash2
+  Brain, Sparkles, Play, List, Trophy, Eye, Clock, Calendar, Layers, Trash2, GraduationCap
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { DisplayText } from '../components/DisplayText';
 
 type ViewState = 'setup' | 'learning' | 'summary' | 'overview';
 type StudyMode = 'due' | 'all' | 'mistakes';
+type CardType = 'flashcard' | 'lecture';
 
 function DonutChart({ progress, color }: { progress: number; color: string }) {
   const r = 40;
@@ -52,10 +54,15 @@ export default function Flashcards() {
   const [completedCount, setCompletedCount] = useState(0);
   const [sessionMistakeIds, setSessionMistakeIds] = useState<string[]>([]);
 
+  const [cardType, setCardType] = useState<CardType>('flashcard');
+
   const subjectParam = selectedSubjectId === '__all__' ? undefined : (selectedSubjectId || undefined);
   const { data: allCards, isLoading: allLoading } = useFlashcards(subjectParam);
   const { data: dueCards, isLoading: dueLoading } = useDueFlashcards(subjectParam);
+  const { data: allLectureCards } = useLectureCards(subjectParam);
+  const { data: dueLectureCards } = useDueLectureCards(subjectParam);
   const reviewMutation = useReviewFlashcard();
+  const lectureReviewMutation = useReviewLectureCard();
   const deleteMutation = useDeleteFlashcard();
   const [confirmDeleteCardId, setConfirmDeleteCardId] = useState<string | null>(null);
   const [deletedCardIds, setDeletedCardIds] = useState<string[]>([]);
@@ -80,6 +87,12 @@ export default function Flashcards() {
   }, [selectedSubjectId, activeSubject, flashcardLearnedCount, flashcardTotalCount]);
 
   const sessionCards = useMemo(() => {
+    if (cardType === 'lecture') {
+      const source = studyMode === 'due' ? dueLectureCards : allLectureCards;
+      if (!source) return [];
+      const shuffled = [...source].sort(() => Math.random() - 0.5);
+      return studyMode === 'due' || sessionSize === 'all' ? shuffled : shuffled.slice(0, sessionSize as number);
+    }
     if (studyMode === 'mistakes') {
       const mistakes = allCards?.filter(c => sessionMistakeIds.includes(c.id)) ?? [];
       return [...mistakes].sort(() => Math.random() - 0.5);
@@ -89,7 +102,7 @@ export default function Flashcards() {
     const shuffled = [...source].sort(() => Math.random() - 0.5);
     if (studyMode === 'due') return shuffled;
     return sessionSize === 'all' ? shuffled : shuffled.slice(0, sessionSize);
-  }, [allCards, dueCards, studyMode, sessionSize, sessionMistakeIds, view === 'learning']);
+  }, [cardType, allCards, dueCards, allLectureCards, dueLectureCards, studyMode, sessionSize, sessionMistakeIds, view === 'learning']);
 
   const currentCard = sessionCards[currentIndex];
 
@@ -121,10 +134,14 @@ export default function Flashcards() {
 
   const handleReview = (quality: number) => {
     if (currentCard) {
-      if (quality < 3) {
-        setSessionMistakeIds(prev => prev.includes(currentCard.id) ? prev : [...prev, currentCard.id]);
+      if (cardType === 'lecture') {
+        lectureReviewMutation.mutate(currentCard.id, quality);
+      } else {
+        if (quality < 3) {
+          setSessionMistakeIds(prev => prev.includes(currentCard.id) ? prev : [...prev, currentCard.id]);
+        }
+        reviewMutation.mutate({ id: currentCard.id, quality });
       }
-      reviewMutation.mutate({ id: currentCard.id, quality });
       setCompletedCount(c => c + 1);
       handleNext();
     }
@@ -287,10 +304,45 @@ export default function Flashcards() {
               </div>
             </section>
 
+            {/* Card Type */}
+            <section className="bg-white p-10 rounded-2xl border border-[#4A3A2F]/6 space-y-6">
+              <h2 className="text-3xl font-display text-[#673147] flex items-center gap-3">
+                <Layers className="w-6 h-6" /> 2. Kartentyp
+              </h2>
+              <div className="grid grid-cols-2 gap-4">
+                <button
+                  onClick={() => setCardType('flashcard')}
+                  className={cn(
+                    "p-6 rounded-[24px] border-2 transition-all text-left space-y-2",
+                    cardType === 'flashcard' ? "bg-[#673147]/5 border-[#673147]/20" : "bg-[#E2E8D4]/50 border-transparent hover:bg-white hover:border-black/5"
+                  )}
+                >
+                  <div className="flex items-center gap-2 text-[#673147] font-bold uppercase tracking-widest text-[10px]">
+                    <Brain className="w-3 h-3" /> Klausur-Karten
+                  </div>
+                  <div className="text-2xl font-display text-[#673147]">Prüfungsvorbereitung</div>
+                  <p className="text-xs text-[#673147]/40 leading-relaxed font-sans">Karteikarten aus dem Import-Bereich.</p>
+                </button>
+                <button
+                  onClick={() => setCardType('lecture')}
+                  className={cn(
+                    "p-6 rounded-[24px] border-2 transition-all text-left space-y-2",
+                    cardType === 'lecture' ? "bg-[#5A7FA8]/5 border-[#5A7FA8]/20" : "bg-[#E2E8D4]/50 border-transparent hover:bg-white hover:border-black/5"
+                  )}
+                >
+                  <div className="flex items-center gap-2 text-[#5A7FA8] font-bold uppercase tracking-widest text-[10px]">
+                    <GraduationCap className="w-3 h-3" /> Vorlesungs-Karten
+                  </div>
+                  <div className="text-2xl font-display text-[#5A7FA8]">Vorlesungsstoff</div>
+                  <p className="text-xs text-[#673147]/40 leading-relaxed font-sans">Karteikarten aus importierten Vorlesungen.</p>
+                </button>
+              </div>
+            </section>
+
             {/* Study Mode */}
             <section className="bg-white p-10 rounded-2xl border border-[#4A3A2F]/6 space-y-6">
               <h2 className="text-3xl font-display text-[#673147] flex items-center gap-3">
-                 <Brain className="w-6 h-6" /> 2. Lern-Modus
+                 <Brain className="w-6 h-6" /> 3. Lern-Modus
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                  <button

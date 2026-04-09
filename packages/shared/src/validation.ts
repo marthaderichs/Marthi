@@ -49,6 +49,8 @@ export const LectureSummaryCreateSchema = z.object({
 });
 
 export const LectureImportPayloadSchema = z.object({
+  subjectId: SubjectIdSchema,
+  lectureTag: z.string().optional().nullable(),
   lectureCards: z.array(LectureCardCreateSchema).default([]),
   lectureSummaries: z.array(LectureSummaryCreateSchema).default([]),
 });

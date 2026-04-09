@@ -2,12 +2,13 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useSubjects } from '../hooks/useSubjects';
 import { useTopics, useTopic, useDeleteTopic, useDeleteQuestion } from '../hooks/useTopics';
+import { useLectureSummaries, useDeleteLectureSummary } from '../hooks/useLectureSummaries';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   X, BookOpen, Loader2, Search, ChevronLeft,
-  Bookmark, Pencil, ArrowRight, Brain, CheckSquare, Trash2
+  ArrowRight, Brain, CheckSquare, Trash2, GraduationCap
 } from 'lucide-react';
-import { Subject, Topic } from '@medilearn/shared';
+import { Subject, Topic, LectureSummary } from '@medilearn/shared';
 import { DisplayText } from '../components/DisplayText';
 import { cn } from '../lib/utils';
 import { SubjectBlob } from '../components/SubjectBlob';
@@ -22,6 +23,10 @@ export default function ContentLibrary() {
   const [deletedTopicIds, setDeletedTopicIds] = useState<string[]>([]);
   const [confirmDeleteQuestionId, setConfirmDeleteQuestionId] = useState<string | null>(null);
   const [deletedQuestionIds, setDeletedQuestionIds] = useState<string[]>([]);
+  const [contentTab, setContentTab] = useState<'kapitel' | 'vorlesung'>('kapitel');
+  const [selectedSummary, setSelectedSummary] = useState<LectureSummary | null>(null);
+  const [deletedSummaryIds, setDeletedSummaryIds] = useState<string[]>([]);
+  const [confirmDeleteSummaryId, setConfirmDeleteSummaryId] = useState<string | null>(null);
 
   // Auto-select subject/topic from URL params (from search)
   useEffect(() => {
@@ -34,8 +39,10 @@ export default function ContentLibrary() {
 
   const { data: topics, isLoading: topicsLoading } = useTopics(selectedSubject?.id);
   const { data: topicDetail } = useTopic(selectedTopic?.id ?? null);
+  const { data: lectureSummaries, isLoading: summariesLoading } = useLectureSummaries(selectedSubject?.id);
   const deleteTopic = useDeleteTopic();
   const deleteQuestion = useDeleteQuestion();
+  const deleteSummary = useDeleteLectureSummary();
 
   // Auto-open topic from URL param once topics are loaded
   useEffect(() => {
@@ -67,6 +74,16 @@ export default function ContentLibrary() {
     setDeletedQuestionIds(prev => [...prev, id]);
     setConfirmDeleteQuestionId(null);
   };
+
+  const handleDeleteSummary = (id: string) => {
+    deleteSummary.mutate(id, { onSuccess: () => {
+      setDeletedSummaryIds(prev => [...prev, id]);
+      setConfirmDeleteSummaryId(null);
+      if (selectedSummary?.id === id) setSelectedSummary(null);
+    }});
+  };
+
+  const visibleSummaries = (lectureSummaries ?? []).filter(s => !deletedSummaryIds.includes(s.id));
 
   if (subjectsLoading) return <div className="flex justify-center py-32"><Loader2 className="w-10 h-10 animate-spin text-[#673147]/30" /></div>;
 
@@ -136,9 +153,102 @@ export default function ContentLibrary() {
               <span className="text-sm font-bold text-[#4A3A2F]">{selectedSubject._count?.flashcards ?? 0}</span>
               <span className="text-xs text-[#4A3A2F]/50 font-typewriter">Karteikarten</span>
             </div>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[#4A3A2F]/8">
+              <GraduationCap className="w-3.5 h-3.5 text-[#5A7FA8]" />
+              <span className="text-sm font-bold text-[#4A3A2F]">{visibleSummaries.length}</span>
+              <span className="text-xs text-[#4A3A2F]/50 font-typewriter">Vorlesungen</span>
+            </div>
           </div>
 
-          {/* Topic cards */}
+          {/* Tab toggle */}
+          <div className="flex gap-1.5 bg-[#F9F4E8] p-1.5 rounded-2xl w-fit">
+            <button
+              onClick={() => setContentTab('kapitel')}
+              className={cn(
+                "flex items-center gap-2 px-5 py-2 rounded-xl text-xs font-bold transition-all",
+                contentTab === 'kapitel' ? "bg-white text-[#673147] shadow-sm" : "text-[#673147]/40 hover:text-[#673147]"
+              )}
+            >
+              <BookOpen className="w-3.5 h-3.5" /> Kapitel
+            </button>
+            <button
+              onClick={() => setContentTab('vorlesung')}
+              className={cn(
+                "flex items-center gap-2 px-5 py-2 rounded-xl text-xs font-bold transition-all",
+                contentTab === 'vorlesung' ? "bg-white text-[#5A7FA8] shadow-sm" : "text-[#673147]/40 hover:text-[#673147]"
+              )}
+            >
+              <GraduationCap className="w-3.5 h-3.5" /> Vorlesung
+              {visibleSummaries.length > 0 && (
+                <span className={cn("text-[10px] px-1.5 py-0.5 rounded-full font-black",
+                  contentTab === 'vorlesung' ? "bg-[#5A7FA8]/10 text-[#5A7FA8]" : "bg-black/5")}>
+                  {visibleSummaries.length}
+                </span>
+              )}
+            </button>
+          </div>
+
+          {/* Vorlesung summaries */}
+          {contentTab === 'vorlesung' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <AnimatePresence mode="popLayout">
+                {summariesLoading ? (
+                  <div className="col-span-3 flex justify-center py-12">
+                    <Loader2 className="w-8 h-8 animate-spin text-[#5A7FA8]/30" />
+                  </div>
+                ) : visibleSummaries.length === 0 ? (
+                  <div className="col-span-3 py-16 text-center text-[#5A7FA8]/30 font-typewriter text-lg">
+                    Noch keine Vorlesungs-Zusammenfassungen für dieses Fach.
+                    <p className="text-sm mt-2">Importiere sie über den Vorlesungs-Import.</p>
+                  </div>
+                ) : visibleSummaries.map((summary) => (
+                  <motion.div
+                    key={summary.id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    className="group relative p-6 bg-[#F9F4E8] rounded-2xl text-left flex flex-col border-l-[3px] hover:-translate-y-0.5 transition-all cursor-pointer"
+                    style={{ borderLeftColor: '#5A7FA8', boxShadow: '2px 2px 0 rgba(74,58,47,0.07)' }}
+                    onClick={() => { if (confirmDeleteSummaryId !== summary.id) setSelectedSummary(summary); }}
+                  >
+                    {summary.lectureTag && (
+                      <span className="text-[9px] font-black uppercase tracking-widest text-[#5A7FA8]/40 mb-2">{summary.lectureTag}</span>
+                    )}
+                    <h3 className="font-serif text-lg text-[#4A3A2F] leading-snug mb-3 pr-8">{summary.title}</h3>
+
+                    {confirmDeleteSummaryId === summary.id ? (
+                      <div className="absolute top-3 right-3 flex gap-1.5" onClick={e => e.stopPropagation()}>
+                        <button onClick={() => handleDeleteSummary(summary.id)}
+                          className="px-2.5 py-1 bg-red-500 text-white text-[10px] rounded-lg font-bold hover:bg-red-600 transition-colors">
+                          Löschen
+                        </button>
+                        <button onClick={() => setConfirmDeleteSummaryId(null)}
+                          className="px-2.5 py-1 bg-[#E2E8D4] text-[#4A3A2F] text-[10px] rounded-lg font-bold">
+                          ×
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setConfirmDeleteSummaryId(summary.id); }}
+                        className="absolute top-3 right-3 p-1.5 text-[#4A3A2F]/0 group-hover:text-[#4A3A2F]/25 hover:!text-red-500 transition-colors rounded-lg"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+
+                    <div className="mt-auto pt-3 flex items-center justify-between">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-[#5A7FA8]/30">Vorlesung lesen</span>
+                      <ArrowRight className="w-4 h-4 text-[#5A7FA8] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+          )}
+
+          {/* Kapitel (Topic) cards */}
+          {contentTab === 'kapitel' && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <AnimatePresence mode="popLayout">
               {filteredTopics.map((topic) => (
@@ -193,8 +303,52 @@ export default function ContentLibrary() {
               ))}
             </AnimatePresence>
           </div>
+          )}
         </div>
       )}
+
+      {/* Lecture Summary Modal */}
+      <AnimatePresence>
+        {selectedSummary && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-[#4A3A2F]/40 backdrop-blur-sm"
+            onClick={() => setSelectedSummary(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 20 }}
+              onClick={e => e.stopPropagation()}
+              className="w-full max-w-3xl bg-[#F9F4E8] max-h-[90vh] rounded-[40px] shadow-2xl flex flex-col overflow-hidden"
+            >
+              <div className="flex items-center justify-between px-10 pt-10 pb-6 border-b border-[#4A3A2F]/8">
+                <div>
+                  {selectedSummary.lectureTag && (
+                    <div className="text-[10px] font-black uppercase tracking-widest text-[#5A7FA8]/40 mb-1">{selectedSummary.lectureTag}</div>
+                  )}
+                  <h2 className="font-display text-4xl md:text-5xl text-[#5A7FA8] leading-tight pr-8">{selectedSummary.title}</h2>
+                </div>
+                <button
+                  onClick={() => setSelectedSummary(null)}
+                  className="p-2.5 rounded-full border border-[#4A3A2F]/10 text-[#4A3A2F]/40 hover:text-[#5A7FA8] hover:border-[#5A7FA8]/30 transition-all shrink-0"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <div className="p-10 md:p-12 overflow-y-auto">
+                <div className="font-serif text-lg leading-[1.85] text-[#4A3A2F]/80 space-y-5">
+                  {selectedSummary.content.split('\n').map((line, i) => (
+                    <p key={i}>{line}</p>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Topic Detail Modal */}
       <AnimatePresence>

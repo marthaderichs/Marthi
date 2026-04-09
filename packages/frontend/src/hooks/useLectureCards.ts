@@ -2,36 +2,36 @@ import { useState, useEffect } from 'react';
 import { api } from '../api/client';
 import { LectureCard } from '@medilearn/shared';
 
-export function useLectureCards(lectureTag?: string) {
+export function useLectureCards(subjectId?: string) {
   const [data, setData] = useState<LectureCard[] | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading(true);
-    const endpoint = lectureTag
-      ? `/lecture-cards?lectureTag=${encodeURIComponent(lectureTag)}`
+    const endpoint = subjectId
+      ? `/lecture-cards?subjectId=${encodeURIComponent(subjectId)}`
       : '/lecture-cards';
     api.get<LectureCard[]>(endpoint)
       .then(setData)
       .finally(() => setIsLoading(false));
-  }, [lectureTag]);
+  }, [subjectId]);
 
   return { data, isLoading };
 }
 
-export function useDueLectureCards(lectureTag?: string) {
+export function useDueLectureCards(subjectId?: string) {
   const [data, setData] = useState<LectureCard[] | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading(true);
-    const endpoint = lectureTag
-      ? `/lecture-cards/due?lectureTag=${encodeURIComponent(lectureTag)}`
+    const endpoint = subjectId
+      ? `/lecture-cards/due?subjectId=${encodeURIComponent(subjectId)}`
       : '/lecture-cards/due';
     api.get<LectureCard[]>(endpoint)
       .then(setData)
       .finally(() => setIsLoading(false));
-  }, [lectureTag]);
+  }, [subjectId]);
 
   return { data, isLoading };
 }

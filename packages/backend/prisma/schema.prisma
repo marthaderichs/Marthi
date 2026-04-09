@@ -17,9 +17,11 @@ model Subject {
   icon        String?                         // 'Heart' (Lucide Icon Name)
   description String
 
-  topics      Topic[]
-  questions   Question[]
-  flashcards  Flashcard[]
+  topics           Topic[]
+  questions        Question[]
+  flashcards       Flashcard[]
+  lectureCards     LectureCard[]
+  lectureSummaries LectureSummary[]
 
   createdAt   DateTime @default(now())
 }
@@ -171,6 +173,10 @@ model LectureCard {
   front       String
   back        String
   lectureTag  String?
+
+  subjectId   String
+  subject     Subject   @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
   easeFactor  Float     @default(2.5)
   interval    Int       @default(0)
   repetitions Int       @default(0)
@@ -178,6 +184,7 @@ model LectureCard {
   lastReview  DateTime?
   createdAt   DateTime  @default(now())
 
+  @@index([subjectId])
   @@index([nextReview])
   @@index([lectureTag])
 }
@@ -190,9 +197,14 @@ model LectureSummary {
   title      String
   content    String
   lectureTag String?
+
+  subjectId  String
+  subject    Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
+  @@index([subjectId])
   @@index([lectureTag])
 }
 

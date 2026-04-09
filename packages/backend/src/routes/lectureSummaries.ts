@@ -4,12 +4,15 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 export const lectureSummariesRouter = Router();
 
-// GET /api/lecture-summaries?lectureTag=...
+// GET /api/lecture-summaries?subjectId=...&lectureTag=...
 lectureSummariesRouter.get('/', async (req, res, next) => {
   try {
-    const { lectureTag } = req.query;
+    const { subjectId, lectureTag } = req.query;
     const summaries = await prisma.lectureSummary.findMany({
-      where: lectureTag ? { lectureTag: String(lectureTag) } : {},
+      where: {
+        ...(subjectId ? { subjectId: String(subjectId) } : {}),
+        ...(lectureTag ? { lectureTag: String(lectureTag) } : {}),
+      },
       orderBy: { createdAt: 'desc' },
     });
     res.json(summaries);

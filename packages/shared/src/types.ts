@@ -36,6 +36,7 @@ export interface Question {
 
 export interface LectureCard {
   id: string;
+  subjectId: string;
   front: string;
   back: string;
   lectureTag?: string | null;
@@ -49,6 +50,7 @@ export interface LectureCard {
 
 export interface LectureSummary {
   id: string;
+  subjectId: string;
   title: string;
   content: string;
   lectureTag?: string | null;

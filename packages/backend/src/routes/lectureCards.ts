@@ -5,12 +5,15 @@ import { LectureCardReviewSchema } from '@medilearn/shared';
 const prisma = new PrismaClient();
 export const lectureCardsRouter = Router();
 
-// GET /api/lecture-cards?lectureTag=...
+// GET /api/lecture-cards?subjectId=...&lectureTag=...
 lectureCardsRouter.get('/', async (req, res, next) => {
   try {
-    const { lectureTag } = req.query;
+    const { subjectId, lectureTag } = req.query;
     const cards = await prisma.lectureCard.findMany({
-      where: lectureTag ? { lectureTag: String(lectureTag) } : {},
+      where: {
+        ...(subjectId ? { subjectId: String(subjectId) } : {}),
+        ...(lectureTag ? { lectureTag: String(lectureTag) } : {}),
+      },
       orderBy: { createdAt: 'desc' },
     });
     res.json(cards);
@@ -19,13 +22,13 @@ lectureCardsRouter.get('/', async (req, res, next) => {
   }
 });
 
-// GET /api/lecture-cards/due?lectureTag=...
+// GET /api/lecture-cards/due?subjectId=...
 lectureCardsRouter.get('/due', async (req, res, next) => {
   try {
-    const { lectureTag } = req.query;
+    const { subjectId } = req.query;
     const cards = await prisma.lectureCard.findMany({
       where: {
-        ...(lectureTag ? { lectureTag: String(lectureTag) } : {}),
+        ...(subjectId ? { subjectId: String(subjectId) } : {}),
         nextReview: { lte: new Date() },
       },
       orderBy: { nextReview: 'asc' },

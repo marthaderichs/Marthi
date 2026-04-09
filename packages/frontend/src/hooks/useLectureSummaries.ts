@@ -2,19 +2,19 @@ import { useState, useEffect } from 'react';
 import { api } from '../api/client';
 import { LectureSummary } from '@medilearn/shared';
 
-export function useLectureSummaries(lectureTag?: string) {
+export function useLectureSummaries(subjectId?: string) {
   const [data, setData] = useState<LectureSummary[] | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading(true);
-    const endpoint = lectureTag
-      ? `/lecture-summaries?lectureTag=${encodeURIComponent(lectureTag)}`
+    const endpoint = subjectId
+      ? `/lecture-summaries?subjectId=${encodeURIComponent(subjectId)}`
       : '/lecture-summaries';
     api.get<LectureSummary[]>(endpoint)
       .then(setData)
       .finally(() => setIsLoading(false));
-  }, [lectureTag]);
+  }, [subjectId]);
 
   return { data, isLoading };
 }
