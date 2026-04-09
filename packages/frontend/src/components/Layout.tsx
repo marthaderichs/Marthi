@@ -217,7 +217,7 @@ export default function Layout() {
     { to: '/garden',     icon: Flower2,      label: 'Garten',     heart: '#E07A8A' },
     { to: '/import',      icon: Upload,        label: 'Import',      heart: '#B8D3E5' },
     { to: '/vorlesungen', icon: GraduationCap, label: 'Vorlesungen', heart: '#5A7FA8' },
-    { to: '/bga',         icon: Activity,      label: 'BGA',         heart: '#5A7FA8' },
+    { to: '/bga',         icon: Activity,      label: 'Klinik',      heart: '#5A7FA8' },
   ];
 
   return (
