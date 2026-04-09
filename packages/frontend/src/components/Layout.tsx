@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { Brain, CheckSquare, Layers, Upload, Flower2, Timer, Coffee, Play, Pause, RotateCcw, Search, X, BookOpen, Menu, GraduationCap } from 'lucide-react';
+import { Brain, CheckSquare, Layers, Upload, Flower2, Timer, Coffee, Play, Pause, RotateCcw, Search, X, BookOpen, Menu, GraduationCap, Activity } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -217,6 +217,7 @@ export default function Layout() {
     { to: '/garden',     icon: Flower2,      label: 'Garten',     heart: '#E07A8A' },
     { to: '/import',      icon: Upload,        label: 'Import',      heart: '#B8D3E5' },
     { to: '/vorlesungen', icon: GraduationCap, label: 'Vorlesungen', heart: '#5A7FA8' },
+    { to: '/bga',         icon: Activity,      label: 'BGA',         heart: '#5A7FA8' },
   ];
 
   return (

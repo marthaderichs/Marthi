@@ -13,6 +13,7 @@ import Flashcards from './pages/Flashcards';
 import ImportData from './pages/ImportData';
 import MistakeGarden from './pages/MistakeGarden';
 import VorlesungsKarteikarten from './pages/VorlesungsKarteikarten';
+import BGATraining from './pages/BGATraining';
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
         <Route path="garden" element={<MistakeGarden />} />
         <Route path="import" element={<ImportData />} />
         <Route path="vorlesungen" element={<VorlesungsKarteikarten />} />
+        <Route path="bga" element={<BGATraining />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
